@@ -1,0 +1,85 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  user_id    String   @id @default(cuid())
+  email      String   @unique @db.VarChar(100)
+  password   String   @db.VarChar(100)
+  name       String   @db.VarChar(100)
+  
+  transactions Transaction[]
+
+  @@map("users")
+}
+
+model Psychologist {
+  psychologist_id String @id @default(cuid())
+  name            String  @db.VarChar(100)
+  email           String  @unique @db.VarChar(100)
+  description     String  @db.Text
+  session_count   Int     @db.Int
+
+  schedules Schedule[]
+  office_id String @default(cuid())
+  office    Office @relation(fields: [office_id], references: [office_id])
+
+  @@map("psychologists")
+}
+
+model Office {
+  office_id     String  @id @default(cuid())
+  province      String  @db.VarChar(50)
+  city          String  @db.VarChar(50)
+  address       String  @db.VarChar(300)
+  phone_number  String  @db.VarChar(20)
+
+  psychologists Psychologist[]
+
+  @@map("offices")
+}
+
+model Schedule {
+  schedule_id   String @id @default(cuid())
+  days          DateTime @db.DateTime
+  session       Int     @db.Int
+  occupied      Boolean @default(false)
+
+  psychologist_id String @default(cuid())
+  psychologist  Psychologist @relation(fields: [psychologist_id], references: [psychologist_id])
+  transaction_id String @unique @default(cuid())
+  transaction    Transaction @relation(fields: [transaction_id], references: [transaction_id])
+
+  @@map("schedules")
+}
+
+model Transaction {
+  transaction_id  String @id @default(cuid())
+  is_paid         Boolean @default(false)
+  payment_method  PaymentMethod @default(cash)
+  amount          Float @db.Float
+  payment_date    DateTime @db.Date
+
+  user            User @relation(fields: [user_id], references: [user_id])
+  user_id         String  @default(cuid())  
+  schedule        Schedule?
+
+  @@map("transactions")
+}
+
+enum PaymentMethod {
+  credit_card
+  debit_card
+  cash
+}

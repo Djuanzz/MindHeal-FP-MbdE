@@ -55,7 +55,7 @@ CREATE TABLE `schedules` (
     `session` INTEGER NOT NULL,
     `occupied` BOOLEAN NOT NULL DEFAULT false,
     `psychologist_id` VARCHAR(191) NOT NULL,
-    `transaction_id` VARCHAR(191) NOT NULL,
+    `transaction_id` VARCHAR(191) NULL,
     UNIQUE INDEX `schedules_transaction_id_key`(`transaction_id`),
     PRIMARY KEY (`schedule_id`)
 );

@@ -1,5 +1,4 @@
 import userService from "../service/user.service.js";
-import jwt from "jsonwebtoken";
 
 const signUp = async (req, res, next) => {
   try {
@@ -13,6 +12,25 @@ const signUp = async (req, res, next) => {
   }
 };
 
+const signIn = async (req, res, next) => {
+  try {
+    const result = await userService.signIn(req.body);
+
+    res.cookie("jwt", result, {
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
+    res.status(200).json({
+      data: result,
+      message: `login success as ${req.body.email}`,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   signUp,
+  signIn,
 };

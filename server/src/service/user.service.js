@@ -30,31 +30,40 @@ const signUp = async (req) => {
   return user;
 };
 
-// const signUp = async (req) => {
-//   const user = validate(userValidation.signUpValidation, req);
+const signIn = async (req) => {
+  const login = validate(userValidation.signInValidation, req);
 
-//   const countUser = await prisma.user.count({
-//     where: {
-//       email: user.email,
-//     },
-//   });
+  // const user = await prisma.user.findUnique({
+  //   where: {
+  //     email: login.email,
+  //   },
+  // });
 
-//   if (countUser > 0) {
-//     throw new ResponseError(400, "user already exists");
-//   }
+  const user = await prisma.$queryRaw`
+    SELECT * FROM users
+    WHERE email = ${login.email}
+  `;
 
-//   user.password = await bcrypt.hash(user.password, 10);
+  if (user.length === 0)
+    throw new ResponseError(400, "username or password is invalid");
 
-//   return prisma.user.create({
-//     data: user,
-//     select: {
-//       email: true,
-//       name: true,
-//       password: true,
-//     },
-//   });
-// };
+  // if (!user) throw new ResponseError(400, "username or password is invalid");
+
+  const isValidPassword = await bcrypt.compare(
+    login.password,
+    user[0].password
+  );
+  // const isValidPassword = await bcrypt.compare(login.password, user.password);
+
+  if (!isValidPassword)
+    throw new ResponseError(400, "username or password is invalid");
+
+  const token = jwt.sign({ id: user.user_id }, process.env.JWT_SECRET);
+
+  return token;
+};
 
 export default {
   signUp,
+  signIn,
 };

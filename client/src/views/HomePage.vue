@@ -3,16 +3,27 @@
     <header class="navbar navbar-expand-lg navbar-dark bg-primary">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">Mindheal.com</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
-              <router-link to="/login" class="nav-link active">Home</router-link>
+              <router-link to="/login" class="nav-link active"
+                >Home</router-link
+              >
             </li>
             <li class="nav-item">
-              <router-link to="/services" class="nav-link">Services</router-link>
+              <router-link to="/services" class="nav-link"
+                >Services</router-link
+              >
             </li>
             <li class="nav-item">
               <router-link to="/about" class="nav-link">About Us</router-link>
@@ -24,11 +35,16 @@
         </div>
       </div>
     </header>
-    <section class="hero d-flex justify-content-center align-items-center text-white">
+    <section
+      class="hero d-flex justify-content-center align-items-center text-white">
       <div class="text-center">
         <h1 class="display-4">Explore Your Inner World</h1>
-        <p class="lead">Discover pathways to better mental health with Mindheal.</p>
-        <button class="btn btn-lg btn-light" @click="startJourney">Get Started</button>
+        <p class="lead">
+          Discover pathways to better mental health with Mindheal.
+        </p>
+        <button class="btn btn-lg btn-light" @click="startJourney">
+          Get Started
+        </button>
       </div>
     </section>
     <footer class="bg-dark text-center text-white py-3">
@@ -39,13 +55,13 @@
 
 <script>
 export default {
-  name: 'HomePage',
+  name: "HomePage",
   methods: {
     startJourney() {
-      this.$router.push('/login');
-    }
-  }
-}
+      this.$router.push("/login");
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -82,7 +98,8 @@ export default {
   color: #fff;
   transition: color 0.3s ease-in-out;
 }
-.navbar .nav-link:hover, .navbar .nav-link.active {
+.navbar .nav-link:hover,
+.navbar .nav-link.active {
   color: #a2d2ff;
 }
 </style>

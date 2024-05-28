@@ -4,19 +4,34 @@
       <h2>Login to Mindheal</h2>
       <form @submit.prevent="submitLoginForm">
         <div class="form-group">
-          <input type="text" id="login-name" placeholder="Enter your name" v-model="loginEmail" required>
+          <input
+            type="text"
+            id="login-name"
+            placeholder="Enter your name"
+            v-model="loginEmail"
+            required />
         </div>
         <div class="form-group">
-          <input type="password" id="login-password" placeholder="Enter your password" v-model="loginPassword" required>
-          <span class="toggle-password" @click="togglePasswordVisibility">&#128065;</span>
+          <input
+            type="password"
+            id="login-password"
+            placeholder="Enter your password"
+            v-model="loginPassword"
+            required />
+          <span class="toggle-password" @click="togglePasswordVisibility"
+            >&#128065;</span
+          >
         </div>
         <button type="submit">Log In</button>
         <div class="form-footer">
-          <p>By continuing, you agree to the <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>.</p>
+          <p>
+            By continuing, you agree to the <a href="#">Terms of Use</a> and
+            <a href="#">Privacy Policy</a>.
+          </p>
           <a href="#">Forgot your password?</a>
         </div>
       </form>
-      <hr>
+      <hr />
       <div class="create-account">
         <p>New to Mindheal?</p>
         <button @click="goToSignUp">Create an Account</button>
@@ -27,38 +42,60 @@
 
 <script>
 export default {
-  name: 'LoginPage',
+  name: "LoginPage",
   data() {
     return {
-      loginEmail: '',
-      loginPassword: '',
-      passwordFieldType: 'password'
+      loginEmail: "",
+      loginPassword: "",
+      passwordFieldType: "password",
     };
   },
   methods: {
     submitLoginForm() {
-      console.log('Login with:', this.loginEmail, this.loginPassword);
-      
+      console.log("Login with:", this.loginEmail, this.loginPassword);
+
       this.login();
     },
-    login() {
-      
-      if (this.loginEmail === 'example@example.com' && this.loginPassword === 'password') {
-        this.$router.push({ name: 'LandingPage' }); 
-      } else {
-        alert('Invalid credentials'); 
+    async login() {
+      try {
+        const req = await fetch("http://localhost:5000/api/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: this.loginEmail,
+            password: this.loginPassword,
+          }),
+        });
+
+        const data = await req.json();
+        console.log(data);
+        this.$router.push({ name: "LandingPage" });
+      } catch (error) {
+        console.error(error);
+        alert("Invalid credentials");
       }
+
+      // if (
+      //   this.loginEmail === "example@example.com" &&
+      //   this.loginPassword === "password"
+      // ) {
+      //   this.$router.push({ name: "LandingPage" });
+      // } else {
+      //   alert("Invalid credentials");
+      // }
     },
     goToSignUp() {
-      this.$router.push({ name: 'SignUpPage' });
+      this.$router.push({ name: "SignUpPage" });
     },
     togglePasswordVisibility() {
-      this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
-    }
-  }
+      this.passwordFieldType =
+        this.passwordFieldType === "password" ? "text" : "password";
+    },
+  },
 };
 </script>
-
 
 <style scoped>
 .auth-page {
@@ -73,7 +110,7 @@ export default {
   width: 100%;
   max-width: 350px;
   padding: 20px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   background-color: #fff;
   border-radius: 8px;
 }
@@ -118,12 +155,14 @@ button:hover {
   background-color: #0056b3;
 }
 
-.form-footer a, .form-footer p {
+.form-footer a,
+.form-footer p {
   color: #666;
   text-decoration: none;
 }
 
-.create-account p, .form-footer p {
+.create-account p,
+.form-footer p {
   margin-bottom: 5px;
 }
 

@@ -4,19 +4,52 @@
       <h2>Create Your Account</h2>
       <form @submit.prevent="submitSignUpForm">
         <div class="form-group">
-          <input type="text" id="signup-email" placeholder="Email Address" v-model="signUpEmail" required>
+          <input
+            type="text"
+            id="signup-name"
+            placeholder="Name"
+            v-model="signUpName"
+            required />
         </div>
         <div class="form-group">
-          <input type="password" id="signup-password" placeholder="Password" v-model="signUpPassword" required>
-          <span class="toggle-password" @click="togglePasswordVisibility('password')">&#128065;</span>
+          <input
+            type="text"
+            id="signup-email"
+            placeholder="Email Address"
+            v-model="signUpEmail"
+            required />
         </div>
         <div class="form-group">
-          <input type="password" id="confirm-password" placeholder="Confirm Password" v-model="confirmPassword" required>
-          <span class="toggle-password" @click="togglePasswordVisibility('confirm')">&#128065;</span>
+          <input
+            type="password"
+            id="signup-password"
+            placeholder="Password"
+            v-model="signUpPassword"
+            required />
+          <span
+            class="toggle-password"
+            @click="togglePasswordVisibility('password')"
+            >&#128065;</span
+          >
+        </div>
+        <div class="form-group">
+          <input
+            type="password"
+            id="confirm-password"
+            placeholder="Confirm Password"
+            v-model="confirmPassword"
+            required />
+          <span
+            class="toggle-password"
+            @click="togglePasswordVisibility('confirm')"
+            >&#128065;</span
+          >
         </div>
         <button type="submit">Create Account</button>
         <div class="form-footer">
-          <p>Already have an account? <a href="#" @click="goToLogin">Log In</a></p>
+          <p>
+            Already have an account? <a href="#" @click="goToLogin">Log In</a>
+          </p>
         </div>
       </form>
     </div>
@@ -25,45 +58,68 @@
 
 <script>
 export default {
-  name: 'SignUpPage',
+  name: "SignUpPage",
   data() {
     return {
-      signUpEmail: '',
-      signUpPassword: '',
-      confirmPassword: '',
+      signUpName: "",
+      signUpEmail: "",
+      signUpPassword: "",
+      confirmPassword: "",
       showPassword: false,
-      showConfirmPassword: false
+      showConfirmPassword: false,
     };
   },
   methods: {
     submitSignUpForm() {
-      console.log('Registering:', this.signUpEmail, this.signUpPassword);
-      
+      console.log("Registering:", this.signUpEmail, this.signUpPassword);
+
       this.register();
     },
-    register() {
-      
-      if (this.signUpEmail && this.signUpPassword === this.confirmPassword) {
-        
-        this.$router.push({ name: 'LandingPage' }); 
-      } else {
-        alert('Please ensure all fields are filled correctly and passwords match.');
+    async register() {
+      try {
+        const req = await fetch("http://localhost:5000/api/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: this.signUpName,
+            email: this.signUpEmail,
+            password: this.signUpPassword,
+          }),
+        });
+
+        const res = await req.json();
+        console.log(res);
+        this.$router.push({ name: "LandingPage" });
+      } catch (error) {
+        console.error("Error registering:", error);
+        alert(
+          "Please ensure all fields are filled correctly and passwords match."
+        );
       }
+
+      // if (this.signUpEmail && this.signUpPassword === this.confirmPassword) {
+      //   this.$router.push({ name: "LandingPage" });
+      // } else {
+      //   alert(
+      //     "Please ensure all fields are filled correctly and passwords match."
+      //   );
+      // }
     },
     goToLogin() {
-      this.$router.push('/login');
+      this.$router.push("/login");
     },
     togglePasswordVisibility(type) {
-      if (type === 'password') {
+      if (type === "password") {
         this.showPassword = !this.showPassword;
       } else {
         this.showConfirmPassword = !this.showConfirmPassword;
       }
-    }
-  }
+    },
+  },
 };
 </script>
-
 
 <style scoped>
 .auth-page {
@@ -78,7 +134,7 @@ export default {
   width: 100%;
   max-width: 350px;
   padding: 20px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   background-color: #fff;
   border-radius: 8px;
 }
@@ -123,7 +179,8 @@ button:hover {
   background-color: #0056b3;
 }
 
-.form-footer a, .form-footer p {
+.form-footer a,
+.form-footer p {
   color: #666;
   text-decoration: none;
 }

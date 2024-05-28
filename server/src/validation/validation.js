@@ -1,13 +1,15 @@
-import Joi from "joi";
-
-const validate = (schema, req) => {
-  const { error, value } = schema.validate(req, {
+const validate = (schema, data) => {
+  const { err, value } = schema.validate(data, {
     abortEarly: false,
     stripUnknown: true,
   });
 
-  if (error) {
-    throw new Error(error.message);
+  if (err) {
+    const errors = {};
+    err.details.forEach((error) => {
+      errors[error.path] = error.message;
+    });
+    return errors;
   }
 
   return value;

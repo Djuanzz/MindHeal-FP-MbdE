@@ -1,36 +1,97 @@
 import userService from "../service/user.service.js";
 
-const signUp = async (req, res, next) => {
+const getAllUsers = async (req, res) => {
   try {
-    const result = await userService.signUp(req.body);
+    const data = await userService.getAllUsers();
+    res.status(200).json({
+      data: data,
+      message: "done",
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const register = async (req, res, next) => {
+  try {
+    const result = await userService.register(req.body);
     res.status(201).json({
       data: result,
-      message: "user created",
+      message: "done",
+    });
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
+const login = async (req, res, next) => {
+  try {
+    const token = await userService.login(req.body);
+    res.cookie("jwt", token, {
+      httpOnly: true,
+      maxAge: 1 * 60 * 60 * 1000,
+    });
+
+    res.status(200).json({
+      data: token,
+      message: `login successfully as ${req.body.email}`,
+    });
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
+const logout = async (req, res, next) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({
+        message: "unauthenticated user",
+      });
+    }
+
+    res.clearCookie("jwt");
+    res.status(200).json({
+      message: "logout successfully",
     });
   } catch (error) {
     next(error);
   }
 };
 
-const signIn = async (req, res, next) => {
+const currUser = async (req, res, next) => {
   try {
-    const result = await userService.signIn(req.body);
-
-    res.cookie("jwt", result, {
-      httpOnly: true,
-      maxAge: 24 * 60 * 60 * 1000,
-    });
-
+    const user = await userService.currUser(req);
     res.status(200).json({
-      data: result,
-      message: `login success as ${req.body.email}`,
+      data: user,
+      message: "done",
     });
-  } catch (error) {
-    next(error);
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
+const updateUser = async (req, res, next) => {
+  try {
+    const UserID = req.user.UserID;
+    const user = await userService.updateUser(req.body, UserID);
+    res.status(200).json({
+      data: user,
+      message: "updated successfully",
+    });
+  } catch (err) {
+    console.log(err);
+    next(err);
   }
 };
 
 export default {
-  signUp,
-  signIn,
+  getAllUsers,
+  register,
+  login,
+  logout,
+  currUser,
+  updateUser,
 };

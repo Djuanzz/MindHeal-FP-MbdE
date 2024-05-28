@@ -1,17 +1,24 @@
 import Joi from "joi";
 
-const signUpValidation = Joi.object({
-  email: Joi.string().email().required(),
-  password: Joi.string().min(6).required(),
+const registerValidation = Joi.object({
   name: Joi.string().required(),
+  email: Joi.string().email().required(),
+  password: Joi.string().required(),
 });
 
-const signInValidation = Joi.object({
+const loginValidation = Joi.object({
   email: Joi.string().email().required(),
-  password: Joi.string().min(6).required(),
+  password: Joi.string().required(),
+});
+
+const updateUserValidation = Joi.object({
+  name: Joi.string().optional(),
+  email: Joi.string().email().optional(),
+  password: Joi.string().optional(),
 });
 
 export default {
-  signUpValidation,
-  signInValidation,
+  registerValidation,
+  loginValidation,
+  updateUserValidation,
 };

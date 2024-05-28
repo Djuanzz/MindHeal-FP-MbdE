@@ -1,69 +1,94 @@
-import { prisma } from "../db/database.js";
-import { validate } from "../validation/validation.js";
+import { db } from "../db/db.js";
 import userValidation from "../validation/user.validation.js";
-import { ResponseError } from "../error/err-handling.js";
+import { validate } from "../validation/validation.js";
 import bcrypt from "bcrypt";
-import { v4 as uuidv4 } from "uuid";
 import jwt from "jsonwebtoken";
 
-const signUp = async (req) => {
-  const user = validate(userValidation.signUpValidation, req);
+const getAllUsers = async () => {
+  const [rows, fields] = await db.query("SELECT * FROM user");
+  return rows;
+};
 
-  const countUser = await prisma.$queryRaw`
-    SELECT COUNT(*) FROM users
-    WHERE email = ${user.email}
-  `;
+const register = async (req) => {
+  const user = validate(userValidation.registerValidation, req);
+
+  const countUserQuery = "SELECT COUNT(*) as count FROM user WHERE email = ?";
+  const [countUser] = await db.query(countUserQuery, [user.email]);
 
   if (countUser[0].count > 0) {
-    throw new ResponseError(400, "Email already exists");
+    throw new Error("Email already exists");
   }
 
-  user.password = await bcrypt.hash(user.password, 10);
-
-  const id = uuidv4();
-
-  const newUser = await prisma.$queryRaw`
-    INSERT INTO users (user_id, email, password, name)
-    VALUES (${id}, ${user.email}, ${user.password}, ${user.name})
-  `;
+  const newUserQuery =
+    "INSERT INTO user (name, email, password) VALUES (?, ?, ?)";
+  const [result] = await db.query(newUserQuery, [
+    user.name,
+    user.email,
+    user.password,
+  ]);
 
   return user;
 };
 
-const signIn = async (req) => {
-  const login = validate(userValidation.signInValidation, req);
+const login = async (req) => {
+  const login = validate(userValidation.loginValidation, req);
 
-  // const user = await prisma.user.findUnique({
-  //   where: {
-  //     email: login.email,
-  //   },
-  // });
+  const userQuery = "SELECT * FROM user WHERE email = ? AND password = ?";
+  const [users] = await db.query(userQuery, [login.email, login.password]);
 
-  const user = await prisma.$queryRaw`
-    SELECT * FROM users
-    WHERE email = ${login.email}
-  `;
+  if (users.length === 0) {
+    throw new Error("Invalid email or password");
+  }
 
-  if (user.length === 0)
-    throw new ResponseError(400, "username or password is invalid");
+  // console.log("pppppppppppppppppppppppppppppppppp", users[0]);
 
-  // if (!user) throw new ResponseError(400, "username or password is invalid");
-
-  const isValidPassword = await bcrypt.compare(
-    login.password,
-    user[0].password
-  );
-  // const isValidPassword = await bcrypt.compare(login.password, user.password);
-
-  if (!isValidPassword)
-    throw new ResponseError(400, "username or password is invalid");
-
-  const token = jwt.sign({ id: user.user_id }, process.env.JWT_SECRET);
-
+  const token = jwt.sign({ UserID: users[0].UserID }, process.env.JWT_SECRET);
   return token;
 };
 
+const currUser = async (req) => {
+  const userQuery = "SELECT * FROM user WHERE UserID = ?";
+  const [user] = await db.query(userQuery, [req.user.UserID]);
+
+  return user[0];
+};
+
+const updateUser = async (req, UserID) => {
+  const user = validate(userValidation.updateUserValidation, req);
+
+  const userQuery = "SELECT * FROM user WHERE UserID = ?";
+  const [users] = await db.query(userQuery, [UserID]);
+
+  if (users.length === 0) {
+    throw new Error("User not found");
+  }
+
+  const data = {};
+  user.name ? (data.name = user.name) : (data.name = users[0].name);
+  user.email ? (data.email = user.email) : (data.email = users[0].email);
+  user.password
+    ? (data.password = user.password)
+    : (data.password = users[0].password);
+
+  // console.log("user", user);
+  // console.log("-------------------", users);
+
+  const updateUserQuery =
+    "UPDATE user SET name = ?, email = ?, password = ? WHERE UserID = ?";
+  const [result] = await db.query(updateUserQuery, [
+    data.name,
+    data.email,
+    data.password,
+    UserID,
+  ]);
+
+  return user;
+};
+
 export default {
-  signUp,
-  signIn,
+  getAllUsers,
+  register,
+  login,
+  currUser,
+  updateUser,
 };

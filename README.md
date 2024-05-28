@@ -13,3 +13,8 @@ Silakan clone repo ini ke directory local
 ## HOW TO RUN CLIENT
 
 To be Announced
+
+1. ketik `cd client` untuk masuk ke dir client
+2. ketik `npm install`
+3. ketik `npm run serve` pada terminal
+4. happy collaboration

@@ -38,3 +38,17 @@ BEGIN
 END 
 
 CALL GetScheduleForCurrentWeek();
+
+CREATE PROCEDURE GetPsychologistSchedule(IN requestedDate DATE)
+BEGIN
+    SELECT p.Name AS PsychologistName, 
+            s.SessionStart, 
+            s.SessionEnd,
+            sch.ScheduleDate
+    FROM Psychologist p
+    JOIN Schedule sch ON p.PsychologistID = sch.Psychologist_PsychologistID
+    JOIN Session s ON sch.Session_SessionID = s.SessionID
+    WHERE sch.ScheduleDate = requestedDate;
+END 
+
+CALL GetPsychologistSchedule('2024-05-28');

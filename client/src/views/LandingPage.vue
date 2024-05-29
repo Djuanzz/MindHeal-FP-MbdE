@@ -22,9 +22,10 @@
           v-for="(schedule, index) in schedules"
           :key="index">
           <div class="card-body">
-            <h5 class="card-title">{{ schedule.date }}</h5>
+            <h5 class="card-title">{{ schedule.ScheduleDate }}</h5>
             <p class="card-text">
-              {{ schedule.name }}<br />{{ schedule.time }}
+              {{ schedule.PsychologistName }}<br />{{ schedule.SessionStart }} -
+              {{ schedule.SessionEnd }}
             </p>
             <button class="btn btn-success" @click="goToTransaction">
               Book Appointment
@@ -70,30 +71,31 @@ export default {
         },
       ],
       selectedDay: ref(""),
-      schedules: [
-        {
-          name: "Dr. Adnan Abdullah Juan S.Psi",
-          time: "10:00 AM - 11:50 AM",
-          date: "DD-MM-YYYY",
-        },
-        {
-          name: "Dr. Adnan Abdullah Juan S.Psi",
-          time: "1:10 PM - 3:00 PM",
-          date: "DD-MM-YYYY",
-        },
-        {
-          name: "Dr. Adnan Abdullah Juan S.Psi",
-          time: "4:00 PM - 5:50 PM",
-          date: "DD-MM-YYYY",
-        },
-      ],
+      currDate: ref(""),
+      schedules: ref([]),
     };
   },
   methods: {
-    selectDay(day) {
-      this.selectedDay = day.day;
-      console.log(`Selected day: ${day.day}`);
-      console.log(`Selected date: ${day.date}`);
+    async selectDay(day) {
+      try {
+        const req = await fetch("http://localhost:5000/api/schedule/day", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            date: day.date,
+          }),
+        });
+
+        this.selectedDay = day.day;
+        const data = await req.json();
+        this.schedules = data.data;
+        console.log(data);
+      } catch (error) {
+        console.error(error);
+        alert("Invalid credentials");
+      }
     },
     goToTransaction() {
       this.$router.push({ name: "TransactionPage" });
@@ -103,7 +105,7 @@ export default {
       const da = String(today.getDate()).padStart(2, "0");
       const month = String(today.getMonth() + 1).padStart(2, "0");
       const year = today.getFullYear();
-      const formattedDate = `${da}/${month}/${year}`;
+      const formattedDate = `${year}-${month}-${da}`;
 
       let dayName;
 
@@ -113,15 +115,13 @@ export default {
 
       console.log(`Tanggal: ${formattedDate}`);
       console.log(`Hari: ${dayName}`);
-      return dayName;
+      return { dayName, formattedDate };
     },
 
     async initDateDay() {
       try {
         const response = await fetch("http://localhost:5000/api/schedule/week");
         const data = await response.json();
-        // console.log(data.data);
-
         for (let i = 0; i < this.dateDay.length; i++) {
           this.dateDay[i].date = data.data[i].ScheduleDate;
         }
@@ -135,7 +135,10 @@ export default {
   },
   mounted() {
     this.initDateDay();
-    this.selectedDay = this.initSelectedDay();
+    const { dayName, formattedDate } = this.initSelectedDay();
+    this.selectedDay = dayName;
+    this.currDate = formattedDate;
+    this.selectDay({ day: this.selectedDay, date: this.currDate });
   },
 };
 </script>

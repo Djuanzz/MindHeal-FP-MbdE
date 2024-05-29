@@ -24,6 +24,7 @@ psikologRouter.post("/", psikologController.createPsikolog);
 scheduleRouter.get("/", scheduleController.getAllSchedule);
 scheduleRouter.post("/", scheduleController.createSchedule);
 scheduleRouter.get("/week", scheduleController.getAllScheduleInWeek);
+scheduleRouter.post("/day", scheduleController.getPsikologSchedule);
 
 export default {
   userRouter,

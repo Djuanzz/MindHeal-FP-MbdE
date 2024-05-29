@@ -31,8 +31,18 @@ const getAllScheduleInWeek = async () => {
   return result[0];
 };
 
+const getPsikologSchedule = async (req) => {
+  const psikologId = req.body.date;
+  const getPsikologScheduleQuery = "CALL GetPsychologistSchedule(?)";
+
+  const [result] = await db.query(getPsikologScheduleQuery, [psikologId]);
+
+  return result[0];
+};
+
 export default {
   getAllSchedule,
   createSchedule,
   getAllScheduleInWeek,
+  getPsikologSchedule,
 };

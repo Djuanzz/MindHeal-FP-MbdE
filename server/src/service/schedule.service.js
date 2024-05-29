@@ -23,7 +23,16 @@ const createSchedule = async (req) => {
   return schedule;
 };
 
+const getAllScheduleInWeek = async () => {
+  const getAllScheduleInWeekQuery = "CALL GetScheduleForCurrentWeek()";
+
+  const [result] = await db.query(getAllScheduleInWeekQuery);
+
+  return result[0];
+};
+
 export default {
   getAllSchedule,
   createSchedule,
+  getAllScheduleInWeek,
 };

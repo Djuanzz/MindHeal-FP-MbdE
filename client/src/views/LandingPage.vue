@@ -6,15 +6,16 @@
     </header>
     <main>
       <ul class="nav nav-pills nav-fill mb-3">
-        <li class="nav-item" v-for="day in days" :key="day">
+        <li class="nav-item" v-for="day in dateDay" :key="day.day">
           <a
             class="nav-link"
-            :class="{ active: selectedDay === day }"
+            :class="{ active: selectedDay === day.day }"
             @click="selectDay(day)">
-            {{ day }}
+            {{ day.day }}
           </a>
         </li>
       </ul>
+
       <div class="schedule-cards">
         <div
           class="card mb-4 shadow-sm"
@@ -36,19 +37,39 @@
 </template>
 
 <script>
+import { ref } from "vue";
+
 export default {
   name: "LandingPage",
   data() {
     return {
-      days: [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
+      dateDay: [
+        {
+          day: "Monday",
+          date: ref(""),
+        },
+        {
+          day: "Tuesday",
+          date: ref(""),
+        },
+        {
+          day: "Wednesday",
+          date: ref(""),
+        },
+        {
+          day: "Thursday",
+          date: ref(""),
+        },
+        {
+          day: "Friday",
+          date: ref(""),
+        },
+        {
+          day: "Saturday",
+          date: ref(""),
+        },
       ],
-      selectedDay: "Tuesday",
+      selectedDay: ref(""),
       schedules: [
         {
           name: "Dr. Adnan Abdullah Juan S.Psi",
@@ -70,11 +91,51 @@ export default {
   },
   methods: {
     selectDay(day) {
-      this.selectedDay = day;
+      this.selectedDay = day.day;
+      console.log(`Selected day: ${day.day}`);
+      console.log(`Selected date: ${day.date}`);
     },
     goToTransaction() {
       this.$router.push({ name: "TransactionPage" });
     },
+    initSelectedDay() {
+      const today = new Date();
+      const da = String(today.getDate()).padStart(2, "0");
+      const month = String(today.getMonth() + 1).padStart(2, "0");
+      const year = today.getFullYear();
+      const formattedDate = `${da}/${month}/${year}`;
+
+      let dayName;
+
+      today.getDay() === 0
+        ? (dayName = "Sunday")
+        : (dayName = this.dateDay[today.getDay() - 1].day);
+
+      console.log(`Tanggal: ${formattedDate}`);
+      console.log(`Hari: ${dayName}`);
+      return dayName;
+    },
+
+    async initDateDay() {
+      try {
+        const response = await fetch("http://localhost:5000/api/schedule/week");
+        const data = await response.json();
+        // console.log(data.data);
+
+        for (let i = 0; i < this.dateDay.length; i++) {
+          this.dateDay[i].date = data.data[i].ScheduleDate;
+        }
+        // this.dateDay.forEach((d) => {
+        //   console.log(d);
+        // });
+      } catch (error) {
+        console.error(error);
+      }
+    },
+  },
+  mounted() {
+    this.initDateDay();
+    this.selectedDay = this.initSelectedDay();
   },
 };
 </script>

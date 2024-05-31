@@ -50,7 +50,7 @@
       return {
         histories: [
           { id: 1, date: '2024-05-31', psychologist: 'Dr. Juan', service: '09:00 - 11:00', cost: 'Rp 500.000,00' },
-          // Add more history data here
+          
         ],
       };
     },

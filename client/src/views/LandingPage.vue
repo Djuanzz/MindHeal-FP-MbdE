@@ -1,5 +1,30 @@
 <template>
   <div class="landing-page container mt-5">
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">MindHeal.com</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavAltMarkup"
+          aria-controls="navbarNavAltMarkup"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav ms-auto">
+          
+            <router-link to="/my-history" class="nav-link btn-outline-secondary mx-2">My History</router-link>
+            <router-link to="/user-profile" class="nav-link btn-outline-secondary mx-2">Profile</router-link>
+          </div>
+        </div>
+      </div>
+    </nav>
+
     <header class="text-center mb-5">
       <h1>Welcome to MindHeal.com</h1>
       <p>Select a day to view available sessions and book your appointment.</p>

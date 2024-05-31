@@ -8,6 +8,8 @@ import AdminDashboard from "@/views/admin/AdminDashboard.vue";
 import ManagePsychologists from "@/views/admin/ManagePsychologists.vue";
 import ScheduleManagement from "@/views/admin/ScheduleManagement.vue";
 import UserHistory from "@/views/admin/UserHistory.vue";
+import UserProfile from "@/views/UserProfile.vue"; 
+import MyHistoryPage from "@/views/MyHistory.vue"; 
 
 const routes = [
   {
@@ -39,6 +41,18 @@ const routes = [
     name: "TransactionPage",
     component: TransactionPage,
     meta: { title: "Transaction" },
+  },
+  {
+    path: "/user-profile",
+    name: "UserProfile",
+    component: UserProfile,
+    meta: { title: "User Profile" },
+  },
+  {
+    path: "/my-history",
+    name: "MyHistoryPage",
+    component: MyHistoryPage,
+    meta: { title: "My History" },
   },
   // Admin routes
   {
@@ -73,4 +87,3 @@ const router = createRouter({
 });
 
 export default router;
-

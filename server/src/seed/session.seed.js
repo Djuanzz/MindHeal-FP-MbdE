@@ -1,0 +1,6 @@
+const sessionSeed = [
+  {
+    sessionStart: "",
+    sessionEnd: "",
+  },
+];

@@ -16,7 +16,7 @@ userRouter.get("/me", userController.currUser);
 userRouter.delete("/logout", userController.logout);
 userRouter.patch("/", userController.updateUser);
 userRouter.post("/history", historyController.createUserHistory);
-userRouter.get("/history", historyController.listUserHistory);
+userRouter.get("/history", historyController.getUserHistoryById);
 
 psikologRouter.get("/:id", psikologController.getPsikologById);
 psikologRouter.post("/", psikologController.createPsikolog);

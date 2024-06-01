@@ -45,9 +45,9 @@ END;
 ### Langkah-Langkah
 
 1. Membuat Entri UserHistory
-2. Mendapatkan UserHistoryID Terbaru (LAST_INSERT ID)
+2. Mendapatkan UserHistoryID Terbaru dengan statement `LAST_INSERT ID()`
 3. Memasukkan Transaction
-4. Memperbarui Jadwal (ScheduleStatus) dari default value 'Available' menjadi 'Waiting'
+4. Memperbarui Jadwal (ScheduleStatus) dari default value `'Available'` menjadi `'Waiting'`
 
 ### Contoh Penggunaan
 
@@ -86,7 +86,7 @@ END;
 CALL UpdateTransactionByUserHistoryID(3,2);
 ```
 
-## DELETE FROM UserHistory (Cancel Transaction)
+## 3. DELETE FROM UserHistory (Cancel Transaction)
 
 ```sql
 DELETE FROM UserHistory WHERE UserHistoryID = ? ;

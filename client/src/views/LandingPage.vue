@@ -11,15 +11,21 @@
           data-bs-target="#navbarNavAltMarkup"
           aria-controls="navbarNavAltMarkup"
           aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
+          aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav ms-auto">
-          
-            <router-link to="/my-history" class="nav-link btn-outline-secondary mx-2">My History</router-link>
-            <router-link to="/user-profile" class="nav-link btn-outline-secondary mx-2">Profile</router-link>
+            <router-link
+              to="/my-history"
+              class="nav-link btn-outline-secondary mx-2"
+              >My History</router-link
+            >
+            <router-link
+              to="/user-profile"
+              class="nav-link btn-outline-secondary mx-2"
+              >Profile</router-link
+            >
           </div>
         </div>
       </div>
@@ -33,7 +39,7 @@
       <ul class="nav nav-pills nav-fill mb-3">
         <li class="nav-item" v-for="day in dateDay" :key="day.day">
           <a
-            class="nav-link"
+            class="nav-link btn"
             :class="{ active: selectedDay === day.day }"
             @click="selectDay(day)">
             {{ day.day }}

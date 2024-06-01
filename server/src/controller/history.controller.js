@@ -46,8 +46,22 @@ const getAllUserHistory = async (req, res, next) => {
   }
 };
 
+const getUserHistoryById = async (req, res, next) => {
+  try {
+    const result = await historyService.getUserHistoryById(req);
+    res.status(200).json({
+      data: result,
+      message: "done",
+    });
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
 export default {
   createUserHistory,
   listUserHistory,
   getAllUserHistory,
+  getUserHistoryById,
 };

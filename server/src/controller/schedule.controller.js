@@ -26,7 +26,35 @@ const createSchedule = async (req, res, next) => {
   }
 };
 
+const getAllScheduleInWeek = async (req, res, next) => {
+  try {
+    const data = await scheduleService.getAllScheduleInWeek();
+    res.status(200).json({
+      data: data,
+      message: "done",
+    });
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
+const getPsikologSchedule = async (req, res, next) => {
+  try {
+    const data = await scheduleService.getPsikologSchedule(req);
+    res.status(200).json({
+      data: data,
+      message: "done",
+    });
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
 export default {
   getAllSchedule,
   createSchedule,
+  getAllScheduleInWeek,
+  getPsikologSchedule,
 };

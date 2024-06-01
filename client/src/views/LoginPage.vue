@@ -62,6 +62,7 @@ export default {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
           body: JSON.stringify({
             email: this.loginEmail,
@@ -71,20 +72,16 @@ export default {
 
         const data = await req.json();
         console.log(data);
-        this.$router.push({ name: "LandingPage" });
+        if (req.ok) {
+          localStorage.setItem("token", data.data);
+          this.$router.push({ name: "LandingPage" });
+        } else {
+          alert("Invalid credentials");
+        }
       } catch (error) {
         console.error(error);
         alert("Invalid credentials");
       }
-
-      // if (
-      //   this.loginEmail === "example@example.com" &&
-      //   this.loginPassword === "password"
-      // ) {
-      //   this.$router.push({ name: "LandingPage" });
-      // } else {
-      //   alert("Invalid credentials");
-      // }
     },
     goToSignUp() {
       this.$router.push({ name: "SignUpPage" });

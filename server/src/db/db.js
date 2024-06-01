@@ -5,4 +5,5 @@ export const db = await mysql.createConnection({
   user: "root",
   password: "root",
   database: "rawat_jalan",
+  dateStrings: ["DATETIME", "DATE"],
 });

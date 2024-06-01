@@ -1,29 +1,62 @@
 <template>
   <div class="landing-page container mt-5">
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">MindHeal.com</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavAltMarkup"
+          aria-controls="navbarNavAltMarkup"
+          aria-expanded="false"
+          aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav ms-auto">
+            <router-link
+              to="/my-history"
+              class="nav-link btn-outline-secondary mx-2"
+              >My History</router-link
+            >
+            <router-link
+              to="/user-profile"
+              class="nav-link btn-outline-secondary mx-2"
+              >Profile</router-link
+            >
+          </div>
+        </div>
+      </div>
+    </nav>
+
     <header class="text-center mb-5">
       <h1>Welcome to MindHeal.com</h1>
       <p>Select a day to view available sessions and book your appointment.</p>
     </header>
     <main>
       <ul class="nav nav-pills nav-fill mb-3">
-        <li class="nav-item" v-for="day in days" :key="day">
+        <li class="nav-item" v-for="day in dateDay" :key="day.day">
           <a
-            class="nav-link"
-            :class="{ active: selectedDay === day }"
+            class="nav-link btn"
+            :class="{ active: selectedDay === day.day }"
             @click="selectDay(day)">
-            {{ day }}
+            {{ day.day }}
           </a>
         </li>
       </ul>
+
       <div class="schedule-cards">
         <div
           class="card mb-4 shadow-sm"
           v-for="(schedule, index) in schedules"
           :key="index">
           <div class="card-body">
-            <h5 class="card-title">{{ schedule.date }}</h5>
+            <h5 class="card-title">{{ schedule.ScheduleDate }}</h5>
             <p class="card-text">
-              {{ schedule.name }}<br />{{ schedule.time }}
+              {{ schedule.PsychologistName }}<br />{{ schedule.SessionStart }} -
+              {{ schedule.SessionEnd }}
             </p>
             <button class="btn btn-success" @click="goToTransaction">
               Book Appointment
@@ -36,45 +69,107 @@
 </template>
 
 <script>
+import { ref } from "vue";
+
 export default {
   name: "LandingPage",
   data() {
     return {
-      days: [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
+      dateDay: [
+        {
+          day: "Monday",
+          date: ref(""),
+        },
+        {
+          day: "Tuesday",
+          date: ref(""),
+        },
+        {
+          day: "Wednesday",
+          date: ref(""),
+        },
+        {
+          day: "Thursday",
+          date: ref(""),
+        },
+        {
+          day: "Friday",
+          date: ref(""),
+        },
+        {
+          day: "Saturday",
+          date: ref(""),
+        },
       ],
-      selectedDay: "Tuesday",
-      schedules: [
-        {
-          name: "Dr. Adnan Abdullah Juan S.Psi",
-          time: "10:00 AM - 11:50 AM",
-          date: "DD-MM-YYYY",
-        },
-        {
-          name: "Dr. Adnan Abdullah Juan S.Psi",
-          time: "1:10 PM - 3:00 PM",
-          date: "DD-MM-YYYY",
-        },
-        {
-          name: "Dr. Adnan Abdullah Juan S.Psi",
-          time: "4:00 PM - 5:50 PM",
-          date: "DD-MM-YYYY",
-        },
-      ],
+      selectedDay: ref(""),
+      currDate: ref(""),
+      schedules: ref([]),
     };
   },
   methods: {
-    selectDay(day) {
-      this.selectedDay = day;
+    async selectDay(day) {
+      try {
+        const req = await fetch("http://localhost:5000/api/schedule/day", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            date: day.date,
+          }),
+        });
+
+        this.selectedDay = day.day;
+        const data = await req.json();
+        this.schedules = data.data;
+        console.log(data);
+      } catch (error) {
+        console.error(error);
+        alert("Invalid credentials");
+      }
     },
     goToTransaction() {
       this.$router.push({ name: "TransactionPage" });
     },
+    initSelectedDay() {
+      const today = new Date();
+      const da = String(today.getDate()).padStart(2, "0");
+      const month = String(today.getMonth() + 1).padStart(2, "0");
+      const year = today.getFullYear();
+      const formattedDate = `${year}-${month}-${da}`;
+
+      let dayName;
+
+      today.getDay() === 0
+        ? (dayName = "Sunday")
+        : (dayName = this.dateDay[today.getDay() - 1].day);
+
+      console.log(`Tanggal: ${formattedDate}`);
+      console.log(`Hari: ${dayName}`);
+      return { dayName, formattedDate };
+    },
+
+    async initDateDay() {
+      try {
+        const response = await fetch("http://localhost:5000/api/schedule/week");
+        const data = await response.json();
+        for (let i = 0; i < this.dateDay.length; i++) {
+          this.dateDay[i].date = data.data[i].ScheduleDate;
+        }
+        // this.dateDay.forEach((d) => {
+        //   console.log(d);
+        // });
+      } catch (error) {
+        console.error(error);
+      }
+    },
+  },
+  mounted() {
+    this.initDateDay();
+    const { dayName, formattedDate } = this.initSelectedDay();
+    this.selectedDay = dayName;
+    this.currDate = formattedDate;
+    this.selectDay({ day: this.selectedDay, date: this.currDate });
   },
 };
 </script>

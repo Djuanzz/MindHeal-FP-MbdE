@@ -82,3 +82,17 @@ VALUES ('2024-05-06', 1, 1),
     ('2024-05-08', 7, 1);
 
 SELECT * FROM Schedule;
+
+-- INSERT INTO
+--     Schedule (
+--         ScheduleDate,
+--         Psychologist_PsychologistID,
+--         Session_SessionID
+--     )
+-- VALUES ('2024-05-11', 1, 1),
+--     ('2024-05-11', 2, 2),
+--     ('2024-05-11', 3, 3),
+--     ('2024-06-09', 4, 1),
+--     ('2024-06-09', 5, 2),
+--     ('2024-06-09', 6, 3),
+--     ('2024-06-10', 7, 1);

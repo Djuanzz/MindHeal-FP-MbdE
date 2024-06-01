@@ -67,11 +67,17 @@ CREATE TABLE Schedule (
     ScheduleDate DATE,
     Psychologist_PsychologistID int,
     Session_SessionID int,
-    Booked boolean DEFAULT FALSE,
+    UserHistory_UserHistoryID int,
+    -- Booked boolean DEFAULT FALSE,
     CONSTRAINT Schedule_pk PRIMARY KEY (ScheduleID),
     FOREIGN KEY (Session_SessionID) REFERENCES Session (SessionID),
     FOREIGN KEY (Psychologist_PsychologistID) REFERENCES Psychologist (PsychologistID)
+    FOREIGN KEY (UserHistory_UserHistoryID) REFERENCES UserHistory (UserHistoryID)
 );
+
+ALTER TABLE Schedule ADD COLUMN inWaiting BOOLEAN DEFAULT FALSE;
+
+SELECT *FROM Schedule;
 
 -- Table: Session
 CREATE TABLE Session (
@@ -87,6 +93,8 @@ CREATE TABLE Transaction (
     IsPayed boolean DEFAULT FALSE,
     PaymentType int,
     Amount FLOAT,
+    DateCreated timestamp DEFAULT CURRENT_TIMESTAMP,
+    DateExpired timestamp DEFAULT GENERATED ALWAYS AS (DATE_ADD(DateCreated, INTERVAL 5 MINUTE)),
     User_UserID int,
     UserHistory_UserHistoryID int,
     CONSTRAINT Transaction_pk PRIMARY KEY (TransactionID),
@@ -106,14 +114,16 @@ CREATE TABLE User (
 -- Table: UserHistory
 CREATE TABLE UserHistory (
     UserHistoryID int NOT NULL AUTO_INCREMENT,
-    DateCreated timestamp DEFAULT CURRENT_TIMESTAMP,
+    -- DateCreated timestamp DEFAULT CURRENT_TIMESTAMP,
     User_UserID int,
     Schedule_ScheduleID int,
     CONSTRAINT UserHistory_pk PRIMARY KEY (UserHistoryID),
-    FOREIGN KEY (Schedule_ScheduleID) REFERENCES Schedule (ScheduleID),
+    -- FOREIGN KEY (Schedule_ScheduleID) REFERENCES Schedule (ScheduleID),
     FOREIGN KEY (User_UserID) REFERENCES User (UserID)
 );
 
+ALTER TABLE UserHistory ADD COLUMN Status VARCHAR(10);
+ 
 -- foreign keys
 -- Reference: Schedule_Psychologist (table: Schedule)
 -- ALTER TABLE Schedule ADD CONSTRAINT Schedule_Psychologist FOREIGN KEY Schedule_Psychologist (Psychologist_PsychologistID)

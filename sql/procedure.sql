@@ -67,3 +67,20 @@ BEGIN
 END 
 
 CALL GetPsychologistSchedule('2024-05-28');
+
+CREATE PROCEDURE ListUserHistoryByUserLogin(IN userID INT)
+BEGIN
+    SELECT
+        UserHistory.UserHistoryID,
+        Schedule.ScheduleDate,
+        Psychologist.Name,
+        Session.SessionStart,
+        Session.SessionEnd
+    FROM UserHistory
+    JOIN Schedule ON UserHistory.Schedule_ScheduleID = Schedule.ScheduleID
+    JOIN Psychologist ON Schedule.Psychologist_PsychologistID = Psychologist.PsychologistID
+    JOIN Session ON Schedule.Session_SessionID = Session.SessionID
+    WHERE UserHistory.User_UserID = userID;
+END;
+
+CALL ListUserHistoryByUserLogin(1);

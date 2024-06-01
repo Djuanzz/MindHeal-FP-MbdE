@@ -7,6 +7,9 @@ CALL InputTransaction(?, ?, ?);
 -- 2. Transaction (INSERT INTO)
 -- 3. Schedule (UPDATE)
 -- Meng-INIT semua tabel yang dibutuhkah untuk melakukan transaksi
+-- Pada proses ini juga perlu diperhatikan bahwa apabila sudah lewat 5 menit:
+-- ScheduleStatus = 'Waiting' -> ScheduleStatus = 'Available'
+-- Dan UserHistory yang berhubungan akan dihapus
 
 CALL UpdateTransactionByUserHistoryID(?, ?);
 -- UpdateTransactionByUserHistoryID(UserHistoryID INT, PaymentType INT)

@@ -15,7 +15,6 @@ BEGIN
     JOIN `Transaction` t ON uh.UserHistoryID = t.UserHistory_UserHistoryID
     WHERE t.IsPayed = FALSE 
     AND TIMESTAMPDIFF(MINUTE, t.DateCreated, TimeNow) >= 5;
-
 END;
 
 CREATE TRIGGER update_schedule_status

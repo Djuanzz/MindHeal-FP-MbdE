@@ -1,4 +1,4 @@
-const dataPsikologSeed = [
+export const psikologSeeds = [
   {
     Name: "Dr. John Doe",
     Email: "john@gmail.com",

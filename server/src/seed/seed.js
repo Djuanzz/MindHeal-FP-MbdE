@@ -11,7 +11,7 @@ const deleteQuery = [
   "DELETE FROM Session;",
   "DELETE FROM Psychologist;",
   "DELETE FROM User;",
-  " ALTER TABLE Psychologist AUTO_INCREMENT = 1;",
+  "ALTER TABLE Psychologist AUTO_INCREMENT = 1;",
   "ALTER TABLE Schedule AUTO_INCREMENT = 1;",
   "ALTER TABLE Session AUTO_INCREMENT = 1;",
   "ALTER TABLE Transaction AUTO_INCREMENT = 1;",

@@ -10,7 +10,7 @@
       <input
         type="text"
         v-model="newPsychologist.schedule"
-        placeholder="schedule"
+        placeholder="Schedule"
         required />
       <button type="submit" :disabled="!isValid">Add Psychologist</button>
     </form>
@@ -22,6 +22,7 @@
         <p>{{ psychologist.name }} - {{ psychologist.schedule }}</p>
       </div>
     </div>
+    <router-link to="/admin/dashboard" class="back-to-dashboard">Back to Dashboard</router-link>
   </div>
 </template>
 
@@ -31,14 +32,14 @@ export default {
     return {
       newPsychologist: {
         name: "",
-        specialization: "",
+        schedule: "",
       },
       psychologists: [],
     };
   },
   computed: {
     isValid() {
-      return this.newPsychologist.name && this.newPsychologist.specialization;
+      return this.newPsychologist.name && this.newPsychologist.schedule;
     },
   },
   methods: {
@@ -49,8 +50,9 @@ export default {
           id: this.psychologists.length + 1,
         });
 
+        // Clear form fields after submission
         this.newPsychologist.name = "";
-        this.newPsychologist.specialization = "";
+        this.newPsychologist.schedule = "";
       }
     },
   },
@@ -60,45 +62,81 @@ export default {
 <style scoped>
 .manage-psychologists {
   max-width: 600px;
-  margin: auto;
-  padding: 20px;
-  background: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin: 50px auto;
+  padding: 30px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  color: #333;
 }
 
 h1 {
   text-align: center;
+  color: #2c3e50;
+  font-weight: bold;
+  margin-bottom: 20px;
 }
 
 .psychologist-form {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: 20px;
+  margin-bottom: 40px;
 }
 
 .psychologist-form input,
 .psychologist-form button {
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+  padding: 15px;
+  border-radius: 8px;
+  border: 2px solid #bdc3c7;
+  font-size: 16px;
+}
+
+.psychologist-form input:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 8px rgba(52, 152, 219, 0.5);
+  outline: none;
 }
 
 .psychologist-form button {
-  background-color: #2575fc;
+  background: linear-gradient(to right, #3498db, #2980b9);
   color: white;
   cursor: pointer;
   border: none;
+  transition: background 0.3s ease-in-out;
+}
+
+.psychologist-form button:hover {
+  background: linear-gradient(to right, #2980b9, #3498db);
 }
 
 .psychologist-form button:disabled {
-  background-color: #ccc;
+  background-color: #bdc3c7;
+  cursor: not-allowed;
 }
 
 .psychologist-item p {
-  padding: 10px;
-  background: white;
-  border-bottom: 1px solid #eee;
+  padding: 12px;
+  background: linear-gradient(to right, #ecf0f1, #bdc3c7);
+  border-radius: 8px;
+  border-left: 5px solid #3498db;
+  margin: 10px 0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.back-to-dashboard {
+  display: block;
+  margin-top: 30px;
+  text-align: center;
+  padding: 10px 20px;
+  background: #3498db;
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+
+.back-to-dashboard:hover {
+  background: #2980b9;
 }
 </style>

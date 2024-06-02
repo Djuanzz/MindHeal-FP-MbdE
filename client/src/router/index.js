@@ -6,8 +6,8 @@ import LandingPage from "@/views/LandingPage.vue";
 import TransactionPage from "@/views/Transaction.vue";
 import AdminDashboard from "@/views/admin/AdminDashboard.vue";
 import ManagePsychologists from "@/views/admin/ManagePsychologists.vue";
-import ScheduleManagement from "@/views/admin/ScheduleManagement.vue";
-import UserHistory from "@/views/admin/UserHistory.vue";
+import TransactionList from '@/views/admin/TransactionList.vue'; // Corrected the path
+import TotalTransaction from '@/views/admin/TotalTransaction.vue'; // Corrected the path
 import UserProfile from "@/views/UserProfile.vue"; 
 import MyHistoryPage from "@/views/MyHistory.vue"; 
 
@@ -68,18 +68,18 @@ const routes = [
     meta: { title: "Manage Psychologists", requiresAuth: true, role: "admin" },
   },
   {
-    path: "/admin/schedule-management",
-    name: "ScheduleManagement",
-    component: ScheduleManagement,
-    meta: { title: "Schedule Management", requiresAuth: true, role: "admin" },
+    path: "/admin/transaction-list",
+    name: "TransactionList",
+    component: TransactionList,
+    meta: { title: "Transaction List", requiresAuth: true, role: "admin" },
   },
   {
-    path: "/admin/user-history",
-    name: "UserHistory",
-    component: UserHistory,
-    meta: { title: "User History", requiresAuth: true, role: "admin" },
-  },
-];
+    path: "/admin/total-transaction",
+    name: "TotalTransaction",
+    component: TotalTransaction,
+    meta: { title: "Total Transactions", requiresAuth: true, role: "admin" },
+  }
+]
 
 const router = createRouter({
   history: createWebHistory(),

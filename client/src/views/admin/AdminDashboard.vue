@@ -8,16 +8,16 @@
           <span class="link-text">Manage Psychologists</span>
         </div>
       </router-link>
-      <router-link to="/admin/schedule-management" class="dashboard-link">
+      <router-link to="/admin/total-transaction" class="dashboard-link">
         <div class="link-card">
           <i class="fas fa-calendar-alt icon"></i>
-          <span class="link-text">Manage Schedules</span>
+          <span class="link-text">Total Transaction</span>
         </div>
       </router-link>
-      <router-link to="/admin/user-history" class="dashboard-link">
+      <router-link to="/admin/transaction-list" class="dashboard-link">
         <div class="link-card">
           <i class="fas fa-history icon"></i>
-          <span class="link-text">View User History</span>
+          <span class="link-text">List Transaction</span>
         </div>
       </router-link>
     </div>

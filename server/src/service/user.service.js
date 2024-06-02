@@ -54,7 +54,8 @@ const currUser = async (req) => {
 };
 
 const updateUser = async (req, UserID) => {
-  const user = validate(userValidation.updateUserValidation, req);
+  const user = req;
+  console.log("user", req);
 
   const userQuery = "SELECT * FROM user WHERE UserID = ?";
   const [users] = await db.query(userQuery, [UserID]);
@@ -66,12 +67,23 @@ const updateUser = async (req, UserID) => {
   const data = {};
   user.name ? (data.name = user.name) : (data.name = users[0].name);
   user.email ? (data.email = user.email) : (data.email = users[0].email);
-  user.password
-    ? (data.password = user.password)
-    : (data.password = users[0].password);
-
-  // console.log("user", user);
-  // console.log("-------------------", users);
+  if (user.password !== "") {
+    console.log("cek password", user.password, users[0].password);
+    if (user.password !== users[0].password) {
+      throw new Error("Invalid password");
+    } else {
+      data.password = user.new;
+    }
+    console.log(
+      "data",
+      data.password,
+      user.new,
+      user.password,
+      users[0].password
+    );
+  } else {
+    data.password = users[0].password;
+  }
 
   const updateUserQuery =
     "UPDATE user SET name = ?, email = ?, password = ? WHERE UserID = ?";

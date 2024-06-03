@@ -5,8 +5,8 @@ import { sessionSeeds } from "./session.seed.js";
 import { userSeeds } from "./user.seed.js";
 
 const deleteQuery = [
-  "DELETE FROM Transaction;",
   "DELETE FROM UserHistory;",
+  "DELETE FROM Transaction;",
   "DELETE FROM Schedule;",
   "DELETE FROM Session;",
   "DELETE FROM Psychologist;",
@@ -32,12 +32,14 @@ const seed = async () => {
 
   try {
     for (const element of userSeeds) {
+      const role = element.role ? element.role : "user";
       const userQuery =
-        "INSERT INTO user (name, email, password) VALUES (?, ?, ?)";
+        "INSERT INTO user (name, email, password, role) VALUES (?, ?, ?, ?)";
       await db.query(userQuery, [
         element.name,
         element.email,
         element.password,
+        role,
       ]);
       console.log("User seeded:", element);
     }

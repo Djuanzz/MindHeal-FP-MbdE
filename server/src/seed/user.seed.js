@@ -1,5 +1,11 @@
 export const userSeeds = [
   {
+    name: "admin",
+    email: "admin@gmail.com",
+    password: "admin123",
+    role: "admin",
+  },
+  {
     name: "warnamerah",
     email: "warnamerah@gmail.com",
     password: "warnamerahaja123",

@@ -19,7 +19,7 @@ DELETE FROM Psychologist;
 DELETE FROM User;
 
 
-DROP TABLE Transaction;
+DROP TABLE Transaction IF EXISTS;
 DROP TABLE UserHistory;
 DROP TABLE Schedule;
 DROP TABLE Session;

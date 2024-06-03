@@ -22,7 +22,9 @@
         <p>{{ psychologist.name }} - {{ psychologist.schedule }}</p>
       </div>
     </div>
-    <router-link to="/admin/dashboard" class="back-to-dashboard">Back to Dashboard</router-link>
+    <router-link to="/admin/dashboard" class="back-to-dashboard"
+      >Back to Dashboard</router-link
+    >
   </div>
 </template>
 

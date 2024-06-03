@@ -5,40 +5,26 @@ CREATE DATABASE rawat_jalan;
 USE rawat_jalan;
 
 ALTER TABLE Psychologist AUTO_INCREMENT = 1;
-
 ALTER TABLE Schedule AUTO_INCREMENT = 1;
-
 ALTER TABLE Session AUTO_INCREMENT = 1;
-
 ALTER TABLE Transaction AUTO_INCREMENT = 1;
-
 ALTER TABLE User AUTO_INCREMENT = 1;
-
 ALTER TABLE UserHistory AUTO_INCREMENT = 1;
 
-DELETE FROM Psychologist;
-
-DELETE FROM Schedule;
-
-DELETE FROM Session;
-
 DELETE FROM Transaction;
-
+DELETE FROM UserHistory;
+DELETE FROM Schedule;
+DELETE FROM Session;
+DELETE FROM Psychologist;
 DELETE FROM User;
 
-DELETE FROM UserHistory;
-
-DROP TABLE Session;
-
-DROP TABLE Schedule;
-
-DROP TABLE Psychologist;
 
 DROP TABLE Transaction;
-
-DROP TABLE User;
-
 DROP TABLE UserHistory;
+DROP TABLE Schedule;
+DROP TABLE Session;
+DROP TABLE Psychologist;
+DROP TABLE User;
 
 DESCRIBE Psychologist;
 

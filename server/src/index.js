@@ -21,6 +21,7 @@ app.use("/api", publicRouter);
 app.use("/api/user", api.userRouter);
 app.use("/api/psikolog", api.psikologRouter);
 app.use("/api/schedule", api.scheduleRouter);
+app.use("/api/transaksi", api.transaksiRouter);
 
 app.listen(process.env.PORT, () => {
   console.log(`Server is running on port ${process.env.PORT}`);

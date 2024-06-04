@@ -38,7 +38,7 @@
           <label for="username">Username:</label>
           <input
             type="text"
-            id="username"
+            id="name"
             v-model="user.name"
             class="form-control" />
         </div>

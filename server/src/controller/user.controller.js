@@ -27,7 +27,7 @@ const register = async (req, res, next) => {
 
 const login = async (req, res, next) => {
   try {
-    const token = await userService.login(req.body);
+    const { token, user } = await userService.login(req.body);
     res.cookie("jwt", token, {
       httpOnly: true,
       maxAge: 1 * 60 * 60 * 1000,
@@ -36,6 +36,7 @@ const login = async (req, res, next) => {
     res.status(200).json({
       data: token,
       message: `login successfully as ${req.body.email}`,
+      role: user.role,
     });
   } catch (err) {
     console.log(err);

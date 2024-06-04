@@ -74,7 +74,11 @@ export default {
         console.log(data);
         if (req.ok) {
           localStorage.setItem("token", data.data);
-          this.$router.push({ name: "LandingPage" });
+          if (data.role === "admin") {
+            this.$router.push({ name: "AdminDashboard" });
+          } else {
+            this.$router.push({ name: "LandingPage" });
+          }
         } else {
           alert("Invalid credentials");
         }

@@ -8,9 +8,8 @@
         placeholder="Name"
         required />
       <input
-        type="text"
+        type="date"
         v-model="newPsychologist.schedule"
-        placeholder="Schedule"
         required />
       <button type="submit" :disabled="!isValid">Add Psychologist</button>
     </form>
@@ -22,42 +21,38 @@
         <p>{{ psychologist.name }} - {{ psychologist.schedule }}</p>
       </div>
     </div>
-    <router-link to="/admin/dashboard" class="back-to-dashboard"
-      >Back to Dashboard</router-link
-    >
+    <router-link to="/admin/dashboard" class="back-to-dashboard">Back to Dashboard</router-link>
   </div>
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      newPsychologist: {
-        name: "",
-        schedule: "",
-      },
-      psychologists: [],
-    };
-  },
-  computed: {
-    isValid() {
-      return this.newPsychologist.name && this.newPsychologist.schedule;
-    },
-  },
-  methods: {
-    addPsychologist() {
-      if (this.isValid) {
-        this.psychologists.push({
-          ...this.newPsychologist,
-          id: this.psychologists.length + 1,
-        });
+import { ref, computed } from 'vue';
 
-        // Clear form fields after submission
-        this.newPsychologist.name = "";
-        this.newPsychologist.schedule = "";
+export default {
+  setup() {
+    const newPsychologist = ref({
+      name: "",
+      schedule: ""
+    });
+    const psychologists = ref([]);
+
+    const isValid = computed(() => {
+      return newPsychologist.value.name && newPsychologist.value.schedule;
+    });
+
+    const addPsychologist = () => {
+      if (isValid.value) {
+        psychologists.value.push({
+          ...newPsychologist.value,
+          id: psychologists.value.length + 1
+        });
+        newPsychologist.value.name = "";
+        newPsychologist.value.schedule = "";
       }
-    },
-  },
+    };
+
+    return { newPsychologist, psychologists, addPsychologist, isValid };
+  }
 };
 </script>
 
@@ -65,7 +60,7 @@ export default {
 .manage-psychologists {
   max-width: 600px;
   margin: 50px auto;
-  padding: 30px;
+  padding: 30px; 
   background: #ffffff;
   border-radius: 12px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
@@ -140,5 +135,18 @@ h1 {
 
 .back-to-dashboard:hover {
   background: #2980b9;
+}
+
+.psychologist-form input[type="date"] {
+  padding: 15px;
+  border-radius: 8px;
+  border: 2px solid #bdc3c7;
+  font-size: 16px;
+}
+
+.psychologist-form input[type="date"]:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 8px rgba(52, 152, 219, 0.5);
+  outline: none;
 }
 </style>

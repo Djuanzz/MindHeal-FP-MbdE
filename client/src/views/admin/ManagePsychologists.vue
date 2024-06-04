@@ -7,10 +7,7 @@
         v-model="newPsychologist.name"
         placeholder="Name"
         required />
-      <input
-        type="date"
-        v-model="newPsychologist.schedule"
-        required />
+      <input type="date" v-model="newPsychologist.schedule" required />
       <button type="submit" :disabled="!isValid">Add Psychologist</button>
     </form>
     <div class="psychologist-list">
@@ -21,18 +18,20 @@
         <p>{{ psychologist.name }} - {{ psychologist.schedule }}</p>
       </div>
     </div>
-    <router-link to="/admin/dashboard" class="back-to-dashboard">Back to Dashboard</router-link>
+    <router-link to="/admin/dashboard" class="back-to-dashboard"
+      >Back to Dashboard</router-link
+    >
   </div>
 </template>
 
 <script>
-import { ref, computed } from 'vue';
+import { ref, computed } from "vue";
 
 export default {
   setup() {
     const newPsychologist = ref({
       name: "",
-      schedule: ""
+      schedule: "",
     });
     const psychologists = ref([]);
 
@@ -44,15 +43,16 @@ export default {
       if (isValid.value) {
         psychologists.value.push({
           ...newPsychologist.value,
-          id: psychologists.value.length + 1
+          id: psychologists.value.length + 1,
         });
         newPsychologist.value.name = "";
         newPsychologist.value.schedule = "";
+        console.log(psychologists.value);
       }
     };
 
     return { newPsychologist, psychologists, addPsychologist, isValid };
-  }
+  },
 };
 </script>
 
@@ -60,7 +60,7 @@ export default {
 .manage-psychologists {
   max-width: 600px;
   margin: 50px auto;
-  padding: 30px; 
+  padding: 30px;
   background: #ffffff;
   border-radius: 12px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);

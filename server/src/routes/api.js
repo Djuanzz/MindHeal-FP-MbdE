@@ -30,6 +30,8 @@ scheduleRouter.post("/day", scheduleController.getPsikologSchedule);
 
 transaksiRouter.get("/", transaksiController.getAllTransaksi);
 transaksiRouter.post("/", transaksiController.createTransaksi);
+transaksiRouter.patch("/", transaksiController.updateTransaksiByUserHistory);
+transaksiRouter.delete("/", transaksiController.deleteTransaksiByUserHistory);
 
 export default {
   userRouter,

@@ -32,7 +32,7 @@ const colors = [
   "hitamtua",
 ];
 
-for (let i = 0; i < 499; i++) {
+for (let i = 0; i < 100000; i++) {
   const color = colors[i % colors.length];
   const user = {
     name: `warna${color}${i + 1}`,

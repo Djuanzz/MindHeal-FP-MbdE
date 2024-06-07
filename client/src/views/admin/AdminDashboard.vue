@@ -20,6 +20,12 @@
           <span class="link-text">List Transaction</span>
         </div>
       </router-link>
+      <router-link to="/admin/users-list" class="dashboard-link">
+        <div class="link-card">
+          <i class="fas fa-users icon"></i>
+          <span class="link-text">Users List</span>
+        </div>
+      </router-link>
     </div>
   </div>
 </template>
@@ -27,9 +33,10 @@
 <style scoped>
 .admin-dashboard {
   padding: 20px;
-  background: linear-gradient(to right, #6a11cb, #2575fc);
+  background: linear-gradient(to right, #6a11cb 0%, #2575fc 100%);
   min-height: 100vh;
   color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .dashboard-title {
@@ -50,6 +57,11 @@
 .dashboard-link {
   text-decoration: none;
   color: white;
+  transition: color 0.3s;
+}
+
+.dashboard-link:hover {
+  color: #ccc;
 }
 
 .link-card {
@@ -59,20 +71,22 @@
   background: rgba(255, 255, 255, 0.1);
   padding: 20px;
   border-radius: 10px;
-  transition: transform 0.3s ease-in-out, background 0.3s ease;
+  transition: all 0.3s ease-in-out;
   width: 200px;
   height: 200px;
   justify-content: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .link-card:hover {
   transform: scale(1.05);
   background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .icon {
   font-size: 40px;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 .link-text {

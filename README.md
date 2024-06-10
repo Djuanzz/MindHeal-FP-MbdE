@@ -18,3 +18,7 @@ To be Announced
 2. ketik `npm install`
 3. ketik `npm run serve` pada terminal
 4. happy collaboration
+
+Our Main Database Design:
+
+![alt text](Rawat_Jalan_Phys_baruuuuu-2024-06-09_20-39.png)

@@ -15,8 +15,8 @@ CREATE TABLE Session (
     SessionEnd TIME NOT NULL
 );
 
-CREATE TABLE Department (
-    DepartmentID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+CREATE TABLE Locations (
+    LocationID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     Name VARCHAR(255)  NOT NULL UNIQUE,
     Address VARCHAR(50)  NOT NULL,
     City VARCHAR(50)  NOT NULL,
@@ -30,8 +30,8 @@ CREATE TABLE Psychologist (
     Specialty VARCHAR(255)  NOT NULL,
     Mobile VARCHAR(50)  NOT NULL,
     VisitPrice DECIMAL(10,2)  NOT NULL,
-    Department_DepartmentID INT NOT NULL,
-    FOREIGN KEY (Department_DepartmentID) REFERENCES Department(DepartmentID)
+    Location_LocationID INT NOT NULL,
+    FOREIGN KEY (Location_LocationID) REFERENCES Locations(LocationID)
 );
 
 CREATE TABLE UserHistory (

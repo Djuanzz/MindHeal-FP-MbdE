@@ -23,25 +23,19 @@ CALL InsertScheduleForCurrentWeek();
 
 CREATE PROCEDURE ListUserHistoryByUserLogin(IN userID INT)
 BEGIN
-    SELECT
-        UserHistory.UserHistoryID,
-        Schedule.ScheduleDate,
-        Psychologist.Name AS PsychologistName,
-        Session.SessionStart,
-        Session.SessionEnd
-    FROM
-        UserHistory
-    JOIN
-        Schedule ON UserHistory.UserHistoryID = Schedule.UserHistory_UserHistoryID
-    JOIN
-        Psychologist ON Schedule.Psychologist_PsychologistID = Psychologist.PsychologistID
-    JOIN
-        Session ON Schedule.Session_SessionID = Session.SessionID
-    WHERE
-        UserHistory.User_UserID = userID;
+  SELECT
+    uh.UserHistoryID,
+    s.ScheduleDate,
+    se.SessionStart,
+    se.SessionEnd
+  FROM UserHistory uh
+  INNER JOIN Schedule s ON uh.UserHistoryID = s.UserHistory_UserHistoryID
+  INNER JOIN Session se ON s.Session_SessionID = se.SessionID
+  WHERE uh.User_UserID = userID;
 END;
 
 CALL ListUserHistoryByUserLogin(1);
+DROP PROCEDURE IF EXISTS `ListUserHistoryByUserLogin`;
 
 CREATE PROCEDURE GetScheduleForCurrentWeek()
 BEGIN
@@ -84,4 +78,82 @@ CALL GetPsychologistSchedule('2024-06-04');
 
 -- psikolog buat update apa gatau
 
+CREATE PROCEDURE GetDatesForCurrentWeek()
+BEGIN
+    DECLARE startOfWeek DATE;
+    SET startOfWeek = DATE_SUB(CURDATE(), INTERVAL (DAYOFWEEK(CURDATE()) - 2) DAY);
 
+    SELECT 
+        startOfWeek AS ScheduleDate,
+        DAYNAME(startOfWeek) AS DayName
+    UNION ALL
+    SELECT 
+        DATE_ADD(startOfWeek, INTERVAL 1 DAY),
+        DAYNAME(DATE_ADD(startOfWeek, INTERVAL 1 DAY))
+    UNION ALL
+    SELECT 
+        DATE_ADD(startOfWeek, INTERVAL 2 DAY),
+        DAYNAME(DATE_ADD(startOfWeek, INTERVAL 2 DAY))
+    UNION ALL
+    SELECT 
+        DATE_ADD(startOfWeek, INTERVAL 3 DAY),
+        DAYNAME(DATE_ADD(startOfWeek, INTERVAL 3 DAY))
+    UNION ALL
+    SELECT 
+        DATE_ADD(startOfWeek, INTERVAL 4 DAY),
+        DAYNAME(DATE_ADD(startOfWeek, INTERVAL 4 DAY))
+    UNION ALL
+    SELECT 
+        DATE_ADD(startOfWeek, INTERVAL 5 DAY),
+        DAYNAME(DATE_ADD(startOfWeek, INTERVAL 5 DAY));
+END;
+
+
+
+CALL GetDatesForCurrentWeek();
+DROP PROCEDURE IF EXISTS `GetDatesForCurrentWeek`
+
+CREATE PROCEDURE CreateUserHistory(IN userID INT, IN scheduleID INT)
+BEGIN
+  DECLARE newHistoryID INT;
+
+  INSERT INTO UserHistory (User_UserID) VALUES (userID);
+  SET newHistoryID = LAST_INSERT_ID(); 
+
+  UPDATE Schedule s
+  SET s.UserHistory_UserHistoryID = newHistoryID,
+      s.ScheduleStatus = 'Booked'
+  WHERE s.ScheduleID = scheduleID;
+
+END;
+
+CALL CreateUserHistory(1, 2);
+
+DROP PROCEDURE IF EXISTS `CreateUserHistory`;
+
+CREATE PROCEDURE InputTransaction(
+    IN User_UserID_input INT,
+    IN ScheduleID_input INT,
+    IN Amount_input FLOAT
+)
+BEGIN
+
+    DECLARE setUserHistoryID INT;
+
+    INSERT INTO UserHistory(User_UserID) 
+    VALUES(User_UserID_input);
+
+    SET setUserHistoryID = LAST_INSERT_ID();
+
+    INSERT INTO transactionbill(Amount, User_UserID, UserHistory_UserHistoryID)
+    VALUES(Amount_input, User_UserID_input, setUserHistoryID);
+
+    UPDATE Schedule
+    SET UserHistory_UserHistoryID = setUserHistoryID,
+        ScheduleStatus = 'Waiting'
+    WHERE ScheduleID = ScheduleID_input;
+
+END;
+
+CALL InputTransaction(1, 1, 1000000);
+DROP PROCEDURE IF EXISTS `InputTransaction`;

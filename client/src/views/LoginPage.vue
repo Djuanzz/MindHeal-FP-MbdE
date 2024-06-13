@@ -65,8 +65,8 @@ export default {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
           body: JSON.stringify({
-            email: this.loginEmail,
-            password: this.loginPassword,
+            Email: this.loginEmail,
+            Password: this.loginPassword,
           }),
         });
 

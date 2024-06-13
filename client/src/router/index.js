@@ -6,11 +6,13 @@ import LandingPage from "@/views/LandingPage.vue";
 import TransactionPage from "@/views/Transaction.vue";
 import AdminDashboard from "@/views/admin/AdminDashboard.vue";
 import ManagePsychologists from "@/views/admin/ManagePsychologists.vue";
-import TransactionList from '@/views/admin/TransactionList.vue'; 
+import TransactionList from "@/views/admin/TransactionList.vue";
 import UsersList from "@/views/admin/UsersList.vue";
-import TotalTransaction from '@/views/admin/TotalTransaction.vue'; 
-import UserProfile from "@/views/UserProfile.vue"; 
-import MyHistoryPage from "@/views/MyHistory.vue"; 
+import TotalTransaction from "@/views/admin/TotalTransaction.vue";
+import UserProfile from "@/views/UserProfile.vue";
+import MyHistoryPage from "@/views/MyHistory.vue";
+import ManageUserProfile from "@/views/admin/ManageUserProfile.vue";
+import ManageUserHistory from "@/views/admin/ManageUserHistory.vue";
 
 const routes = [
   {
@@ -44,7 +46,7 @@ const routes = [
     meta: { title: "Transaction" },
   },
   {
-    path: "/user-profile",
+    path: "/user-profile/:userId?",
     name: "UserProfile",
     component: UserProfile,
     meta: { title: "User Profile" },
@@ -84,8 +86,20 @@ const routes = [
     path: "/admin/users-list",
     name: "UsersList",
     component: UsersList,
-    meta: { title: "Users List", requiresAuth: true, role: "admin" }
-  }
+    meta: { title: "Users List", requiresAuth: true, role: "admin" },
+  },
+  {
+    path: "/admin/user-profile/:userId?",
+    name: "ManageUserProfile",
+    component: ManageUserProfile,
+    meta: { title: "Manage User Profile", requiresAuth: true, role: "admin" },
+  },
+  {
+    path: "/admin/user-history/:userId?",
+    name: "ManageUserHistory",
+    component: ManageUserHistory,
+    meta: { title: "Manage User History", requiresAuth: true, role: "admin" },
+  },
 ];
 
 const router = createRouter({

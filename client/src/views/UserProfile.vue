@@ -32,14 +32,47 @@
       <h1>Your Profile</h1>
       <p>Manage your personal information and settings.</p>
     </header>
+
+    <section class="profile-data mb-4">
+      <h2>Your Information</h2>
+      <table class="table table-striped">
+        <tbody>
+          <tr>
+            <th>Name</th>
+            <td>{{ user.Name }}</td>
+          </tr>
+          <tr>
+            <th>Email</th>
+            <td>{{ user.Email }}</td>
+          </tr>
+          <tr>
+            <th>Date of Birth</th>
+            <td>{{ user.DateOfBirth }}</td>
+          </tr>
+          <tr>
+            <th>Address</th>
+            <td>{{ user.Address }}</td>
+          </tr>
+          <tr>
+            <th>City</th>
+            <td>{{ user.City }}</td>
+          </tr>
+          <tr>
+            <th>Mobile</th>
+            <td>{{ user.Mobile }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
     <main>
       <form @submit.prevent="updateProfile" class="profile-form mb-4">
         <div class="form-group mb-4">
-          <label for="username">Username:</label>
+          <label for="username">Name:</label>
           <input
             type="text"
             id="name"
-            v-model="user.name"
+            v-model="user.Name"
             class="form-control" />
         </div>
         <div class="form-group mb-4">
@@ -47,7 +80,7 @@
           <input
             type="email"
             id="email"
-            v-model="user.email"
+            v-model="user.Email"
             class="form-control" />
         </div>
         <button type="submit" class="btn btn-primary">Update Profile</button>
@@ -58,7 +91,7 @@
           <input
             type="password"
             id="current-password"
-            v-model="passwords.password"
+            v-model="passwords.Password"
             class="form-control" />
         </div>
         <div class="form-group mb-4">
@@ -66,7 +99,7 @@
           <input
             type="password"
             id="new-password"
-            v-model="passwords.new"
+            v-model="passwords.NewPassword"
             class="form-control" />
         </div>
         <div class="form-group mb-4">
@@ -74,7 +107,7 @@
           <input
             type="password"
             id="confirm-password"
-            v-model="passwords.confirm"
+            v-model="passwords.Confirm"
             class="form-control" />
         </div>
         <button type="submit" class="btn btn-secondary">Update Password</button>
@@ -92,9 +125,9 @@ export default {
     return {
       user: ref({}),
       passwords: {
-        password: "",
-        new: "",
-        confirm: "",
+        Password: "",
+        NewPassword: "",
+        Confirm: "",
       },
     };
   },
@@ -119,7 +152,7 @@ export default {
     },
     async updatePassword() {
       try {
-        if (this.passwords.new !== this.passwords.confirm) {
+        if (this.passwords.NewPassword !== this.passwords.Confirm) {
           alert("New passwords do not match.");
           return;
         }
@@ -163,6 +196,7 @@ export default {
     },
   },
   mounted() {
+    // console.log(this.$route.params.userId);
     this.currentUser();
   },
 };

@@ -10,7 +10,6 @@ const createUserHistory = async (req, res, next) => {
     res.status(201).json({
       data: {
         "logined user": req.user.email,
-        "success create schedule at id": result.Schedule_ScheduleID,
       },
       message: "done",
     });

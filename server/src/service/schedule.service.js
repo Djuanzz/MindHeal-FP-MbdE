@@ -10,12 +10,14 @@ const getAllSchedule = async () => {
 const createSchedule = async (req) => {
   const schedule = validate(scheduleValidation.createScheduleValidation, req);
   const newScheduleQuery =
-    "INSERT INTO schedule (ScheduleDate, Psychologist_PsychologistID, Session_SessionID) VALUES (?, ?, ?)";
+    "INSERT INTO schedule (ScheduleDate, ScheduleStatus, Psychologist_PsychologistID, Session_SessionID, UserHistory_UserHistoryID) VALUES (?, ?, ?, ?, ?)";
 
   const [result] = await db.query(newScheduleQuery, [
     schedule.ScheduleDate,
+    schedule.ScheduleStatus,
     schedule.Psychologist_PsychologistID,
     schedule.Session_SessionID,
+    schedule.UserHistory_UserHistoryID,
   ]);
 
   console.log(schedule);

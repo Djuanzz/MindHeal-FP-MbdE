@@ -2,18 +2,22 @@ import { db } from "../db/db.js";
 
 const resetQuery = [
   "DELETE FROM Schedule;",
-  "DELETE FROM Transaction;",
+  "DELETE FROM TransactionBill;",
+  "DELETE FROM UserDiagnosis;",
   "DELETE FROM UserHistory;",
   "DELETE FROM Session;",
   "DELETE FROM Psychologist;",
-  "DELETE FROM User;",
+  "DELETE FROM Locations;",
+  "DELETE FROM Users;",
 
   "DROP TABLE IF EXISTS Schedule;",
-  "DROP TABLE IF EXISTS Transaction;",
+  "DROP TABLE IF EXISTS TransactionBill;",
+  "DROP TABLE IF EXISTS UserDiagnosis;",
   "DROP TABLE IF EXISTS UserHistory;",
   "DROP TABLE IF EXISTS Session;",
   "DROP TABLE IF EXISTS Psychologist;",
-  "DROP TABLE IF EXISTS User;",
+  "DROP TABLE IF EXISTS Locations;",
+  "DROP TABLE IF EXISTS Users;",
 ];
 
 const resetDb = async () => {

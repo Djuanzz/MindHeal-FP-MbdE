@@ -3,7 +3,7 @@ import { validate } from "../validation/validation.js";
 import transaksiValidation from "../validation/transaksi.validation.js";
 
 const getAllTransaksi = async () => {
-  const [rows, fields] = await db.query("SELECT * FROM transaction");
+  const [rows, fields] = await db.query("SELECT * FROM TransactionBill");
   return rows;
 };
 
@@ -12,10 +12,13 @@ const createTransaksi = async (req) => {
     transaksiValidation.createTransaksiValidation,
     req
   );
-  const newTransaksiQuery = "CALL InputTransaction(?, ?, 100000)";
+  const newTransaksiQuery =
+    "INSERT INTO TransactionBill (PaymentType, Amount, TimeDue, UserHistory_UserHistoryID) VALUES (?, ?, ?, ?)";
   const [result] = await db.query(newTransaksiQuery, [
-    transaksi.User_UserID,
-    transaksi.ScheduleID,
+    transaksi.PaymentType,
+    transaksi.Amount,
+    transaksi.TimeDue,
+    transaksi.UserHistory_UserHistoryID,
   ]);
 
   return result;

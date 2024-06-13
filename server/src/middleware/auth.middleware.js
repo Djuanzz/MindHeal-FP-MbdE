@@ -15,7 +15,7 @@ const auth = async (req, res, next) => {
 
   try {
     const payload = jwt.verify(token, process.env.JWT_SECRET);
-    const userQuery = "SELECT * FROM user WHERE UserID = ?";
+    const userQuery = "SELECT * FROM Users WHERE UserID = ?";
     const [user] = await db.query(userQuery, [payload.UserID]);
 
     if (!user || user.length === 0) {

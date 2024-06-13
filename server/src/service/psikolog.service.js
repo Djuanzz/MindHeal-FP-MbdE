@@ -30,11 +30,15 @@ const createPsikolog = async (req) => {
   }
 
   const newPsikologQuery =
-    "INSERT INTO psychologist (Name, Email) VALUES (?, ?)";
+    "INSERT INTO psychologist (Name, Email, Specialty, Mobile, VisitPrice, Location_LocationID) VALUES (?, ?, ?, ?, ?)";
 
   const [result] = await db.query(newPsikologQuery, [
     psikolog.Name,
     psikolog.Email,
+    psikolog.Specialty,
+    psikolog.Mobile,
+    psikolog.VisitPrice,
+    psikolog.Location_LocationID,
   ]);
 
   return psikolog;

@@ -3,18 +3,13 @@ import { validate } from "../validation/validation.js";
 import { db } from "../db/db.js";
 
 const createUserHistory = async (userId, req) => {
-  const history = validate(historyValidation.createUserHistoryValidation, req);
+  const history = req;
 
-  if (history.Schedule_ScheduleID == null) {
-    throw new Error("err found");
-  }
+  // console.log(userId, history);
 
   const newUserHistoryQuery =
-    "INSERT INTO UserHistory (User_UserID, Schedule_ScheduleID) VALUES (?, ?)";
-  const [result] = await db.query(newUserHistoryQuery, [
-    userId,
-    history.Schedule_ScheduleID,
-  ]);
+    "INSERT INTO UserHistory (User_UserID) VALUES (?)";
+  const [result] = await db.query(newUserHistoryQuery, [userId]);
 
   console.log(history);
 

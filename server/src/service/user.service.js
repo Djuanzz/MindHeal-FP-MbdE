@@ -20,11 +20,15 @@ const register = async (req) => {
   }
 
   const newUserQuery =
-    "INSERT INTO user (name, email, password) VALUES (?, ?, ?)";
+    "INSERT INTO user (Name, Email, Password, DateOfBirth, Address, City, Mobile) VALUES (?, ?, ?, ?, ?, ?, ?)";
   const [result] = await db.query(newUserQuery, [
-    user.name,
-    user.email,
-    user.password,
+    user.Name,
+    user.Email,
+    user.Password,
+    user.DateOfBirth,
+    user.Address,
+    user.City,
+    user.Mobile,
   ]);
 
   return user;
@@ -33,7 +37,7 @@ const register = async (req) => {
 const login = async (req) => {
   const login = validate(userValidation.loginValidation, req);
 
-  const userQuery = "SELECT * FROM user WHERE email = ? AND password = ?";
+  const userQuery = "SELECT * FROM Users WHERE email = ? AND password = ?";
   const [users] = await db.query(userQuery, [login.email, login.password]);
 
   if (users.length === 0) {
@@ -47,7 +51,7 @@ const login = async (req) => {
 };
 
 const currUser = async (req) => {
-  const userQuery = "SELECT * FROM user WHERE UserID = ?";
+  const userQuery = "SELECT * FROM Users WHERE UserID = ?";
   const [user] = await db.query(userQuery, [req.user.UserID]);
 
   return user[0];

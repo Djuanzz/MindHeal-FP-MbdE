@@ -5,12 +5,16 @@ import psikologController from "../controller/psikolog.controller.js";
 import scheduleController from "../controller/schedule.controller.js";
 import historyController from "../controller/history.controller.js";
 import transaksiController from "../controller/transaksi.controller.js";
+import diagnosisController from "../controller/diagnosis.controller.js";
+import locationController from "../controller/location.controller.js";
 
 const userRouter = new express.Router();
 const psikologRouter = new express.Router();
 const scheduleRouter = new express.Router();
 const historyRouter = new express.Router();
 const transaksiRouter = new express.Router();
+const diagnosisRouter = new express.Router();
+const locationRouter = new express.Router();
 
 userRouter.use(authMiddleware.auth);
 
@@ -33,10 +37,17 @@ transaksiRouter.post("/", transaksiController.createTransaksi);
 transaksiRouter.patch("/", transaksiController.updateTransaksiByUserHistory);
 transaksiRouter.delete("/", transaksiController.deleteTransaksiByUserHistory);
 
+diagnosisRouter.post("/", diagnosisController.createDiagnosis);
+
+locationRouter.post("/", locationController.createLocation);
+locationRouter.get("/", locationController.getAllLocation);
+
 export default {
   userRouter,
   psikologRouter,
   scheduleRouter,
   historyRouter,
   transaksiRouter,
+  diagnosisRouter,
+  locationRouter,
 };

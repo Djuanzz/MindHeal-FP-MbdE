@@ -44,7 +44,8 @@
             </h5>
             <p class="card-text">
               Time: {{ history.SessionStart }} - {{ history.SessionEnd }}<br />
-              Cost: 500.000
+              Detail: Kayake mending cardnya diklik trus masuk ke halaman baru
+              kalo ga muncul popup isinya detail history
             </p>
           </div>
         </div>

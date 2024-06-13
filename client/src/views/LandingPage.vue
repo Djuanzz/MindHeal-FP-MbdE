@@ -48,14 +48,19 @@
       </ul>
 
       <div class="schedule-cards">
+        <div v-if="schedules.length === 0">
+          <p>No schedules available.</p>
+        </div>
         <div
+          v-else
           class="card mb-4 shadow-sm"
           v-for="(schedule, index) in schedules"
           :key="index">
           <div class="card-body">
             <h5 class="card-title">{{ schedule.ScheduleDate }}</h5>
             <p class="card-text">
-              {{ schedule.PsychologistName }}<br />{{ schedule.SessionStart }} -
+              {{ schedule.PsychologistName }}<br />{{ schedule.SessionStart }}
+              -
               {{ schedule.SessionEnd }}
             </p>
             <button class="btn btn-success" @click="goToTransaction">
@@ -153,12 +158,26 @@ export default {
       try {
         const response = await fetch("http://localhost:5000/api/schedule/week");
         const data = await response.json();
-        for (let i = 0; i < this.dateDay.length; i++) {
-          this.dateDay[i].date = data.data[i].ScheduleDate;
+        console.log(data);
+
+        if (data.data.length > 0) {
+          for (let i = 0; i < this.dateDay.length; i++) {
+            for (let j = 0; j < data.data.length; j++) {
+              if (this.dateDay[i].day == data.data[j].DayName) {
+                this.dateDay[i].date = data.data[j].ScheduleDate;
+              }
+            }
+          }
         }
-        // this.dateDay.forEach((d) => {
-        //   console.log(d);
-        // });
+
+        data.data.forEach((d, i) => {
+          console.log(this.dateDay[i].day);
+          if (this.dateDay[i].day == d.DayName) {
+            this.dateDay[i].date = d.ScheduleDate;
+          }
+        });
+
+        console.log(this.dateDay[1].date);
       } catch (error) {
         console.error(error);
       }

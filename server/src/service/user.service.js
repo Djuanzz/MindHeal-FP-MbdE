@@ -5,14 +5,14 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 const getAllUsers = async () => {
-  const [rows, fields] = await db.query("SELECT * FROM user");
+  const [rows, fields] = await db.query("SELECT * FROM Users");
   return rows;
 };
 
 const register = async (req) => {
   const user = validate(userValidation.registerValidation, req);
 
-  const countUserQuery = "SELECT COUNT(*) as count FROM user WHERE email = ?";
+  const countUserQuery = "SELECT COUNT(*) as count FROM Users WHERE email = ?";
   const [countUser] = await db.query(countUserQuery, [user.email]);
 
   if (countUser[0].count > 0) {
@@ -20,7 +20,7 @@ const register = async (req) => {
   }
 
   const newUserQuery =
-    "INSERT INTO user (Name, Email, Password, DateOfBirth, Address, City, Mobile) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    "INSERT INTO Users (Name, Email, Password, DateOfBirth, Address, City, Mobile) VALUES (?, ?, ?, ?, ?, ?, ?)";
   const [result] = await db.query(newUserQuery, [
     user.Name,
     user.Email,
@@ -37,7 +37,7 @@ const register = async (req) => {
 const login = async (req) => {
   const login = validate(userValidation.loginValidation, req);
 
-  const userQuery = "SELECT * FROM Users WHERE email = ? AND password = ?";
+  const userQuery = "SELECT * FROM Users WHERE Email = ? AND Password = ?";
   const [users] = await db.query(userQuery, [login.email, login.password]);
 
   if (users.length === 0) {
@@ -61,7 +61,7 @@ const updateUser = async (req, UserID) => {
   const user = req;
   console.log("user", req);
 
-  const userQuery = "SELECT * FROM user WHERE UserID = ?";
+  const userQuery = "SELECT * FROM Users WHERE UserID = ?";
   const [users] = await db.query(userQuery, [UserID]);
 
   if (users.length === 0) {
@@ -90,7 +90,7 @@ const updateUser = async (req, UserID) => {
   }
 
   const updateUserQuery =
-    "UPDATE user SET name = ?, email = ?, password = ? WHERE UserID = ?";
+    "UPDATE Users SET Name = ?, Email = ?, Password = ? WHERE UserID = ?";
   const [result] = await db.query(updateUserQuery, [
     data.name,
     data.email,

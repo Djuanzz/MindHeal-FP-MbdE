@@ -3,14 +3,14 @@ import { validate } from "../validation/validation.js";
 import scheduleValidation from "../validation/schedule.validation.js";
 
 const getAllSchedule = async () => {
-  const [rows, fields] = await db.query("SELECT * FROM schedule");
+  const [rows, fields] = await db.query("SELECT * FROM Schedule");
   return rows;
 };
 
 const createSchedule = async (req) => {
   const schedule = validate(scheduleValidation.createScheduleValidation, req);
   const newScheduleQuery =
-    "INSERT INTO schedule (ScheduleDate, ScheduleStatus, Psychologist_PsychologistID, Session_SessionID, UserHistory_UserHistoryID) VALUES (?, ?, ?, ?, ?)";
+    "INSERT INTO Schedule (ScheduleDate, ScheduleStatus, Psychologist_PsychologistID, Session_SessionID, UserHistory_UserHistoryID) VALUES (?, ?, ?, ?, ?)";
 
   const [result] = await db.query(newScheduleQuery, [
     schedule.ScheduleDate,
@@ -26,7 +26,7 @@ const createSchedule = async (req) => {
 };
 
 const getAllScheduleInWeek = async () => {
-  const getAllScheduleInWeekQuery = "CALL GetScheduleForCurrentWeek()";
+  const getAllScheduleInWeekQuery = "CALL GetDatesForCurrentWeek()";
 
   const [result] = await db.query(getAllScheduleInWeekQuery);
 
@@ -34,10 +34,10 @@ const getAllScheduleInWeek = async () => {
 };
 
 const getPsikologSchedule = async (req) => {
-  const psikologId = req.body.date;
+  const date = req.body.date;
   const getPsikologScheduleQuery = "CALL GetPsychologistSchedule(?)";
 
-  const [result] = await db.query(getPsikologScheduleQuery, [psikologId]);
+  const [result] = await db.query(getPsikologScheduleQuery, [date]);
 
   return result[0];
 };

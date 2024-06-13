@@ -3,13 +3,13 @@ import { validate } from "../validation/validation.js";
 import psikologValidation from "../validation/psikolog.validation.js";
 
 const getAllPsikolog = async () => {
-  const [rows, fields] = await db.query("SELECT * FROM psychologist");
+  const [rows, fields] = await db.query("SELECT * FROM Psychologist");
   return rows;
 };
 
 const getPsikologById = async (id) => {
   const [rows, fields] = await db.query(
-    "SELECT * FROM psychologist WHERE PsychologistID = ?",
+    "SELECT * FROM Psychologist WHERE PsychologistID = ?",
     [id]
   );
   return rows;
@@ -22,7 +22,7 @@ const createPsikolog = async (req) => {
   console.log(psikolog);
 
   const countPsikologQuery =
-    "SELECT COUNT(*) as count FROM psychologist WHERE Email = ?";
+    "SELECT COUNT(*) as count FROM Psychologist WHERE Email = ?";
   const [countPsi] = await db.query(countPsikologQuery, [psikolog.Email]);
 
   if (countPsi[0].count > 0) {
@@ -30,7 +30,7 @@ const createPsikolog = async (req) => {
   }
 
   const newPsikologQuery =
-    "INSERT INTO psychologist (Name, Email, Specialty, Mobile, VisitPrice, Location_LocationID) VALUES (?, ?, ?, ?, ?)";
+    "INSERT INTO Psychologist (Name, Email, Specialty, Mobile, VisitPrice, Location_LocationID) VALUES (?, ?, ?, ?, ?)";
 
   const [result] = await db.query(newPsikologQuery, [
     psikolog.Name,

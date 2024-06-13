@@ -12,8 +12,8 @@ const getAllUsers = async () => {
 const register = async (req) => {
   const user = validate(userValidation.registerValidation, req);
 
-  const countUserQuery = "SELECT COUNT(*) as count FROM Users WHERE email = ?";
-  const [countUser] = await db.query(countUserQuery, [user.email]);
+  const countUserQuery = "SELECT COUNT(*) as count FROM Users WHERE Email = ?";
+  const [countUser] = await db.query(countUserQuery, [user.Email]);
 
   if (countUser[0].count > 0) {
     throw new Error("Email already exists");
@@ -36,12 +36,13 @@ const register = async (req) => {
 
 const login = async (req) => {
   const login = validate(userValidation.loginValidation, req);
+  console.log("login", login);
 
   const userQuery = "SELECT * FROM Users WHERE Email = ? AND Password = ?";
-  const [users] = await db.query(userQuery, [login.email, login.password]);
+  const [users] = await db.query(userQuery, [login.Email, login.Password]);
 
   if (users.length === 0) {
-    throw new Error("Invalid email or password");
+    throw new Error("Invalid Email or Password");
   }
 
   // console.log("pppppppppppppppppppppppppppppppppp", users[0]);
@@ -59,7 +60,6 @@ const currUser = async (req) => {
 
 const updateUser = async (req, UserID) => {
   const user = req;
-  console.log("user", req);
 
   const userQuery = "SELECT * FROM Users WHERE UserID = ?";
   const [users] = await db.query(userQuery, [UserID]);
@@ -69,36 +69,43 @@ const updateUser = async (req, UserID) => {
   }
 
   const data = {};
-  user.name ? (data.name = user.name) : (data.name = users[0].name);
-  user.email ? (data.email = user.email) : (data.email = users[0].email);
-  if (user.password !== "") {
-    console.log("cek password", user.password, users[0].password);
-    if (user.password !== users[0].password) {
-      throw new Error("Invalid password");
+  user.Name ? (data.Name = user.Name) : (data.Name = users[0].Name);
+  user.Email ? (data.Email = user.Email) : (data.Email = users[0].Email);
+  if (user.Password !== "") {
+    console.log("cek Password", user.Password, users[0].Password);
+    if (user.Password !== users[0].Password) {
+      throw new Error("Invalid Password");
     } else {
-      data.password = user.new;
+      data.Password = user.NewPassword;
     }
     console.log(
       "data",
-      data.password,
-      user.new,
-      user.password,
-      users[0].password
+      data.Password,
+      user.NewPassword,
+      user.Password,
+      users[0].Password
     );
   } else {
-    data.password = users[0].password;
+    data.Password = users[0].Password;
   }
 
   const updateUserQuery =
     "UPDATE Users SET Name = ?, Email = ?, Password = ? WHERE UserID = ?";
   const [result] = await db.query(updateUserQuery, [
-    data.name,
-    data.email,
-    data.password,
+    data.Name,
+    data.Email,
+    data.Password,
     UserID,
   ]);
 
   return user;
+};
+
+const getUserByUserID = async (UserID) => {
+  const userQuery = "SELECT * FROM Users WHERE UserID = ?";
+  const [users] = await db.query(userQuery, [UserID]);
+
+  return users[0];
 };
 
 export default {
@@ -107,4 +114,5 @@ export default {
   login,
   currUser,
   updateUser,
+  getUserByUserID,
 };

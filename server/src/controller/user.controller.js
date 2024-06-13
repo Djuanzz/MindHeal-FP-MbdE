@@ -88,6 +88,20 @@ const updateUser = async (req, res, next) => {
   }
 };
 
+const getUserByUserID = async (req, res, next) => {
+  try {
+    const user = await userService.getUserByUserID(req.params.id);
+    console.log("user", user);
+    res.status(200).json({
+      data: user,
+      message: "done",
+    });
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
 export default {
   getAllUsers,
   register,
@@ -95,4 +109,5 @@ export default {
   logout,
   currUser,
   updateUser,
+  getUserByUserID,
 };

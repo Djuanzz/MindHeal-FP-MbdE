@@ -16,10 +16,7 @@ const getPsikologById = async (id) => {
 };
 
 const createPsikolog = async (req) => {
-  console.log(req);
   const psikolog = validate(psikologValidation.registerValidation, req);
-
-  console.log(psikolog);
 
   const countPsikologQuery =
     "SELECT COUNT(*) as count FROM Psychologist WHERE Email = ?";
@@ -30,7 +27,7 @@ const createPsikolog = async (req) => {
   }
 
   const newPsikologQuery =
-    "INSERT INTO Psychologist (Name, Email, Specialty, Mobile, VisitPrice, Location_LocationID) VALUES (?, ?, ?, ?, ?)";
+    "INSERT INTO Psychologist (Name, Email, Specialty, Mobile, VisitPrice, Location_LocationID) VALUES (?, ?, ?, ?, ?, ?)";
 
   const [result] = await db.query(newPsikologQuery, [
     psikolog.Name,

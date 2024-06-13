@@ -22,7 +22,7 @@ userRouter.get("/me", userController.currUser);
 userRouter.delete("/logout", userController.logout);
 userRouter.patch("/", userController.updateUser);
 userRouter.post("/history", historyController.createUserHistory);
-userRouter.get("/history", historyController.getUserHistoryById);
+userRouter.get("/history", historyController.getUserHistoryByUserLogin);
 
 psikologRouter.get("/:id", psikologController.getPsikologById);
 psikologRouter.post("/", psikologController.createPsikolog);

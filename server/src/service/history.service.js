@@ -30,8 +30,15 @@ const getAllUserHistory = async () => {
   return userHistory;
 };
 
-const getUserHistoryById = async (req) => {
+const getUserHistoryByUserLogin = async (req) => {
   const userId = req.user.UserID;
+  const userHistoryQuery = "CALL ListUserHistoryByUserLogin(?)";
+  const [userHistory] = await db.query(userHistoryQuery, [userId]);
+
+  return userHistory[0];
+};
+
+const getUserHistoryByUserId = async (userId) => {
   const userHistoryQuery = "CALL ListUserHistoryByUserLogin(?)";
   const [userHistory] = await db.query(userHistoryQuery, [userId]);
 
@@ -42,5 +49,6 @@ export default {
   createUserHistory,
   listUserHistory,
   getAllUserHistory,
-  getUserHistoryById,
+  getUserHistoryByUserLogin,
+  getUserHistoryByUserId,
 };

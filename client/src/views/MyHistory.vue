@@ -43,6 +43,7 @@
               {{ history.ScheduleDate }} with {{ history.Name }}
             </h5>
             <p class="card-text">
+              Location: {{ history.Location }}<br />
               Time: {{ history.SessionStart }} - {{ history.SessionEnd }}<br />
               Detail: Kayake mending cardnya diklik trus masuk ke halaman baru
               kalo ga muncul popup isinya detail history

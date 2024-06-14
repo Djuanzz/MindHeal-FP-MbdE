@@ -11,7 +11,7 @@ const app = express();
 app.use(
   cors({
     credentials: true,
-    origin: "http://localhost:8080",
+    origin: "*",
   })
 );
 app.use(express.json());
@@ -24,6 +24,7 @@ app.use("/api/schedule", api.scheduleRouter);
 app.use("/api/transaksi", api.transaksiRouter);
 app.use("/api/diagnosis", api.diagnosisRouter);
 app.use("/api/location", api.locationRouter);
+app.use("/api/session", api.sessionRouter);
 
 app.listen(process.env.PORT, () => {
   console.log(`Server is running on port ${process.env.PORT}`);

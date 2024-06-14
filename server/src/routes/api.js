@@ -7,6 +7,7 @@ import historyController from "../controller/history.controller.js";
 import transaksiController from "../controller/transaksi.controller.js";
 import diagnosisController from "../controller/diagnosis.controller.js";
 import locationController from "../controller/location.controller.js";
+import sessionController from "../controller/session.controller.js";
 
 const userRouter = new express.Router();
 const psikologRouter = new express.Router();
@@ -15,6 +16,7 @@ const historyRouter = new express.Router();
 const transaksiRouter = new express.Router();
 const diagnosisRouter = new express.Router();
 const locationRouter = new express.Router();
+const sessionRouter = new express.Router();
 
 userRouter.use(authMiddleware.auth);
 
@@ -42,6 +44,8 @@ diagnosisRouter.post("/", diagnosisController.createDiagnosis);
 locationRouter.post("/", locationController.createLocation);
 locationRouter.get("/", locationController.getAllLocation);
 
+sessionRouter.get("/", sessionController.getAllSessions);
+
 export default {
   userRouter,
   psikologRouter,
@@ -50,4 +54,5 @@ export default {
   transaksiRouter,
   diagnosisRouter,
   locationRouter,
+  sessionRouter,
 };

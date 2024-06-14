@@ -36,7 +36,7 @@ const register = async (req) => {
 
 const login = async (req) => {
   const login = validate(userValidation.loginValidation, req);
-  console.log("login", login);
+  // console.log("login", login);
 
   const userQuery = "SELECT * FROM Users WHERE Email = ? AND Password = ?";
   const [users] = await db.query(userQuery, [login.Email, login.Password]);

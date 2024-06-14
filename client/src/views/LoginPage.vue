@@ -58,7 +58,7 @@ export default {
     },
     async login() {
       try {
-        const req = await fetch("http://localhost:5000/api/login", {
+        const req = await fetch("http://localhost/api/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

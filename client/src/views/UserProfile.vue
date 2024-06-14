@@ -24,6 +24,11 @@
               class="nav-link btn-outline-secondary mx-2"
               >My History</router-link
             >
+            <button
+              class="nav-link btn-outline-secondary mx-2 logout"
+              @click="logout">
+              Logout
+            </button>
           </div>
         </div>
       </div>
@@ -194,7 +199,26 @@ export default {
         console.error("Error:", error);
       }
     },
+
+    async logout() {
+      try {
+        const response = await fetch("http://localhost:5000/api/user/logout", {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        const data = await response.json();
+        console.log("Logout:", data);
+        localStorage.removeItem("token");
+        this.$router.push({ name: "HomePage" });
+      } catch (err) {
+        console.error("Error:", err);
+      }
+    },
   },
+
   mounted() {
     // console.log(this.$route.params.userId);
     this.currentUser();

@@ -8,9 +8,17 @@
           <span class="link-text">Manage Psychologists</span>
         </div>
       </router-link>
-      <router-link to="/admin/total-transaction" class="dashboard-link">
+      <router-link
+        to="/admin/manage-psychologists-schedule"
+        class="dashboard-link">
         <div class="link-card">
           <i class="fas fa-calendar-alt icon"></i>
+          <span class="link-text">Manage Schedule</span>
+        </div>
+      </router-link>
+      <router-link to="/admin/total-transaction" class="dashboard-link">
+        <div class="link-card">
+          <i class="fas fa-money-check-alt icon"></i>
           <span class="link-text">Total Transaction</span>
         </div>
       </router-link>
@@ -36,7 +44,7 @@
   background: linear-gradient(to right, #6a11cb 0%, #2575fc 100%);
   min-height: 100vh;
   color: white;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .dashboard-title {

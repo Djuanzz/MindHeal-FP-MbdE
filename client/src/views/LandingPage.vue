@@ -127,7 +127,6 @@ export default {
         this.selectedDay = day.day;
         const data = await req.json();
         this.schedules = data.data;
-        console.log(data);
       } catch (error) {
         console.error(error);
         alert("Invalid credentials");
@@ -149,8 +148,6 @@ export default {
         ? (dayName = "Sunday")
         : (dayName = this.dateDay[today.getDay() - 1].day);
 
-      console.log(`Tanggal: ${formattedDate}`);
-      console.log(`Hari: ${dayName}`);
       return { dayName, formattedDate };
     },
 
@@ -158,7 +155,6 @@ export default {
       try {
         const response = await fetch("http://localhost:5000/api/schedule/week");
         const data = await response.json();
-        console.log(data);
 
         if (data.data.length > 0) {
           for (let i = 0; i < this.dateDay.length; i++) {
@@ -171,13 +167,10 @@ export default {
         }
 
         data.data.forEach((d, i) => {
-          console.log(this.dateDay[i].day);
           if (this.dateDay[i].day == d.DayName) {
             this.dateDay[i].date = d.ScheduleDate;
           }
         });
-
-        console.log(this.dateDay[1].date);
       } catch (error) {
         console.error(error);
       }

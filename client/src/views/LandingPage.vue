@@ -33,9 +33,16 @@
 
     <header class="text-center mb-5">
       <h1>Welcome to MindHeal.com</h1>
-      <p>Select a day to view available sessions and book your appointment.</p>
+      <p>Select a location and day to view available sessions and book your appointment.</p>
     </header>
     <main>
+      <div class="mb-3">
+        <label for="locationSelect" class="form-label">Select Location</label>
+        <select id="locationSelect" class="form-select" v-model="selectedLocation" @change="fetchSchedules">
+          <option v-for="location in locations" :key="location.id" :value="location.name">{{ location.name }}</option>
+        </select>
+      </div>
+
       <ul class="nav nav-pills nav-fill mb-3">
         <li class="nav-item" v-for="day in dateDay" :key="day.day">
           <a
@@ -63,7 +70,7 @@
               -
               {{ schedule.SessionEnd }}
             </p>
-            <button class="btn btn-success" @click="goToTransaction">
+            <button class="btn btn-success" @click="bookAppointment(schedule)">
               Book Appointment
             </button>
           </div>
@@ -81,76 +88,46 @@ export default {
   data() {
     return {
       dateDay: [
-        {
-          day: "Monday",
-          date: ref(""),
-        },
-        {
-          day: "Tuesday",
-          date: ref(""),
-        },
-        {
-          day: "Wednesday",
-          date: ref(""),
-        },
-        {
-          day: "Thursday",
-          date: ref(""),
-        },
-        {
-          day: "Friday",
-          date: ref(""),
-        },
-        {
-          day: "Saturday",
-          date: ref(""),
-        },
+        { day: "Monday", date: ref("") },
+        { day: "Tuesday", date: ref("") },
+        { day: "Wednesday", date: ref("") },
+        { day: "Thursday", date: ref("") },
+        { day: "Friday", date: ref("") },
+        { day: "Saturday", date: ref("") },
       ],
       selectedDay: ref(""),
       currDate: ref(""),
       schedules: ref([]),
+      locations: ref([]),
+      selectedLocation: ref(""),
     };
   },
   methods: {
-    async selectDay(day) {
+    async fetchSchedules() {
       try {
-        const req = await fetch("http://localhost:5000/api/schedule/day", {
+        const req = await fetch("http://localhost:5000/api/schedule/day-location", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            date: day.date,
+            date: this.currDate,
+            location: this.selectedLocation,
           }),
         });
 
-        this.selectedDay = day.day;
         const data = await req.json();
         this.schedules = data.data;
       } catch (error) {
         console.error(error);
-        alert("Invalid credentials");
+        alert("Error fetching schedules");
       }
     },
-    goToTransaction() {
-      this.$router.push({ name: "TransactionPage" });
+    async selectDay(day) {
+      this.selectedDay = day.day;
+      this.currDate = day.date;
+      await this.fetchSchedules();
     },
-    initSelectedDay() {
-      const today = new Date();
-      const da = String(today.getDate()).padStart(2, "0");
-      const month = String(today.getMonth() + 1).padStart(2, "0");
-      const year = today.getFullYear();
-      const formattedDate = `${year}-${month}-${da}`;
-
-      let dayName;
-
-      today.getDay() === 0
-        ? (dayName = "Sunday")
-        : (dayName = this.dateDay[today.getDay() - 1].day);
-
-      return { dayName, formattedDate };
-    },
-
     async initDateDay() {
       try {
         const response = await fetch("http://localhost:5000/api/schedule/week");
@@ -175,9 +152,57 @@ export default {
         console.error(error);
       }
     },
+    async fetchLocations() {
+      try {
+        const response = await fetch("http://localhost:5000/api/locations");
+        const data = await response.json();
+        this.locations = data.data;
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async bookAppointment(schedule) {
+      try {
+        const response = await fetch("http://localhost:5000/api/book", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({
+            scheduleId: schedule.id,
+            location: this.selectedLocation,
+          }),
+        });
+
+        if (response.ok) {
+          this.$router.push({ name: "MyHistory" });
+        } else {
+          alert("Error booking appointment");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    initSelectedDay() {
+      const today = new Date();
+      const da = String(today.getDate()).padStart(2, "0");
+      const month = String(today.getMonth() + 1).padStart(2, "0");
+      const year = today.getFullYear();
+      const formattedDate = `${year}-${month}-${da}`;
+
+      let dayName;
+
+      today.getDay() === 0
+        ? (dayName = "Sunday")
+        : (dayName = this.dateDay[today.getDay() - 1].day);
+
+      return { dayName, formattedDate };
+    },
   },
   mounted() {
     this.initDateDay();
+    this.fetchLocations();
     const { dayName, formattedDate } = this.initSelectedDay();
     this.selectedDay = dayName;
     this.currDate = formattedDate;

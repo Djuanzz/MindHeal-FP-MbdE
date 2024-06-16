@@ -33,13 +33,26 @@
 
     <header class="text-center mb-5">
       <h1>Welcome to MindHeal.com</h1>
-      <p>Select a location and day to view available sessions and book your appointment.</p>
+      <p>
+        Select a location and day to view available sessions and book your
+        appointment.
+      </p>
     </header>
     <main>
       <div class="mb-3">
         <label for="locationSelect" class="form-label">Select Location</label>
-        <select id="locationSelect" class="form-select" v-model="selectedLocation" @change="fetchSchedules">
-          <option v-for="location in locations" :key="location.id" :value="location.name">{{ location.name }}</option>
+        <select
+          id="locationSelect"
+          class="form-select"
+          v-model="selectedLocation"
+          @change="handleLocationChange">
+          <option value="">All Locations</option>
+          <option
+            v-for="location in locations"
+            :key="location.LocationID"
+            :value="location.Name">
+            {{ location.Name }}
+          </option>
         </select>
       </div>
 
@@ -61,16 +74,19 @@
         <div
           v-else
           class="card mb-4 shadow-sm"
-          v-for="(schedule, index) in schedules"
-          :key="index">
+          v-for="schedule in filteredSchedules"
+          :key="schedule.ScheduleID">
           <div class="card-body">
             <h5 class="card-title">{{ schedule.ScheduleDate }}</h5>
             <p class="card-text">
               {{ schedule.PsychologistName }}<br />{{ schedule.SessionStart }}
               -
-              {{ schedule.SessionEnd }}
+              {{ schedule.SessionEnd }} <br />
+              {{ schedule.LocationName }}
             </p>
-            <button class="btn btn-success" @click="bookAppointment(schedule)">
+            <button
+              class="btn btn-success"
+              @click="bookAppointment(schedule.ScheduleID)">
               Book Appointment
             </button>
           </div>
@@ -102,18 +118,35 @@ export default {
       selectedLocation: ref(""),
     };
   },
+  computed: {
+    filteredSchedules() {
+      if (this.selectedLocation) {
+        return this.schedules.filter(
+          (schedule) => schedule.LocationName === this.selectedLocation
+        );
+      } else {
+        return this.schedules;
+      }
+    },
+  },
+
   methods: {
     async fetchSchedules() {
       try {
-        const req = await fetch("http://localhost:5000/api/schedule/day-location", {
+        const bodyContent = {
+          date: this.currDate,
+        };
+
+        if (this.selectedLocation) {
+          bodyContent.location = this.selectedLocation;
+        }
+
+        const req = await fetch("http://localhost:5000/api/schedule/day", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            date: this.currDate,
-            location: this.selectedLocation,
-          }),
+          body: JSON.stringify(bodyContent),
         });
 
         const data = await req.json();
@@ -123,11 +156,13 @@ export default {
         alert("Error fetching schedules");
       }
     },
+
     async selectDay(day) {
       this.selectedDay = day.day;
       this.currDate = day.date;
       await this.fetchSchedules();
     },
+
     async initDateDay() {
       try {
         const response = await fetch("http://localhost:5000/api/schedule/week");
@@ -152,38 +187,26 @@ export default {
         console.error(error);
       }
     },
+
     async fetchLocations() {
       try {
-        const response = await fetch("http://localhost:5000/api/locations");
+        const response = await fetch("http://localhost:5000/api/location");
         const data = await response.json();
         this.locations = data.data;
       } catch (error) {
         console.error(error);
       }
     },
-    async bookAppointment(schedule) {
-      try {
-        const response = await fetch("http://localhost:5000/api/book", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          body: JSON.stringify({
-            scheduleId: schedule.id,
-            location: this.selectedLocation,
-          }),
-        });
 
-        if (response.ok) {
-          this.$router.push({ name: "MyHistory" });
-        } else {
-          alert("Error booking appointment");
-        }
-      } catch (error) {
-        console.error(error);
-      }
+    async bookAppointment(scheduleID) {
+      console.log(scheduleID);
+      // Implement the booking logic here
     },
+
+    async handleLocationChange() {
+      await this.fetchSchedules();
+    },
+
     initSelectedDay() {
       const today = new Date();
       const da = String(today.getDate()).padStart(2, "0");
@@ -200,6 +223,7 @@ export default {
       return { dayName, formattedDate };
     },
   },
+
   mounted() {
     this.initDateDay();
     this.fetchLocations();

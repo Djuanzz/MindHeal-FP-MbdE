@@ -33,40 +33,29 @@ END;
 
 DROP PROCEDURE IF EXISTS `ListUserHistoryByUserLogin`;
 
-CREATE PROCEDURE GetScheduleForCurrentWeek()
-BEGIN
-    SELECT DISTINCT
-        s.ScheduleDate,
-        DAYNAME(s.ScheduleDate) AS DayName
-    FROM
-        Schedule s
-    WHERE
-        s.ScheduleDate BETWEEN
-            DATE_SUB(CURDATE(), INTERVAL (DAYOFWEEK(CURDATE()) - 2) DAY)
-            AND DATE_ADD(DATE_SUB(CURDATE(), INTERVAL (DAYOFWEEK(CURDATE()) - 2) DAY), INTERVAL 5 DAY)
-    ORDER BY
-        s.ScheduleDate;
-END;
-
-CALL GetScheduleForCurrentWeek();
-
 CREATE PROCEDURE GetPsychologistSchedule(IN requestedDate DATE)
 BEGIN
     SELECT 
+        sch.ScheduleID,
         p.Name AS PsychologistName, 
         s.SessionStart, 
         s.SessionEnd,
-        sch.ScheduleDate
+        sch.ScheduleDate,
+        loc.LocationID,
+        loc.Name as LocationName
     FROM 
         Psychologist p
     JOIN 
         Schedule sch ON p.PsychologistID = sch.Psychologist_PsychologistID
     JOIN 
         Session s ON sch.Session_SessionID = s.SessionID
+    JOIN
+        Locations loc ON p.Location_LocationID = loc.LocationID
     WHERE 
         sch.ScheduleDate = requestedDate;
 END;
 
+DROP PROCEDURE IF EXISTS `GetPsychologistSchedule`;
 
 CREATE PROCEDURE GetDatesForCurrentWeek()
 BEGIN

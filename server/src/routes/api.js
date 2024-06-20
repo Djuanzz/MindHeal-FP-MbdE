@@ -28,11 +28,14 @@ userRouter.get("/history", historyController.getUserHistoryByUserLogin);
 
 psikologRouter.get("/:id", psikologController.getPsikologById);
 psikologRouter.post("/", psikologController.createPsikolog);
+psikologRouter.delete("/", psikologController.deletePsikolog);
 
 scheduleRouter.get("/", scheduleController.getAllSchedule);
 scheduleRouter.post("/", scheduleController.createSchedule);
 scheduleRouter.get("/week", scheduleController.getAllScheduleInWeek);
 scheduleRouter.post("/day", scheduleController.getPsikologSchedule);
+scheduleRouter.get("/psikolog", scheduleController.getAllPsychologistSchedule);
+scheduleRouter.delete("/", scheduleController.deletePsikologSchedule);
 
 transaksiRouter.get("/", transaksiController.getAllTransaksi);
 transaksiRouter.post("/", transaksiController.createTransaksi);

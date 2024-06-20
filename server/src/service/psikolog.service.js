@@ -41,8 +41,21 @@ const createPsikolog = async (req) => {
   return psikolog;
 };
 
+const deletePsikolog = async (req) => {
+  const id = req.PsychologistID;
+  const deletePsikologQuery = `
+  DELETE FROM Psychologist
+  WHERE PsychologistID = ?
+  `;
+
+  const [result] = await db.query(deletePsikologQuery, [id]);
+
+  return result;
+};
+
 export default {
   getAllPsikolog,
   getPsikologById,
   createPsikolog,
+  deletePsikolog,
 };

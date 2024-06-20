@@ -10,11 +10,10 @@ const getAllSchedule = async () => {
 const createSchedule = async (req) => {
   const schedule = validate(scheduleValidation.createScheduleValidation, req);
   const newScheduleQuery =
-    "INSERT INTO Schedule (ScheduleDate, ScheduleStatus, Psychologist_PsychologistID, Session_SessionID, UserHistory_UserHistoryID) VALUES (?, ?, ?, ?, ?)";
+    "INSERT INTO Schedule (ScheduleDate, Psychologist_PsychologistID, Session_SessionID, UserHistory_UserHistoryID) VALUES (?, ?, ?, ?)";
 
   const [result] = await db.query(newScheduleQuery, [
     schedule.ScheduleDate,
-    schedule.ScheduleStatus,
     schedule.Psychologist_PsychologistID,
     schedule.Session_SessionID,
     schedule.UserHistory_UserHistoryID,
@@ -42,9 +41,31 @@ const getPsikologSchedule = async (req) => {
   return result[0];
 };
 
+const getAllPsychologistSchedule = async () => {
+  const getAllPsychologistScheduleQuery = "CALL GetAllPsychologistsSchedules()";
+
+  const [result] = await db.query(getAllPsychologistScheduleQuery);
+
+  return result[0];
+};
+
+const deletePsikologSchedule = async (req) => {
+  const scheduleID = req.body.ScheduleID;
+  const deletePsikologScheduleQuery = `
+  DELETE FROM Schedule
+  WHERE ScheduleID = ?
+  `;
+
+  const [result] = await db.query(deletePsikologScheduleQuery, [scheduleID]);
+
+  return result[0];
+};
+
 export default {
   getAllSchedule,
   createSchedule,
   getAllScheduleInWeek,
   getPsikologSchedule,
+  getAllPsychologistSchedule,
+  deletePsikologSchedule,
 };

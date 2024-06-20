@@ -52,9 +52,37 @@ const getPsikologSchedule = async (req, res, next) => {
   }
 };
 
+const getAllPsychologistSchedule = async (req, res, next) => {
+  try {
+    const data = await scheduleService.getAllPsychologistSchedule();
+    res.status(200).json({
+      data: data,
+      message: "done",
+    });
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
+const deletePsikologSchedule = async (req, res, next) => {
+  try {
+    const data = await scheduleService.deletePsikologSchedule(req);
+    res.status(200).json({
+      data: data,
+      message: "done",
+    });
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
 export default {
   getAllSchedule,
   createSchedule,
   getAllScheduleInWeek,
   getPsikologSchedule,
+  getAllPsychologistSchedule,
+  deletePsikologSchedule,
 };

@@ -36,7 +36,7 @@ CREATE TABLE Psychologist (
 
 CREATE TABLE UserHistory (
     UserHistoryID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    DateCreated DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    DateCreated DATE DEFAULT CURRENT_TIMESTAMP NOT NULL,
     User_UserID INT,
     FOREIGN KEY (User_UserID) REFERENCES Users(UserID)
 );
@@ -44,11 +44,11 @@ CREATE TABLE UserHistory (
 CREATE TABLE TransactionBill(
     TransactionBillID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     IsPayed BOOLEAN DEFAULT FALSE NOT NULL,
-    PaymentType VARCHAR(50)  NOT NULL,
+    PaymentType VARCHAR(50),
     Amount DECIMAL(10,2)  NOT NULL,
     TimeDue TIMESTAMP NOT NULL,
     UserHistory_UserHistoryID INT NOT NULL,
-    FOREIGN KEY (UserHistory_UserHistoryID) REFERENCES UserHistory(UserHistoryID)
+    FOREIGN KEY (UserHistory_UserHistoryID) REFERENCES UserHistory(UserHistoryID) ON DELETE CASCADE
 );
 
 CREATE TABLE Schedule (

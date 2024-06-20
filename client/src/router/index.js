@@ -14,49 +14,56 @@ import MyHistoryPage from "@/views/MyHistory.vue";
 import ManageUserProfile from "@/views/admin/ManageUserProfile.vue";
 import ManageUserHistory from "@/views/admin/ManageUserHistory.vue";
 import ManageSchedulePsycholog from "@/views/admin/ManageSchedulePsycholog.vue";
+import DetailHistory from "@/views/DetailHistory.vue";
 
 const routes = [
   {
     path: "/",
     name: "HomePage",
     component: HomePage,
-    meta: { title: "Home" },
+    meta: { title: "Home" }
   },
   {
     path: "/login",
     name: "LoginPage",
     component: LoginPage,
-    meta: { title: "Login" },
+    meta: { title: "Login" }
   },
   {
     path: "/signup",
     name: "SignUpPage",
     component: SignUpPage,
-    meta: { title: "Sign Up" },
+    meta: { title: "Sign Up" }
   },
   {
     path: "/landing",
     name: "LandingPage",
     component: LandingPage,
-    meta: { title: "Landing" },
+    meta: { title: "Landing" }
   },
   {
     path: "/transaction",
     name: "TransactionPage",
     component: TransactionPage,
-    meta: { title: "Transaction" },
+    meta: { title: "Transaction" }
   },
   {
     path: "/user-profile/:userId?",
     name: "UserProfile",
     component: UserProfile,
-    meta: { title: "User Profile" },
+    meta: { title: "User Profile" }
   },
   {
     path: "/my-history",
     name: "MyHistoryPage",
     component: MyHistoryPage,
-    meta: { title: "My History" },
+    meta: { title: "My History" }
+  },
+  {
+    path: "/detail-history/:id",
+    name: "DetailHistory",
+    component: DetailHistory,
+    props: true
   },
   // Admin routes
   {

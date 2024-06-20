@@ -16,14 +16,8 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav ms-auto">
-            <router-link to="/landing" class="nav-link btn-outline-primary"
-              >Schedule</router-link
-            >
-            <router-link
-              to="/user-profile"
-              class="nav-link btn-outline-secondary"
-              >Profile</router-link
-            >
+            <router-link to="/landing" class="nav-link btn-outline-primary">Schedule</router-link>
+            <router-link to="/user-profile" class="nav-link btn-outline-secondary">Profile</router-link>
           </div>
         </div>
       </div>
@@ -37,7 +31,8 @@
         <div
           class="card mb-4 shadow-sm"
           v-for="history in histories"
-          :key="history.id">
+          :key="history.id"
+          @click="goToDetail(history.id)">
           <div class="card-body">
             <h5 class="card-title">
               {{ history.ScheduleDate }} with {{ history.Name }}
@@ -45,8 +40,7 @@
             <p class="card-text">
               Location: {{ history.Location }}<br />
               Time: {{ history.SessionStart }} - {{ history.SessionEnd }}<br />
-              Detail: Kayake mending cardnya diklik trus masuk ke halaman baru
-              kalo ga muncul popup isinya detail history
+              Detail: Click card for more details.
             </p>
           </div>
         </div>
@@ -82,6 +76,9 @@ export default {
         console.error(error);
       }
     },
+    goToDetail(id) {
+      this.$router.push({ name: 'DetailHistory', params: { id } });
+    }
   },
   mounted() {
     this.myHistory();

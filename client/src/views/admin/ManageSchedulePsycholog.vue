@@ -2,7 +2,7 @@
   <div class="manage-psychologists">
     <h1>Manage Psychologists Schedule</h1>
     <form @submit.prevent="addPsychologist" class="psychologist-form">
-      <select v-model="newPsychologist.name" required>
+      <select v-model="newPsychologist.Psychologist_PsychologistID" required>
         <option disabled value="">Select a psychologist</option>
         <option
           v-for="psychologist in psychologistList"
@@ -11,8 +11,8 @@
           {{ psychologist.Name }}
         </option>
       </select>
-      <input type="date" v-model="newPsychologist.schedule" required />
-      <select v-model="newPsychologist.location" required>
+      <input type="date" v-model="newPsychologist.ScheduleDate" required />
+      <!-- <select v-model="newPsychologist.location" required>
         <option disabled value="">Select a location</option>
         <option
           v-for="location in locationList"
@@ -20,8 +20,8 @@
           :value="location.LocationID">
           {{ location.Name }}
         </option>
-      </select>
-      <select v-model="newPsychologist.session" required>
+      </select> -->
+      <select v-model="newPsychologist.Session_SessionID" required>
         <option disabled value="">Select a session</option>
         <option
           v-for="session in sessionList"
@@ -40,8 +40,24 @@
         :key="psychologist.ScheduleID"
         class="psychologist-item">
         <p>
-          {{ psychologist.ScheduleDate }} - {{ psychologist.ScheduleStatus }} -
-          {{ psychologist.location }} - {{ psychologist.session }}
+          <span class="">
+            {{ psychologist.ScheduleDate }} -
+            {{ psychologist.PsychologistName }} -
+            {{ psychologist.LocationName }}
+            <b
+              :class="
+                psychologist.ScheduleStatus === 'Available'
+                  ? 'text-success'
+                  : 'text-danger'
+              ">
+              {{ psychologist.ScheduleStatus }}
+            </b>
+          </span>
+          <button
+            @click="deletePsikologSchedule(psychologist.ScheduleID)"
+            class="btn btn-danger">
+            X
+          </button>
         </p>
       </div>
     </div>
@@ -58,46 +74,45 @@ export default {
   name: "ManageSchedulePsycholog",
   setup() {
     const newPsychologist = ref({
-      name: "",
-      schedule: "",
-      location: "",
-      session: "",
+      Psychologist_PsychologistID: "",
+      ScheduleDate: "",
+      // location: "",
+      Session_SessionID: "",
     });
 
     const psychologistList = ref([]);
-
-    const locationList = ref([]);
-
+    // const locationList = ref([]);
     const sessionList = ref([]);
-
     const psychologists = ref([]);
 
     const isValid = computed(() => {
       return (
-        newPsychologist.value.name &&
-        newPsychologist.value.schedule &&
-        newPsychologist.value.location &&
-        newPsychologist.value.session
+        newPsychologist.value.Psychologist_PsychologistID &&
+        newPsychologist.value.ScheduleDate &&
+        newPsychologist.value.Session_SessionID
       );
     });
 
-    const addPsychologist = () => {
+    const addPsychologist = async () => {
       if (isValid.value) {
-        psychologists.value.push({
-          ...newPsychologist.value,
-          id: psychologists.value.length + 1,
-        });
-        newPsychologist.value.name = "";
-        newPsychologist.value.schedule = "";
-        newPsychologist.value.location = "";
-        newPsychologist.value.session = "";
-        console.log(psychologists.value);
+        try {
+          await createNewSchedule();
+          await getAllSchedules();
+
+          newPsychologist.value.Psychologist_PsychologistID = "";
+          newPsychologist.value.ScheduleDate = "";
+          newPsychologist.value.Session_SessionID = "";
+        } catch (error) {
+          console.error(error);
+        }
       }
     };
 
     const getAllPsychologists = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/psikologs");
+        const response = await fetch("http://localhost:5000/api/psikologs", {
+          method: "GET",
+        });
         const data = await response.json();
         psychologistList.value = data.data;
       } catch (error) {
@@ -105,19 +120,23 @@ export default {
       }
     };
 
-    const getAllLocation = async () => {
-      try {
-        const response = await fetch("http://localhost:5000/api/location");
-        const data = await response.json();
-        locationList.value = data.data;
-      } catch (error) {
-        console.error(error);
-      }
-    };
+    // const getAllLocation = async () => {
+    //   try {
+    //     const response = await fetch("http://localhost:5000/api/location", {
+    //       method: "GET",
+    //     });
+    //     const data = await response.json();
+    //     locationList.value = data.data;
+    //   } catch (error) {
+    //     console.error(error);
+    //   }
+    // };
 
     const getAllSessions = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/session");
+        const response = await fetch("http://localhost:5000/api/session", {
+          method: "GET",
+        });
         const data = await response.json();
         sessionList.value = data.data;
       } catch (error) {
@@ -127,7 +146,12 @@ export default {
 
     const getAllSchedules = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/schedule");
+        const response = await fetch(
+          "http://localhost:5000/api/schedule/psikolog",
+          {
+            method: "GET",
+          }
+        );
         const data = await response.json();
         psychologists.value = data.data;
         console.log(data);
@@ -136,23 +160,58 @@ export default {
       }
     };
 
+    const createNewSchedule = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/schedule", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newPsychologist.value),
+        });
+        const data = await response.json();
+        console.log(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    const deletePsikologSchedule = async (ScheduleID) => {
+      try {
+        const response = await fetch(`http://localhost:5000/api/schedule`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ ScheduleID }),
+        });
+        const data = await response.json();
+        console.log(data);
+        await getAllSchedules();
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
     return {
       newPsychologist,
       psychologistList,
-      locationList,
+      // locationList,
       sessionList,
       psychologists,
       addPsychologist,
       isValid,
       getAllPsychologists,
-      getAllLocation,
+      // getAllLocation,
       getAllSessions,
       getAllSchedules,
+      createNewSchedule,
+      deletePsikologSchedule,
     };
   },
   created() {
     this.getAllPsychologists();
-    this.getAllLocation();
+    // this.getAllLocation();
     this.getAllSessions();
     this.getAllSchedules();
   },
@@ -218,6 +277,8 @@ h1 {
 }
 
 .psychologist-item p {
+  display: flex;
+  justify-content: space-between;
   padding: 12px;
   background: linear-gradient(to right, #ecf0f1, #bdc3c7);
   border-radius: 8px;

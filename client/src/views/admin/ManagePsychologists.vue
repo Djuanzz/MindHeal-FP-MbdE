@@ -4,23 +4,63 @@
     <form @submit.prevent="addPsychologist" class="psychologist-form">
       <input
         type="text"
-        v-model="newPsychologist.name"
+        v-model="newPsychologist.Name"
         placeholder="Name"
         required />
-      <input type="date" v-model="newPsychologist.schedule" required />
+      <input
+        type="email"
+        v-model="newPsychologist.Email"
+        placeholder="Email"
+        required />
+      <input
+        type="text"
+        v-model="newPsychologist.Mobile"
+        placeholder="Mobile"
+        required />
+      <input
+        type="text"
+        v-model="newPsychologist.Specialty"
+        placeholder="Specialty"
+        required />
+
+      <select v-model="newPsychologist.VisitPrice" required>
+        <option disabled value="">Select a Price</option>
+        <option v-for="price in priceList" :key="price.id" :value="price.price">
+          {{ price.price }}
+        </option>
+      </select>
+
+      <select v-model="newPsychologist.Location_LocationID" required>
+        <option disabled value="">Select a location</option>
+        <option
+          v-for="location in locationList"
+          :key="location.LocationID"
+          :value="location.LocationID">
+          {{ location.Name }}
+        </option>
+      </select>
       <button type="submit" :disabled="!isValid">Add Psychologist</button>
     </form>
     <div class="psychologist-list">
       <div
         v-for="psychologist in psychologists"
-        :key="psychologist.id"
+        :key="psychologist.PsychologistID"
         class="psychologist-item">
-        <p>{{ psychologist.name }} - {{ psychologist.schedule }}</p>
+        <p>
+          {{ psychologist.Name }} - {{ psychologist.Email }}
+          <span class="actions">
+            <button
+              @click="detailPsikolog(psychologist.PsychologistID)"
+              class="btn btn-info">
+              Details
+            </button>
+          </span>
+        </p>
       </div>
     </div>
-    <router-link to="/admin/dashboard" class="back-to-dashboard"
-      >Back to Dashboard</router-link
-    >
+    <router-link to="/admin/dashboard" class="back-to-dashboard">
+      Back to Dashboard
+    </router-link>
   </div>
 </template>
 
@@ -30,28 +70,129 @@ import { ref, computed } from "vue";
 export default {
   setup() {
     const newPsychologist = ref({
-      name: "",
-      schedule: "",
+      Name: "",
+      Email: "",
+      Mobile: "",
+      Specialty: "",
+      VisitPrice: "",
+      Location_LocationID: "",
     });
+
+    const priceList = [
+      { id: 1, price: 300000 },
+      { id: 2, price: 400000 },
+      { id: 3, price: 500000 },
+      { id: 4, price: 600000 },
+      { id: 5, price: 700000 },
+    ];
+
     const psychologists = ref([]);
+    const locationList = ref([]);
 
     const isValid = computed(() => {
-      return newPsychologist.value.name && newPsychologist.value.schedule;
+      return (
+        newPsychologist.value.Name &&
+        newPsychologist.value.Email &&
+        newPsychologist.value.Mobile &&
+        newPsychologist.value.Specialty &&
+        newPsychologist.value.VisitPrice
+      );
     });
 
-    const addPsychologist = () => {
-      if (isValid.value) {
-        psychologists.value.push({
-          ...newPsychologist.value,
-          id: psychologists.value.length + 1,
+    const createNewPsikolog = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/psikolog", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newPsychologist.value),
         });
-        newPsychologist.value.name = "";
-        newPsychologist.value.schedule = "";
-        console.log(psychologists.value);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        return data;
+      } catch (error) {
+        console.error("There was a problem with the fetch operation:", error);
+        throw error;
       }
     };
 
-    return { newPsychologist, psychologists, addPsychologist, isValid };
+    const addPsychologist = async () => {
+      console.log(newPsychologist.value);
+      if (isValid.value) {
+        try {
+          await createNewPsikolog();
+          await getAllPsikolog();
+
+          newPsychologist.value.Name = "";
+          newPsychologist.value.Email = "";
+          newPsychologist.value.Mobile = "";
+          newPsychologist.value.Specialty = "";
+          newPsychologist.value.VisitPrice = "";
+          newPsychologist.value.Location_LocationID = "";
+        } catch (error) {
+          alert("Failed to add psychologist. Please try again.");
+        }
+      }
+    };
+
+    const getAllPsikolog = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/psikologs", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        psychologists.value = data.data;
+      } catch (error) {
+        console.error("There was a problem with the fetch operation:", error);
+      }
+    };
+
+    const getAllLocation = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/location", {
+          method: "GET",
+        });
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        locationList.value = data.data;
+        console.log(data);
+      } catch (error) {
+        console.error("There was a problem with the fetch operation:", error);
+      }
+    };
+
+    const detailPsikolog = (id) => {
+      console.log(id);
+    };
+
+    return {
+      newPsychologist,
+      psychologists,
+      addPsychologist,
+      isValid,
+      getAllPsikolog,
+      locationList,
+      getAllLocation,
+      priceList,
+      createNewPsikolog,
+      detailPsikolog,
+    };
+  },
+
+  mounted() {
+    this.getAllPsikolog();
+    this.getAllLocation();
   },
 };
 </script>
@@ -82,6 +223,7 @@ h1 {
 }
 
 .psychologist-form input,
+.psychologist-form select,
 .psychologist-form button {
   padding: 15px;
   border-radius: 8px;
@@ -89,7 +231,8 @@ h1 {
   font-size: 16px;
 }
 
-.psychologist-form input:focus {
+.psychologist-form input:focus,
+.psychologist-form select:focus {
   border-color: #3498db;
   box-shadow: 0 0 8px rgba(52, 152, 219, 0.5);
   outline: none;
@@ -113,12 +256,34 @@ h1 {
 }
 
 .psychologist-item p {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 12px;
   background: linear-gradient(to right, #ecf0f1, #bdc3c7);
   border-radius: 8px;
   border-left: 5px solid #3498db;
   margin: 10px 0;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+}
+
+.btn-info {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-info:hover {
+  background-color: #2980b9;
 }
 
 .back-to-dashboard {

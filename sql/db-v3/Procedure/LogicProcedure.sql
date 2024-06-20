@@ -104,3 +104,27 @@ BEGIN
 END;
 
 DROP PROCEDURE IF EXISTS `CreateUserHistory`;
+
+CREATE PROCEDURE GetAllPsychologistsSchedules()
+BEGIN
+    SELECT 
+        sch.ScheduleID,
+        p.Name AS PsychologistName, 
+        sch.ScheduleStatus,
+        s.SessionStart, 
+        s.SessionEnd,
+        sch.ScheduleDate,
+        loc.LocationID,
+        loc.Name as LocationName
+    FROM 
+        Psychologist p
+    JOIN 
+        Schedule sch ON p.PsychologistID = sch.Psychologist_PsychologistID
+    JOIN 
+        Session s ON sch.Session_SessionID = s.SessionID
+    JOIN 
+        Locations loc ON p.Location_LocationID = loc.LocationID
+    ORDER BY sch.ScheduleDate DESC;
+END;
+
+DROP PROCEDURE IF EXISTS `GetAllPsychologistsSchedules`;

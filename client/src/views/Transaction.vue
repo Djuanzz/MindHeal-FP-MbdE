@@ -23,7 +23,16 @@
               <i :class="getIconClass(method)"></i> {{ method }}
             </label>
           </div>
-          <button type="submit" class="btn-checkout">Proceed to Payment</button>
+          <button
+            type="submit"
+            class="btn-checkout"
+            :disabled="!selectedPaymentMethod">
+            <!-- Disable button if no payment method selected -->
+            Proceed to Payment
+          </button>
+          <button type="button" class="btn-cancel" @click="cancelTransaction">
+            Cancel
+          </button>
         </form>
       </div>
     </main>
@@ -77,6 +86,30 @@ export default {
       }
     },
 
+    async cancelTransaction() {
+      try {
+        const res = await fetch(`http://localhost:5000/api/user/history`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({
+            UserHistoryID: this.$route.params.userHistoryID,
+          }),
+        });
+
+        const data = await res.json();
+        console.log(data);
+
+        this.$router.push({
+          name: "LandingPage",
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    },
+
     getIconClass(method) {
       switch (method) {
         case "Credit Card":
@@ -102,9 +135,6 @@ export default {
     timeoutAction() {
       this.$router.push({ name: "LandingPage" });
       alert("Time is up! Your transaction canceled.");
-      // this.selectedPaymentMethod = "";
-      // this.countdown = 10;
-      // this.startTimer();
     },
   },
   mounted() {
@@ -131,12 +161,12 @@ export default {
 
 header h1 {
   color: #0056b3;
-  font-size: 24px; /* Smaller and more elegant */
+  font-size: 24px;
 }
 
 .payment-options h2 {
   color: #007bff;
-  font-size: 20px; /* Reduced size for subheading */
+  font-size: 20px;
 }
 
 .countdown {
@@ -157,14 +187,14 @@ header h1 {
 }
 
 .payment-method input[type="radio"] {
-  display: none; /* Hide the default radio input */
+  display: none;
 }
 
 .payment-method label {
   padding: 8px 16px;
-  font-size: 14px; /* Smaller font size */
+  font-size: 14px;
   color: #343a40;
-  border: 2px dashed #007bff; /* Dashed border for more flair */
+  border: 2px dashed #007bff;
   border-radius: 20px;
   width: 100%;
   cursor: pointer;
@@ -183,7 +213,7 @@ header h1 {
 }
 
 .payment-method i {
-  margin-right: 8px; /* Icon spacing */
+  margin-right: 8px;
 }
 
 .btn-checkout {
@@ -198,7 +228,28 @@ header h1 {
   margin-top: 20px;
 }
 
+.btn-checkout:disabled {
+  background: #cccccc;
+  cursor: not-allowed;
+}
+
 .btn-checkout:hover {
   background: linear-gradient(145deg, #004495, #0062cc);
+}
+
+.btn-cancel {
+  background: #dc3545;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.3s ease;
+  margin-top: 10px;
+}
+
+.btn-cancel:hover {
+  background: #c82333;
 }
 </style>

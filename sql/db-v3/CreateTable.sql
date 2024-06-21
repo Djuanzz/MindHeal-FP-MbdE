@@ -6,7 +6,8 @@ CREATE TABLE Users (
     DateOfBirth DATE  NOT NULL,
     Address VARCHAR(50)  NOT NULL,
     City VARCHAR(50)  NOT NULL,
-    Mobile VARCHAR(50)  NOT NULL
+    Mobile VARCHAR(50)  NOT NULL,
+    Role ENUM('Admin','User') DEFAULT 'User' NOT NULL
 );
 
 CREATE TABLE Session (

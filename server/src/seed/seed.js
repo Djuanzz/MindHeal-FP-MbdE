@@ -3,20 +3,26 @@ import { psikologSeeds } from "./psikolog.seed.js";
 import { scheduleSeeds } from "./schedule.seed.js";
 import { sessionSeeds } from "./session.seed.js";
 import { userSeeds } from "./user.seed.js";
+import { locationSeeds } from "./location.seed.js";
 
 const deleteQuery = [
-  "DELETE FROM UserHistory;",
-  "DELETE FROM Transaction;",
   "DELETE FROM Schedule;",
+  "DELETE FROM TransactionBill;",
+  "DELETE FROM UserDiagnosis;",
+  "DELETE FROM UserHistory;",
   "DELETE FROM Session;",
   "DELETE FROM Psychologist;",
-  "DELETE FROM User;",
-  "ALTER TABLE Psychologist AUTO_INCREMENT = 1;",
+  "DELETE FROM Locations;",
+  "DELETE FROM Users;",
+
   "ALTER TABLE Schedule AUTO_INCREMENT = 1;",
-  "ALTER TABLE Session AUTO_INCREMENT = 1;",
-  "ALTER TABLE Transaction AUTO_INCREMENT = 1;",
-  "ALTER TABLE User AUTO_INCREMENT = 1;",
+  "ALTER TABLE TransactionBill AUTO_INCREMENT = 1;",
+  "ALTER TABLE UserDiagnosis AUTO_INCREMENT = 1;",
   "ALTER TABLE UserHistory AUTO_INCREMENT = 1;",
+  "ALTER TABLE Session AUTO_INCREMENT = 1;",
+  "ALTER TABLE Psychologist AUTO_INCREMENT = 1;",
+  "ALTER TABLE Locations AUTO_INCREMENT = 1;",
+  "ALTER TABLE Users AUTO_INCREMENT = 1;",
 ];
 
 const seed = async () => {
@@ -32,26 +38,34 @@ const seed = async () => {
 
   try {
     for (const element of userSeeds) {
-      const role = element.role ? element.role : "user";
       const userQuery =
-        "INSERT INTO user (name, email, password, role) VALUES (?, ?, ?, ?)";
+        "INSERT INTO Users (Name, Email, Password, DateOfBirth, Address, City, Mobile, Role) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
       await db.query(userQuery, [
-        element.name,
-        element.email,
-        element.password,
-        role,
+        element.Name,
+        element.Email,
+        element.Password,
+        element.DateOfBirth,
+        element.Address,
+        element.City,
+        element.Mobile,
+        element.Role,
       ]);
       console.log("User seeded:", element);
     }
     console.log("User seed done");
 
-    for (const element of psikologSeeds) {
-      const psikologQuery =
-        "INSERT INTO psychologist (Name, Email) VALUES (?, ?)";
-      await db.query(psikologQuery, [element.Name, element.Email]);
-      console.log("Psychologist seeded:", element);
+    for (const element of locationSeeds) {
+      const locationQuery =
+        "INSERT INTO Locations (Name, Address, City, Phone) VALUES (?, ?, ?, ?)";
+      await db.query(locationQuery, [
+        element.City,
+        element.Address,
+        element.City,
+        element.Phone,
+      ]);
+      console.log("Location seeded:", element);
     }
-    console.log("Psychologist seed done");
+    console.log("Location seed done");
 
     for (const element of sessionSeeds) {
       const sessionQuery =
@@ -61,16 +75,31 @@ const seed = async () => {
     }
     console.log("Session seed done");
 
-    for (const element of scheduleSeeds) {
-      const scheduleQuery =
-        "INSERT INTO schedule (ScheduleDate, Psychologist_PsychologistID, Session_SessionID) VALUES (?, ?, ?)";
-      await db.query(scheduleQuery, [
-        element.ScheduleDate,
-        element.Psychologist_PsychologistID,
-        element.Session_SessionID,
+    for (const element of psikologSeeds) {
+      const psikologQuery =
+        "INSERT INTO Psychologist (Name, Email, Specialty, Mobile, VisitPrice, Location_LocationID) VALUES (?, ?, ?, ?, ?, ?)";
+      await db.query(psikologQuery, [
+        element.Name,
+        element.Email,
+        element.Specialty,
+        element.Mobile,
+        element.VisitPrice,
+        element.Location_LocationID,
       ]);
-      console.log("Schedule seeded:", element);
+      console.log("Psychologist seeded:", element);
     }
+    console.log("Psychologist seed done");
+
+    // for (const element of scheduleSeeds) {
+    //   const scheduleQuery =
+    //     "INSERT INTO schedule (ScheduleDate, Psychologist_PsychologistID, Session_SessionID) VALUES (?, ?, ?)";
+    //   await db.query(scheduleQuery, [
+    //     element.ScheduleDate,
+    //     element.Psychologist_PsychologistID,
+    //     element.Session_SessionID,
+    //   ]);
+    //   console.log("Schedule seeded:", element);
+    // }
   } catch (err) {
     console.error("Error seeding data:", err);
   } finally {

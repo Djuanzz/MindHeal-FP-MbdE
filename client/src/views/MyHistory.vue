@@ -41,10 +41,9 @@
           @click="goToDetail(history.UserHistoryID)">
           <div class="card-body">
             <h5 class="card-title">
-              {{ history.ScheduleDate }} with {{ history.Name }}
+              {{ history.ScheduleDate }}
             </h5>
             <p class="card-text">
-              Location: {{ history.Location }}<br />
               Time: {{ history.SessionStart }} - {{ history.SessionEnd }}<br />
               Detail: Click card for more details.
             </p>

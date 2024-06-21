@@ -36,3 +36,4 @@ BEGIN
 END;
 
 DROP PROCEDURE IF EXISTS InputTransaction;
+DROP PROCEDURE IF EXISTS UpdateTransactionByUserHistoryID;

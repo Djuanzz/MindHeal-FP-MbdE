@@ -2,10 +2,14 @@ import fs from "fs";
 
 const userSeeds = [
   {
-    name: "admin",
-    email: "admin@gmail.com",
-    password: "admin123",
-    role: "admin",
+    Name: "admin",
+    Email: "admin@gmail.com",
+    Password: "admin123",
+    DateOfBirth: "1990-01-01",
+    Address: "Jl. Sudirman No. 1",
+    City: "Jakarta",
+    Mobile: "081234567890",
+    Role: "Admin",
   },
 ];
 
@@ -32,13 +36,30 @@ const colors = [
   "hitamtua",
 ];
 
-for (let i = 0; i < 100000; i++) {
+const cityMaps = {
+  1: "Jakarta",
+  2: "Bandung",
+  3: "Surabaya",
+  4: "Semarang",
+  5: "Yogyakarta",
+  6: "Bali",
+  7: "Lombok",
+  8: "Makassar",
+  9: "Manado",
+  10: "Medan",
+};
+
+for (let i = 0; i < 500; i++) {
   const color = colors[i % colors.length];
   const user = {
-    name: `warna${color}${i + 1}`,
-    email: `warna${color}${i + 1}@gmail.com`,
-    password: `warna${color}aja123`,
-    role: "user",
+    Name: `warna${color}${i + 1}`,
+    Email: `warna${color}${i + 1}@gmail.com`,
+    Password: `warna${color}aja123`,
+    DateOfBirth: "2000-01-01",
+    Address: `Jalan warna ${color} no ${i + 1}`,
+    City: cityMaps[(i % 10) + 1],
+    Mobile: `08${i}234${i}78${i}`,
+    Role: "User",
   };
   userSeeds.push(user);
 }

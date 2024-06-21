@@ -169,6 +169,7 @@ export default {
 
         const data = await req.json();
         this.schedules = data.data;
+        console.log(data);
       } catch (error) {
         console.error(error);
         alert("Error fetching schedules");

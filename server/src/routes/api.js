@@ -27,6 +27,7 @@ userRouter.post("/history", historyController.createUserHistory);
 userRouter.get("/history", historyController.getUserHistoryByUserLogin);
 userRouter.post("/transaksi", transaksiController.createTransaksi);
 userRouter.post("/transaksi/pay", transaksiController.userPayTheTransaction);
+userRouter.delete("/history", historyController.deleteHistory);
 
 psikologRouter.get("/:id", psikologController.getPsikologById);
 psikologRouter.post("/", psikologController.createPsikolog);

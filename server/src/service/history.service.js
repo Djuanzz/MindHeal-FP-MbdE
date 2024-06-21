@@ -52,6 +52,13 @@ const getDetailUserHistoryByUserHistoryID = async (userHistoryId) => {
   return userHistory[0];
 };
 
+const deleteHistory = async (req) => {
+  const deleteHistoryQuery = "DELETE FROM UserHistory WHERE UserHistoryID = ?";
+  const [result] = await db.query(deleteHistoryQuery, [req.UserHistoryID]);
+
+  return result;
+};
+
 export default {
   createUserHistory,
   listUserHistory,
@@ -59,4 +66,5 @@ export default {
   getUserHistoryByUserLogin,
   getUserHistoryByUserId,
   getDetailUserHistoryByUserHistoryID,
+  deleteHistory,
 };

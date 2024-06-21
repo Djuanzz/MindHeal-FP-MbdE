@@ -74,7 +74,7 @@ export default {
         console.log(data);
         if (req.ok) {
           localStorage.setItem("token", data.data);
-          if (data.role === "admin") {
+          if (data.role === "Admin") {
             this.$router.push({ name: "AdminDashboard" });
           } else {
             this.$router.push({ name: "LandingPage" });

@@ -1,5 +1,6 @@
-CALL `InputTransaction`(?, ?, ?);
--- InputTransaction( User_UserID INT, ScheduleID INT, Amount DECIMAL(10,2))
+CALL `InputTransaction`(?, ?, ?, @Created_UserHistoryID);
+SELECT @Created_UserHistoryID AS Created_UserHistoryID;
+-- InputTransaction( User_UserID INT, ScheduleID INT, Amount DECIMAL(10,2), OUT Created_UserHistoryID INT)
 -- Procedure yang digunakan untuk:
 -- 1. UserHistory (INSERT INTO)
 -- 2. Transaction (INSERT INTO)
@@ -22,6 +23,3 @@ CALL `UpdateTransactionByUserHistoryID`(?, ?);
 DELETE FROM UserHistory WHERE UserHistoryID = ?;
 -- Menghapus UserHistory berdasarkan UserHistoryID
 -- Digunakan apabila user ingin MEMBATALKAN transaksi
-
-CALL `InputTransaction`(5, 2, 900000);
-CALL `UpdateTransactionByUserHistoryID`(3, 'Cash');

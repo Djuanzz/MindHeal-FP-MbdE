@@ -1,7 +1,8 @@
 CREATE PROCEDURE InputTransaction(
     IN User_UserID_input INT,
     IN ScheduleID_input INT,
-    IN Amount_input DECIMAL(10,2)
+    IN Amount_input DECIMAL(10,2),
+    OUT Created_UserHistoryID INT -- Tambah Line Ini
 )
 BEGIN 
 
@@ -20,6 +21,7 @@ BEGIN
     `ScheduleStatus` = 'Waiting'
     WHERE `ScheduleID` = ScheduleID_input;
 
+    SET Created_UserHistoryID = setUserHistoryID;
 END;
 
 CREATE PROCEDURE UpdateTransactionByUserHistoryID(

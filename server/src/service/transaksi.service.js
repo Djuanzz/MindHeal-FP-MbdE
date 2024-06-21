@@ -7,21 +7,22 @@ const getAllTransaksi = async () => {
   return rows;
 };
 
-const createTransaksi = async (req) => {
-  const transaksi = validate(
-    transaksiValidation.createTransaksiValidation,
-    req
-  );
+const createTransaksi = async (userId, req) => {
+  const transaksi = req;
   const newTransaksiQuery =
-    "INSERT INTO TransactionBill (PaymentType, Amount, TimeDue, UserHistory_UserHistoryID) VALUES (?, ?, ?, ?)";
+    "CALL `InputTransaction`(?, ?, ?, @Created_UserHistoryID)";
+
   const [result] = await db.query(newTransaksiQuery, [
-    transaksi.PaymentType,
+    userId,
+    transaksi.ScheduleID,
     transaksi.Amount,
-    transaksi.TimeDue,
-    transaksi.UserHistory_UserHistoryID,
   ]);
 
-  return result;
+  const userHistoryID = await db.query(
+    "SELECT @Created_UserHistoryID as UserHistoryID"
+  );
+
+  return userHistoryID[0][0];
 };
 
 const updateTransaksiByUserHistory = async (req) => {
@@ -42,9 +43,21 @@ const deleteTransaksiByUserHistory = async (req) => {
   return result;
 };
 
+const userPayTheTransaction = async (req) => {
+  const userPayTheTransactionQuery =
+    "CALL `UpdateTransactionByUserHistoryID`(?, ?);";
+  const [result] = await db.query(userPayTheTransactionQuery, [
+    req.UserHistoryID,
+    req.PaymentType,
+  ]);
+
+  return result;
+};
+
 export default {
   getAllTransaksi,
   createTransaksi,
   updateTransaksiByUserHistory,
   deleteTransaksiByUserHistory,
+  userPayTheTransaction,
 };

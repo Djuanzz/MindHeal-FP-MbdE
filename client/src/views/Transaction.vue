@@ -37,7 +37,7 @@ export default {
     return {
       selectedPaymentMethod: "",
       paymentMethods: ["Credit Card", "Debit Card", "Cash"],
-      countdown: 60, // 5 minutes in seconds
+      countdown: 300, // 5 minutes in seconds
       interval: null,
     };
   },
@@ -49,9 +49,34 @@ export default {
     },
   },
   methods: {
-    submitPayment() {
-      console.log("Selected payment method:", this.selectedPaymentMethod);
+    async submitPayment() {
+      try {
+        const res = await fetch(
+          `http://localhost:5000/api/user/transaksi/pay`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+            body: JSON.stringify({
+              UserHistoryID: this.$route.params.userHistoryID,
+              PaymentType: this.selectedPaymentMethod,
+            }),
+          }
+        );
+
+        const data = await res.json();
+        console.log(data);
+
+        this.$router.push({
+          name: "MyHistoryPage",
+        });
+      } catch (error) {
+        console.error(error);
+      }
     },
+
     getIconClass(method) {
       switch (method) {
         case "Credit Card":

@@ -1,4 +1,6 @@
 CALL `InputTransaction`(?, ?, ?, @Created_UserHistoryID);
+CALL `InputTransaction`(1, 1, 1000000, @Created_UserHistoryID);
+CALL `InputTransaction`(1, 2, 1000000, @Created_UserHistoryID);
 SELECT @Created_UserHistoryID AS Created_UserHistoryID;
 -- InputTransaction( User_UserID INT, ScheduleID INT, Amount DECIMAL(10,2), OUT Created_UserHistoryID INT)
 -- Procedure yang digunakan untuk:

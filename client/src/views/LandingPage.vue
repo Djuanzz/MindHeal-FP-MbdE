@@ -79,15 +79,18 @@
           <div class="card-body">
             <h5 class="card-title">{{ schedule.ScheduleDate }}</h5>
             <p class="card-text">
-              {{ schedule.PsychologistName }}<br />{{ schedule.SessionStart }}
-              -
-              {{ schedule.SessionEnd }} <br />
-              {{ schedule.LocationName }}
+              {{ schedule.PsychologistName }}<br />
+              {{ schedule.SessionStart }} - {{ schedule.SessionEnd }} <br />
+              {{ schedule.LocationName }} <br />
+              {{ schedule.ScheduleStatus }} <br />
+              Rp. {{ schedule.Price }}
             </p>
             <button
-              class="btn btn-success"
-              @click="bookAppointment(schedule.ScheduleID)">
-              Book Appointment
+              class="btn"
+              :class="getButtonClass(schedule.ScheduleStatus)"
+              :disabled="schedule.ScheduleStatus !== 'Available'"
+              @click="bookAppointment(schedule)">
+              {{ getButtonText(schedule.ScheduleStatus) }}
             </button>
           </div>
         </div>
@@ -131,6 +134,21 @@ export default {
   },
 
   methods: {
+    getButtonClass(status) {
+      return {
+        "btn-success": status === "Available",
+        "btn-danger": status === "Booked",
+        "btn-warning": status === "Waiting",
+      };
+    },
+
+    getButtonText(status) {
+      if (status === "Available") return "Book Appointment";
+      if (status === "Booked") return "Unavailable";
+      if (status === "Waiting") return "Waiting";
+      return "";
+    },
+
     async fetchSchedules() {
       try {
         const bodyContent = {
@@ -198,10 +216,33 @@ export default {
       }
     },
 
-    async bookAppointment(scheduleID) {
-      // console.log(scheduleID);
-      // Implement the booking logic here
-      this.$router.push({ name: "TransactionPage", params: { scheduleID } });
+    async bookAppointment(schedule) {
+      try {
+        // console.log(schedule.ScheduleID);
+        const res = await fetch(`http://localhost:5000/api/user/transaksi`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({
+            ScheduleID: schedule.ScheduleID,
+            Amount: schedule.Price,
+          }),
+        });
+
+        const data = await res.json();
+        const userHistoryID = data.data.UserHistoryID;
+        console.log(userHistoryID);
+
+        this.$router.push({
+          name: "TransactionPage",
+          params: { userHistoryID: userHistoryID },
+        });
+      } catch (err) {
+        console.error(err);
+        alert("Error booking appointment");
+      }
     },
 
     async handleLocationChange() {

@@ -37,7 +37,9 @@ CREATE PROCEDURE GetPsychologistSchedule(IN requestedDate DATE)
 BEGIN
     SELECT 
         sch.ScheduleID,
+        sch.`ScheduleStatus`,
         p.Name AS PsychologistName, 
+        p.`VisitPrice` as Price,
         s.SessionStart, 
         s.SessionEnd,
         sch.ScheduleDate,

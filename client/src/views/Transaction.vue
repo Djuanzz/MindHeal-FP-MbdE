@@ -6,6 +6,7 @@
     <main>
       <div class="payment-options">
         <h2>Select Your Payment Method</h2>
+        <p class="countdown">Time remaining: {{ countdownText }}</p>
         <form @submit.prevent="submitPayment" class="payment-form">
           <div
             class="payment-method"
@@ -36,7 +37,16 @@ export default {
     return {
       selectedPaymentMethod: "",
       paymentMethods: ["Credit Card", "Debit Card", "Cash"],
+      countdown: 60, // 5 minutes in seconds
+      interval: null,
     };
+  },
+  computed: {
+    countdownText() {
+      const minutes = Math.floor(this.countdown / 60);
+      const seconds = this.countdown % 60;
+      return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+    },
   },
   methods: {
     submitPayment() {
@@ -54,7 +64,30 @@ export default {
           return "";
       }
     },
+    startTimer() {
+      this.interval = setInterval(() => {
+        if (this.countdown > 0) {
+          this.countdown--;
+        } else {
+          clearInterval(this.interval);
+          this.timeoutAction();
+        }
+      }, 1000);
+    },
+    timeoutAction() {
+      this.$router.push({ name: "LandingPage" });
+      alert("Time is up! Your transaction canceled.");
+      // this.selectedPaymentMethod = "";
+      // this.countdown = 10;
+      // this.startTimer();
+    },
   },
+  mounted() {
+    this.startTimer();
+  },
+  // beforeDestroy() {
+  //   clearInterval(this.interval);
+  // },
 };
 </script>
 
@@ -79,6 +112,12 @@ header h1 {
 .payment-options h2 {
   color: #007bff;
   font-size: 20px; /* Reduced size for subheading */
+}
+
+.countdown {
+  font-size: 18px;
+  color: #dc3545;
+  margin-bottom: 20px;
 }
 
 .payment-form {

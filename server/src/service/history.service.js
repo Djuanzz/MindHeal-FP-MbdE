@@ -45,10 +45,18 @@ const getUserHistoryByUserId = async (userId) => {
   return userHistory[0];
 };
 
+const getDetailUserHistoryByUserHistoryID = async (userHistoryId) => {
+  const userHistoryQuery = "CALL GetDetailedUserHistoryByUserHistoryID(?)";
+  const [userHistory] = await db.query(userHistoryQuery, [userHistoryId]);
+
+  return userHistory[0];
+};
+
 export default {
   createUserHistory,
   listUserHistory,
   getAllUserHistory,
   getUserHistoryByUserLogin,
   getUserHistoryByUserId,
+  getDetailUserHistoryByUserHistoryID,
 };

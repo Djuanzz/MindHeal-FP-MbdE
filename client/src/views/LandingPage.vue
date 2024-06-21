@@ -199,8 +199,9 @@ export default {
     },
 
     async bookAppointment(scheduleID) {
-      console.log(scheduleID);
+      // console.log(scheduleID);
       // Implement the booking logic here
+      this.$router.push({ name: "TransactionPage", params: { scheduleID } });
     },
 
     async handleLocationChange() {

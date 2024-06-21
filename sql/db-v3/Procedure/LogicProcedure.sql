@@ -128,3 +128,43 @@ BEGIN
 END;
 
 DROP PROCEDURE IF EXISTS `GetAllPsychologistsSchedules`;
+
+SELECT u.Name, s.`ScheduleDate`, l.`Name`, p.`Name` FROM UserHistory uh
+JOIN Users u ON uh.User_UserID = u.UserID
+JOIN Schedule s ON uh.UserHistoryID = s.UserHistory_UserHistoryID
+JOIN Psychologist p ON s.Psychologist_PsychologistID = p.PsychologistID
+JOIN Locations l ON p.Location_LocationID = l.LocationID
+-- JOIN UserDiagnosis ud ON uh.UserHistoryID = ud.UserHistory_UserHistoryID
+WHERE uh.`UserHistoryID` = 3;
+
+CREATE PROCEDURE GetDetailedUserHistoryByUserHistoryID(IN userHistoryID INT)
+BEGIN
+    SELECT 
+        u.Name AS UserName,
+        uh.UserHistoryID,
+        s.ScheduleID,
+        s.ScheduleDate,
+        s.ScheduleStatus,
+        p.Name AS PsychologistName,
+        se.SessionStart,
+        se.SessionEnd,
+        l.Name AS LocationName
+    FROM 
+        UserHistory uh
+    JOIN 
+        Users u ON uh.User_UserID = u.UserID
+    JOIN 
+        Schedule s ON uh.UserHistoryID = s.UserHistory_UserHistoryID
+    JOIN 
+        Psychologist p ON s.Psychologist_PsychologistID = p.PsychologistID
+    JOIN 
+        Session se ON s.Session_SessionID = se.SessionID
+    JOIN 
+        Locations l ON p.Location_LocationID = l.LocationID
+    WHERE 
+        uh.UserHistoryID = userHistoryID;
+END;
+
+CALL GetDetailedUserHistoryByUserHistoryID(3);
+
+DROP PROCEDURE IF EXISTS `GetDetailedUserHistoryByUserHistoryID`;

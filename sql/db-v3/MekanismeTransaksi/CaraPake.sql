@@ -22,3 +22,6 @@ CALL `UpdateTransactionByUserHistoryID`(?, ?);
 DELETE FROM UserHistory WHERE UserHistoryID = ?;
 -- Menghapus UserHistory berdasarkan UserHistoryID
 -- Digunakan apabila user ingin MEMBATALKAN transaksi
+
+CALL `InputTransaction`(5, 2, 900000);
+CALL `UpdateTransactionByUserHistoryID`(3, 'Cash');

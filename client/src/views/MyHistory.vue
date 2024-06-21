@@ -16,8 +16,14 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav ms-auto">
-            <router-link to="/landing" class="nav-link btn-outline-primary">Schedule</router-link>
-            <router-link to="/user-profile" class="nav-link btn-outline-secondary">Profile</router-link>
+            <router-link to="/landing" class="nav-link btn-outline-primary"
+              >Schedule</router-link
+            >
+            <router-link
+              to="/user-profile"
+              class="nav-link btn-outline-secondary"
+              >Profile</router-link
+            >
           </div>
         </div>
       </div>
@@ -31,8 +37,8 @@
         <div
           class="card mb-4 shadow-sm"
           v-for="history in histories"
-          :key="history.id"
-          @click="goToDetail(history.id)">
+          :key="history.UserHistoryID"
+          @click="goToDetail(history.UserHistoryID)">
           <div class="card-body">
             <h5 class="card-title">
               {{ history.ScheduleDate }} with {{ history.Name }}
@@ -77,8 +83,8 @@ export default {
       }
     },
     goToDetail(id) {
-      this.$router.push({ name: 'DetailHistory', params: { id } });
-    }
+      this.$router.push({ name: "DetailHistory", params: { id } });
+    },
   },
   mounted() {
     this.myHistory();

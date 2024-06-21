@@ -32,3 +32,5 @@ BEGIN
         IsPayed = TRUE
     WHERE UserHistory_UserHistoryID = p_UserHistoryID;
 END;
+
+DROP PROCEDURE IF EXISTS InputTransaction;

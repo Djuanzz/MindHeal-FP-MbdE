@@ -1,30 +1,37 @@
 <template>
-    <div class="detail-history container mt-5">
-      <!-- Back Button -->
-      <div class="back-button mb-4">
-        <button @click="goBack" class="btn btn-outline-primary">Back to History</button>
-      </div>
-  
-      <!-- Appointment Details -->
-      <div class="card">
-        <div class="card-body">
-          <h1 class="card-title">Appointment Details</h1>
-          <p><strong>Date:</strong> {{ DetailHistory.ScheduleDate }}</p>
-          <p><strong>With:</strong> {{ DetailHistory.Name }}</p>
-          <p><strong>Location:</strong> {{ DetailHistory.Location }}</p>
-          <p><strong>Time:</strong> {{ DetailHistory.SessionStart }} - {{ DetailHistory.SessionEnd }}</p>
-          <p><strong>Diagnosis:</strong> {{ DetailHistory.Diagnosis || 'N/A' }}</p>
-        </div>
+  <div class="detail-history container mt-5">
+    <!-- Back Button -->
+    <div class="back-button mb-4">
+      <button @click="goBack" class="btn btn-outline-primary">
+        Back to History
+      </button>
+    </div>
+
+    <!-- Appointment Details -->
+    <div class="card">
+      <div class="card-body">
+        <h1 class="card-title">Appointment Details</h1>
+        <p><strong>Date:</strong> {{ detailHistory.ScheduleDate }}</p>
+        <p><strong>With:</strong> {{ detailHistory.PsychologistName }}</p>
+        <p><strong>Location:</strong> {{ detailHistory.LocationName }}</p>
+        <p>
+          <strong>Time:</strong> {{ detailHistory.SessionStart }} -
+          {{ detailHistory.SessionEnd }}
+        </p>
+        <p>
+          <strong>Diagnosis:</strong> {{ detailHistory.Diagnosis || "N/A" }}
+        </p>
       </div>
     </div>
-  </template>
+  </div>
+</template>
 
 <script>
 //import { ref } from "vue";
 
 export default {
-  name: 'DetailHistory',
-  props: ['id'],
+  name: "DetailHistory",
+  props: ["id"],
   data() {
     return {
       detailHistory: {},
@@ -32,27 +39,31 @@ export default {
   },
   methods: {
     goBack() {
-      this.$router.push({ name: 'MyHistoryPage' });
+      this.$router.push({ name: "MyHistoryPage" });
     },
     async fetchDetails() {
       try {
-        const response = await fetch(`http://localhost:5000/api/user/history/${this.id}`, {
-          method: 'GET',
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`
+        const response = await fetch(
+          `http://localhost:5000/api/historys/detail/${this.id}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
           }
-        });
+        );
         const data = await response.json();
-        this.detailHistory = data.data;
+        this.detailHistory = data.data[0];
+        console.log(data.data[0]);
       } catch (error) {
-        console.error('Failed to fetch details:', error);
+        console.error("Failed to fetch details:", error);
       }
-    }
+    },
   },
   mounted() {
     this.fetchDetails();
-  }
+  },
 };
 </script>
 
@@ -98,5 +109,3 @@ export default {
   border-color: #007bff;
 }
 </style>
-
-  

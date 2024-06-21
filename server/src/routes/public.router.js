@@ -10,6 +10,10 @@ router.get("/users", userController.getAllUsers);
 router.get("/historys", historyController.getAllUserHistory);
 router.get("/users/:id", userController.getUserByUserID);
 router.get("/historys/:id", historyController.getUserHistoryByUserId);
+router.get(
+  "/historys/detail/:id",
+  historyController.getDetailUserHistoryByUserHistoryID
+);
 
 router.post("/register", userController.register);
 router.post("/login", userController.login);

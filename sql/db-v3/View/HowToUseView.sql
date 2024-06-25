@@ -6,6 +6,11 @@ SELECT * FROM PsychologistUserDiagnosisView WHERE `PsychologistID` = 2;
 
 
 
-SELECT * FROM UserFavoriteLocation WHERE UserID = 3 LIMIT 1;
+SELECT * FROM UserFavoriteLocation WHERE UserID = ? LIMIT 1;
 -- SELECT * FROM UserFavoriteLocation WHERE UserID = 3 LIMIT 1;
 -- VIEW BUAT USER FAVORITE LOCATION yoww
+
+
+SELECT * FROM UserPsychologistVisitCount WHERE UserID = ?;
+-- SELECT * FROM UserPsychologistVisitCount WHERE UserID = 1;
+-- VIEW BUAT USER PSYCHOLOGIST VISIT COUNT

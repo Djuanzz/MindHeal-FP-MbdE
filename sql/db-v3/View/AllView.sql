@@ -71,3 +71,26 @@ GROUP BY
     u.UserID, l.LocationID
 ORDER BY 
     VisitCount DESC;
+
+-- VIEW buat tiap User udh visit setiap seorang psikolog berapa kali
+CREATE VIEW UserPsychologistVisitCount AS
+SELECT 
+    u.UserID,
+    u.Name AS UserName,
+    p.PsychologistID,
+    p.Name AS PsychologistName,
+    COUNT(s.ScheduleID) AS NumberOfVisits
+FROM 
+    Users u
+JOIN 
+    UserHistory uh ON u.UserID = uh.User_UserID
+JOIN 
+    Schedule s ON uh.UserHistoryID = s.UserHistory_UserHistoryID
+JOIN 
+    Psychologist p ON s.Psychologist_PsychologistID = p.PsychologistID
+WHERE 
+    s.ScheduleStatus = 'Booked'
+GROUP BY 
+    u.UserID, 
+    p.PsychologistID;
+

@@ -4,4 +4,8 @@ SELECT * FROM PsychologistUserDiagnosisView WHERE `PsychologistID` = 2;
 -- Untuk query menggunakan VIEW
 -- Biar tahu pyschologist dan UserDiagnosis
 
-SELECT * FROM PsychologistUserHistoryView WHERE `PsychologistID` = 2;
+
+
+SELECT * FROM UserFavoriteLocation WHERE UserID = 3 LIMIT 1;
+-- SELECT * FROM UserFavoriteLocation WHERE UserID = 3 LIMIT 1;
+-- VIEW BUAT USER FAVORITE LOCATION yoww

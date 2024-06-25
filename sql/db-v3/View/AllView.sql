@@ -47,4 +47,27 @@ JOIN
 JOIN
     Users u ON uh.User_UserID = u.UserID;
 
-DROP VIEW IF EXISTS PsychologistUserHistoryView;
+-- VIEW buat Location favorite user
+CREATE VIEW UserFavoriteLocation AS
+SELECT 
+    u.UserID,
+    u.Name AS UserName,
+    l.LocationID,
+    l.Name AS LocationName,
+    l.Address,
+    l.City,
+    COUNT(*) AS VisitCount
+FROM 
+    Users u
+JOIN 
+    UserHistory uh ON u.UserID = uh.User_UserID
+JOIN 
+    Schedule s ON uh.UserHistoryID = s.UserHistory_UserHistoryID
+JOIN 
+    Psychologist p ON s.Psychologist_PsychologistID = p.PsychologistID
+JOIN 
+    Locations l ON p.Location_LocationID = l.LocationID
+GROUP BY 
+    u.UserID, l.LocationID
+ORDER BY 
+    VisitCount DESC;

@@ -65,6 +65,16 @@ const getRevenueByMonth = async (req) => {
   return result;
 };
 
+const getDetailTransaksi = async (req) => {
+  try {
+    const getDetailTransaksiQuery = "CALL GetTransactionDetails()";
+    const [result] = await db.query(getDetailTransaksiQuery);
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export default {
   getAllTransaksi,
   createTransaksi,
@@ -72,4 +82,5 @@ export default {
   deleteTransaksiByUserHistory,
   userPayTheTransaction,
   getRevenueByMonth,
+  getDetailTransaksi,
 };

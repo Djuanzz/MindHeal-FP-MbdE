@@ -2,45 +2,53 @@
   <div class="admin-dashboard">
     <h1 class="dashboard-title">Admin Dashboard</h1>
     <div class="links-container">
-      <router-link to="/admin/manage-psychologists" class="dashboard-link">
-        <div class="link-card">
-          <i class="fas fa-user-md icon"></i>
-          <span class="link-text">Manage Psychologists</span>
-        </div>
-      </router-link>
-      <router-link
-        to="/admin/manage-psychologists-schedule"
-        class="dashboard-link">
-        <div class="link-card">
-          <i class="fas fa-calendar-alt icon"></i>
-          <span class="link-text">Manage Schedule</span>
-        </div>
-      </router-link>
-      <router-link to="/admin/total-transaction" class="dashboard-link">
-        <div class="link-card">
-          <i class="fas fa-money-check-alt icon"></i>
-          <span class="link-text">Total Transaction</span>
-        </div>
-      </router-link>
-      <router-link to="/admin/transaction-list" class="dashboard-link">
-        <div class="link-card">
-          <i class="fas fa-history icon"></i>
-          <span class="link-text">List Transaction</span>
-        </div>
-      </router-link>
-      <router-link to="/admin/users-list" class="dashboard-link">
-        <div class="link-card">
-          <i class="fas fa-users icon"></i>
-          <span class="link-text">Users List</span>
-        </div>
-      </router-link>
+      <div class="didalamnya">
+        <router-link to="/admin/manage-psychologists" class="dashboard-link">
+          <div class="link-card">
+            <i class="fas fa-user-md icon"></i>
+            <span class="link-text">Manage Psychologists</span>
+          </div>
+        </router-link>
 
-      <router-link to="/admin/manage-diagnosis" class="dashboard-link">
-        <div class="link-card">
-          <i class="fas fa-clipboard icon"></i>
-          <span class="link-text">Diagnosis</span>
-        </div>
-      </router-link>
+        <router-link
+          to="/admin/manage-psychologists-schedule"
+          class="dashboard-link">
+          <div class="link-card">
+            <i class="fas fa-calendar-alt icon"></i>
+            <span class="link-text">Manage Schedule</span>
+          </div>
+        </router-link>
+
+        <router-link to="/admin/total-transaction" class="dashboard-link">
+          <div class="link-card">
+            <i class="fas fa-money-check-alt icon"></i>
+            <span class="link-text">Total Transaction</span>
+          </div>
+        </router-link>
+      </div>
+
+      <div class="didalamnya">
+        <router-link to="/admin/transaction-list" class="dashboard-link">
+          <div class="link-card">
+            <i class="fas fa-history icon"></i>
+            <span class="link-text">List Transaction</span>
+          </div>
+        </router-link>
+
+        <router-link to="/admin/users-list" class="dashboard-link">
+          <div class="link-card">
+            <i class="fas fa-users icon"></i>
+            <span class="link-text">Users List</span>
+          </div>
+        </router-link>
+
+        <router-link to="/admin/manage-diagnosis" class="dashboard-link">
+          <div class="link-card">
+            <i class="fas fa-clipboard icon"></i>
+            <span class="link-text">Diagnosis</span>
+          </div>
+        </router-link>
+      </div>
     </div>
   </div>
 </template>
@@ -64,15 +72,23 @@
 
 .links-container {
   display: flex;
+  flex-direction: column;
   justify-content: space-around;
   flex-wrap: wrap;
   margin-top: 20px;
+}
+
+.didalamnya {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .dashboard-link {
   text-decoration: none;
   color: white;
   transition: color 0.3s;
+  margin: 20px;
 }
 
 .dashboard-link:hover {

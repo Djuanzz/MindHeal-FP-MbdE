@@ -53,9 +53,22 @@ const deletePsikolog = async (req) => {
   return result;
 };
 
+const getTotalPatientHandled = async (psychologistId) => {
+  const getTotalPatientHandledQuery = `
+SELECT GetTotalPatientsHandled(?) AS TotalPatients
+  `;
+
+  const [result] = await db.query(getTotalPatientHandledQuery, [
+    psychologistId,
+  ]);
+
+  return result;
+};
+
 export default {
   getAllPsikolog,
   getPsikologById,
   createPsikolog,
   deletePsikolog,
+  getTotalPatientHandled,
 };

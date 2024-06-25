@@ -85,6 +85,18 @@ const getRevenueByMonth = async (req, res, next) => {
   }
 };
 
+const getDetailTransaksi = async (req, res, next) => {
+  try {
+    const result = await transaksiService.getDetailTransaksi();
+    res.status(200).json({
+      data: result,
+      message: "done",
+    });
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
 export default {
   getAllTransaksi,
   createTransaksi,
@@ -92,4 +104,5 @@ export default {
   deleteTransaksiByUserHistory,
   userPayTheTransaction,
   getRevenueByMonth,
+  getDetailTransaksi,
 };

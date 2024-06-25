@@ -52,9 +52,25 @@ const deletePsikolog = async (req, res, next) => {
   }
 };
 
+const getTotalPatientHandled = async (req, res, next) => {
+  try {
+    const data = await psikologService.getTotalPatientHandled(
+      req.params.PsychologistID
+    );
+    res.status(200).json({
+      data: data,
+      message: "done",
+    });
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
 export default {
   getAllPsikolog,
   getPsikologById,
   createPsikolog,
   deletePsikolog,
+  getTotalPatientHandled,
 };

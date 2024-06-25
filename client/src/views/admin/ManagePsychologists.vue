@@ -41,6 +41,9 @@
       </select>
       <button type="submit" :disabled="!isValid">Add Psychologist</button>
     </form>
+    <router-link to="/admin/dashboard" class="back-to-dashboard">
+      Back to Dashboard
+    </router-link>
     <div class="psychologist-list">
       <div
         v-for="psychologist in psychologists"
@@ -49,18 +52,15 @@
         <p>
           {{ psychologist.Name }} - {{ psychologist.Email }}
           <span class="actions">
-            <button
-              @click="detailPsikolog(psychologist.PsychologistID)"
+            <router-link
+              :to="`/admin/psychologist-profile/${psychologist.PsychologistID}`"
               class="btn btn-info">
               Details
-            </button>
+            </router-link>
           </span>
         </p>
       </div>
     </div>
-    <router-link to="/admin/dashboard" class="back-to-dashboard">
-      Back to Dashboard
-    </router-link>
   </div>
 </template>
 
@@ -174,6 +174,11 @@ export default {
 
     const detailPsikolog = (id) => {
       console.log(id);
+      // this.$router.push({ name: "ManageDetailPsychologist", params: { id } });
+      this.$router.push({
+        path: "/admin/psychologist-profile/:psychologistId?",
+        params: { id },
+      });
     };
 
     return {

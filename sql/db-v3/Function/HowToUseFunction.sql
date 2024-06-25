@@ -1,7 +1,7 @@
 SELECT GetTotalRevenue() AS TotalRevenue;
 -- Total Pendapatan
 
-SELECT GetTotalPatientsHandled(?) AS TotalPatients;
+SELECT GetTotalPatientsHandled(2) AS TotalPatients;
 -- Total Pasien yang di-Handle
 -- Parameter = `p_PsychologistID`
 

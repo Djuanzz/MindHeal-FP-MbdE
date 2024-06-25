@@ -32,6 +32,10 @@ userRouter.delete("/history", historyController.deleteHistory);
 psikologRouter.get("/:id", psikologController.getPsikologById);
 psikologRouter.post("/", psikologController.createPsikolog);
 psikologRouter.delete("/", psikologController.deletePsikolog);
+psikologRouter.get(
+  "/total-patient/:PsychologistID",
+  psikologController.getTotalPatientHandled
+);
 
 scheduleRouter.get("/", scheduleController.getAllSchedule);
 scheduleRouter.post("/", scheduleController.createSchedule);
@@ -45,6 +49,7 @@ transaksiRouter.post("/", transaksiController.createTransaksi);
 transaksiRouter.patch("/", transaksiController.updateTransaksiByUserHistory);
 transaksiRouter.delete("/", transaksiController.deleteTransaksiByUserHistory);
 transaksiRouter.post("/revenue/month", transaksiController.getRevenueByMonth);
+transaksiRouter.get("/detail", transaksiController.getDetailTransaksi);
 
 diagnosisRouter.post("/", diagnosisController.createDiagnosis);
 diagnosisRouter.get(

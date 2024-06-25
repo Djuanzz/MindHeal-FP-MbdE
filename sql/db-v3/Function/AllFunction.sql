@@ -12,6 +12,22 @@ BEGIN
     RETURN totalRevenue;
 END;
 
+-- REVENUE PER MONTH
+CREATE FUNCTION GetMonthlyRevenue(year_input INT, month_input INT)
+RETURNS DECIMAL(10, 2)
+DETERMINISTIC
+BEGIN
+    DECLARE monthlyRevenue DECIMAL(10, 2);
+
+    SELECT COALESCE(SUM(Amount), 0) INTO monthlyRevenue
+    FROM TransactionBill
+    WHERE IsPayed = TRUE
+    AND YEAR(TimeDue) = year_input
+    AND MONTH(TimeDue) = month_input;
+
+    RETURN monthlyRevenue;
+END;
+
 -- Mendapatkan Total Patients yang telah di-Handle
 -- Berdasarkan PsyhchologistID
 CREATE FUNCTION GetTotalPatientsHandled(p_PsychologistID INT)
@@ -46,3 +62,4 @@ BEGIN
 
     RETURN busiestDay;
 END;
+

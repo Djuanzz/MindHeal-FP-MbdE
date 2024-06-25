@@ -8,3 +8,7 @@ SELECT GetTotalPatientsHandled(?) AS TotalPatients;
 SELECT GetBusiestDay() AS BusiestDay;
 -- Hari Paling Banyak Transaksi
 -- berdasarkan ScheduleStatus = 'Booked'
+
+SELECT GetMonthlyRevenue(?, ?);
+--SELECT GetMonthlyRevenue(2024, 5);
+-- Pendapatan Bulanan

@@ -26,7 +26,22 @@ const getDiagnosisByUserHistoryId = async (req, res) => {
   }
 };
 
+const updateDiagnosisByDiagnosisId = async (req, res) => {
+  try {
+    const result = await diagnosisService.updateDiagnosisByDiagnosisId(
+      req.body
+    );
+    res.status(200).json({
+      data: result,
+      message: "done",
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export default {
   createDiagnosis,
   getDiagnosisByUserHistoryId,
+  updateDiagnosisByDiagnosisId,
 };

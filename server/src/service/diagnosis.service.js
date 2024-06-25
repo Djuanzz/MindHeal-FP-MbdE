@@ -25,7 +25,26 @@ const getDiagnosisByUserHistoryId = async (userHistoryId) => {
   return diagnosis;
 };
 
+const updateDiagnosisByDiagnosisId = async (req) => {
+  const diagnosis = req;
+  const updateDiagnosisQuery =
+    "CALL UpdateUserDiagnosis (?, ?, ?, ?, ?, ?, ?, ?)";
+  const [result] = await db.query(updateDiagnosisQuery, [
+    diagnosis.UserDiagnosisID,
+    diagnosis.DiagnosisType,
+    diagnosis.DiagnosisStatus,
+    diagnosis.SeverityLevel,
+    diagnosis.SymptompsDescription,
+    diagnosis.TreatmentPlan,
+    diagnosis.DiagnosisDate,
+    diagnosis.Notes,
+  ]);
+
+  return diagnosis;
+};
+
 export default {
   createDiagnosis,
   getDiagnosisByUserHistoryId,
+  updateDiagnosisByDiagnosisId,
 };

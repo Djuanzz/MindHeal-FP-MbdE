@@ -50,6 +50,10 @@ diagnosisRouter.get(
   "/:userHistoryId",
   diagnosisController.getDiagnosisByUserHistoryId
 );
+diagnosisRouter.patch(
+  "/:diagnosisId",
+  diagnosisController.updateDiagnosisByDiagnosisId
+);
 
 locationRouter.post("/", locationController.createLocation);
 locationRouter.get("/", locationController.getAllLocation);

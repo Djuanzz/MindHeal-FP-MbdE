@@ -232,23 +232,22 @@ export default {
     };
 
     const updateUserDiagnosis = async () => {
-      console.log(newDiagnosis.value.UserDiagnosisID);
-      //   try {
-      //     const response = await fetch(
-      //       `http://localhost:5000/api/diagnosis/${newDiagnosis.value.DiagnosisID}`,
-      //       {
-      //         method: "PATCH",
-      //         headers: {
-      //           "Content-Type": "application/json",
-      //         },
-      //         body: JSON.stringify(newDiagnosis.value),
-      //       }
-      //     );
-      //     const data = await response.json();
-      //     console.log(data);
-      //   } catch (error) {
-      //     console.error(error);
-      //   }
+      try {
+        const response = await fetch(
+          `http://localhost:5000/api/diagnosis/${newDiagnosis.value.DiagnosisID}`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newDiagnosis.value),
+          }
+        );
+        const data = await response.json();
+        console.log(data);
+      } catch (error) {
+        console.error(error);
+      }
     };
 
     const isDiagnosisFormValid = computed(() => {

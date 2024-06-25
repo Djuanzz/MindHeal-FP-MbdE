@@ -8,7 +8,7 @@
     </div>
 
     <!-- Appointment Details -->
-    <div class="card">
+    <div class="card mb-4">
       <div class="card-body">
         <h1 class="card-title">Appointment Details</h1>
         <p><strong>Date:</strong> {{ detailHistory.ScheduleDate }}</p>
@@ -18,16 +18,52 @@
           <strong>Time:</strong> {{ detailHistory.SessionStart }} -
           {{ detailHistory.SessionEnd }}
         </p>
-        <p>
-          <strong>Diagnosis:</strong> {{ detailHistory.Diagnosis || "N/A" }}
-        </p>
+      </div>
+    </div>
+
+    <!-- Diagnosis Details -->
+    <div class="card">
+      <div class="card-body">
+        <h1 class="card-title">Diagnosis Details</h1>
+        <table class="table table-striped">
+          <tbody>
+            <tr>
+              <th scope="row">Diagnosis Date</th>
+              <td>{{ userDiagnosis?.DiagnosisDate || "N/A" }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Diagnosis Status</th>
+              <td>{{ userDiagnosis?.DiagnosisStatus || "N/A" }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Diagnosis Type</th>
+              <td>{{ userDiagnosis?.DiagnosisType || "N/A" }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Notes</th>
+              <td>{{ userDiagnosis?.Notes || "N/A" }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Severity Level</th>
+              <td>{{ userDiagnosis?.SeverityLevel || "N/A" }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Symptoms Description</th>
+              <td>{{ userDiagnosis?.SymptompsDescription || "N/A" }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Treatment Plan</th>
+              <td>{{ userDiagnosis?.TreatmentPlan || "N/A" }}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-//import { ref } from "vue";
+import { ref } from "vue";
 
 export default {
   name: "DetailHistory",
@@ -35,6 +71,7 @@ export default {
   data() {
     return {
       detailHistory: {},
+      userDiagnosis: ref({}),
     };
   },
   methods: {
@@ -55,14 +92,35 @@ export default {
         );
         const data = await response.json();
         this.detailHistory = data.data[0];
-        console.log(data.data[0]);
+        // console.log(data.data[0]);
       } catch (error) {
         console.error("Failed to fetch details:", error);
+      }
+    },
+    async fetchUserDiagnosis() {
+      console.log(this.id);
+      try {
+        const response = await fetch(
+          `http://localhost:5000/api/diagnosis/${this.id}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        const data = await response.json();
+        this.userDiagnosis = data.data[0];
+        console.log(this.userDiagnosis.DiagnosisDate);
+      } catch (error) {
+        console.error(error);
       }
     },
   },
   mounted() {
     this.fetchDetails();
+    this.fetchUserDiagnosis();
   },
 };
 </script>

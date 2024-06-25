@@ -108,6 +108,24 @@ const getUserByUserID = async (UserID) => {
   return users[0];
 };
 
+const getCountConsultation = async (req) => {
+  const userId = req.user.UserID;
+  const countConsultationQuery =
+    "SELECT GetUserConsultationCount(?) AS ConsultationCount";
+  const [count] = await db.query(countConsultationQuery, [userId]);
+
+  return count[0];
+};
+
+const topLocation = async (req) => {
+  const userId = req.user.UserID;
+  const topLocationQuery =
+    "SELECT * FROM UserFavoriteLocation WHERE UserID = ? LIMIT 3";
+  const [topLocation] = await db.query(topLocationQuery, [userId]);
+
+  return topLocation;
+};
+
 export default {
   getAllUsers,
   register,
@@ -115,4 +133,6 @@ export default {
   currUser,
   updateUser,
   getUserByUserID,
+  getCountConsultation,
+  topLocation,
 };

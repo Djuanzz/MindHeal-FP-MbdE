@@ -28,6 +28,8 @@ userRouter.get("/history", historyController.getUserHistoryByUserLogin);
 userRouter.post("/transaksi", transaksiController.createTransaksi);
 userRouter.post("/transaksi/pay", transaksiController.userPayTheTransaction);
 userRouter.delete("/history", historyController.deleteHistory);
+userRouter.get("/count-consultation", userController.getCountConsultation);
+userRouter.get("/top-location", userController.topLocation);
 
 psikologRouter.get("/:id", psikologController.getPsikologById);
 psikologRouter.post("/", psikologController.createPsikolog);

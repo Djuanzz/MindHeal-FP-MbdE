@@ -66,6 +66,37 @@
             <th>Mobile</th>
             <td>{{ user.Mobile }}</td>
           </tr>
+          <tr>
+            <th>Count Consultation</th>
+            <td>{{ countConsultation }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Top 3 Locations Visited -->
+    <section class="top-locations mb-4">
+      <h2>Top 3 Locations Visited</h2>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Location Name</th>
+            <th>Address</th>
+            <th>City</th>
+            <th>Visit Count</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(location, index) in topLocations" :key="index">
+            <td>{{ location.LocationName || "" }}</td>
+            <td>{{ location.Address || "" }}</td>
+            <td>{{ location.City || "" }}</td>
+            <td>{{ location.VisitCount || "" }}</td>
+          </tr>
+          <!-- Display empty rows if less than 3 locations -->
+          <tr v-for="index in emptyRows" :key="'empty' + index">
+            <td colspan="4"></td>
+          </tr>
         </tbody>
       </table>
     </section>
@@ -120,7 +151,6 @@
     </main>
   </div>
 </template>
-
 <script>
 import { ref } from "vue";
 
@@ -129,12 +159,19 @@ export default {
   data() {
     return {
       user: ref({}),
+      countConsultation: ref(0),
+      topLocations: ref([]),
       passwords: {
         Password: "",
         NewPassword: "",
         Confirm: "",
       },
     };
+  },
+  computed: {
+    emptyRows() {
+      return 3 - this.topLocations.length;
+    },
   },
   methods: {
     async updateProfile() {
@@ -153,7 +190,6 @@ export default {
       } catch (err) {
         console.error("Error:", err);
       }
-      // console.log("Profile updated:", this.user);
     },
     async updatePassword() {
       try {
@@ -177,11 +213,6 @@ export default {
       } catch (err) {
         alert("Failed to update password.");
       }
-      // if (this.passwords.new !== this.passwords.confirm) {
-      //   alert("New passwords do not match.");
-      //   return;
-      // }
-      // console.log("Password updated:", this.passwords);
     },
     async currentUser() {
       try {
@@ -217,15 +248,55 @@ export default {
         console.error("Error:", err);
       }
     },
+
+    async fetchCountConsultation() {
+      try {
+        const response = await fetch(
+          "http://localhost:5000/api/user/count-consultation",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        const data = await response.json();
+        this.countConsultation = data.data.ConsultationCount;
+        console.log("Consultation count:", this.countConsultation);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    },
+
+    async fetchTopLocations() {
+      try {
+        const response = await fetch(
+          "http://localhost:5000/api/user/top-location",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        const data = await response.json();
+        this.topLocations = data.data.slice(0, 3); // Limit to top 3 locations
+        console.log("Top locations:", this.topLocations);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    },
   },
 
   mounted() {
-    // console.log(this.$route.params.userId);
     this.currentUser();
+    this.fetchCountConsultation();
+    this.fetchTopLocations();
   },
 };
 </script>
-
 <style scoped>
 .user-profile {
   max-width: 600px;

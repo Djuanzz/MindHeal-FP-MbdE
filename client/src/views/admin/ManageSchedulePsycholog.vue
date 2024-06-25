@@ -34,6 +34,9 @@
         Add Psychologist Schedule
       </button>
     </form>
+    <router-link to="/admin/dashboard" class="back-to-dashboard"
+      >Back to Dashboard</router-link
+    >
     <div class="psychologist-list">
       <div
         v-for="psychologist in psychologists"
@@ -61,9 +64,6 @@
         </p>
       </div>
     </div>
-    <router-link to="/admin/dashboard" class="back-to-dashboard"
-      >Back to Dashboard</router-link
-    >
   </div>
 </template>
 

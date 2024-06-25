@@ -102,6 +102,32 @@ const getUserByUserID = async (req, res, next) => {
   }
 };
 
+const getCountConsultation = async (req, res, next) => {
+  try {
+    const data = await userService.getCountConsultation(req);
+    res.status(200).json({
+      data: data,
+      message: "done",
+    });
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
+const topLocation = async (req, res, next) => {
+  try {
+    const data = await userService.topLocation(req);
+    res.status(200).json({
+      data: data,
+      message: "done",
+    });
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
 export default {
   getAllUsers,
   register,
@@ -110,4 +136,6 @@ export default {
   currUser,
   updateUser,
   getUserByUserID,
+  getCountConsultation,
+  topLocation,
 };

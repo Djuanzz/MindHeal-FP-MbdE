@@ -12,3 +12,8 @@ SELECT GetBusiestDay() AS BusiestDay;
 SELECT GetMonthlyRevenue(?, ?);
 --SELECT GetMonthlyRevenue(2024, 5);
 -- Pendapatan Bulanan
+
+
+SELECT GetUserConsultationCount(?) AS ConsultationCount;
+-- SELECT GetUserConsultationCount(2) AS ConsultationCount;
+-- Total Konsultasi per User berdasarkan UserID

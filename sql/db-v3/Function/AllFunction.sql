@@ -63,3 +63,25 @@ BEGIN
     RETURN busiestDay;
 END;
 
+-- Mendapatkan User Consultation Count
+CREATE FUNCTION GetUserConsultationCount(p_UserID INT)
+RETURNS INT
+DETERMINISTIC
+BEGIN
+    DECLARE consultationCount INT;
+
+    SELECT 
+        COUNT(s.ScheduleID) INTO consultationCount
+    FROM 
+        Users u
+    JOIN 
+        UserHistory uh ON u.UserID = uh.User_UserID
+    JOIN 
+        Schedule s ON uh.UserHistoryID = s.UserHistory_UserHistoryID
+    WHERE 
+        u.UserID = p_UserID
+        AND s.ScheduleStatus = 'Booked';
+
+    RETURN consultationCount;
+END;
+

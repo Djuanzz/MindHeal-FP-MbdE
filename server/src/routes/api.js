@@ -44,6 +44,7 @@ transaksiRouter.get("/", transaksiController.getAllTransaksi);
 transaksiRouter.post("/", transaksiController.createTransaksi);
 transaksiRouter.patch("/", transaksiController.updateTransaksiByUserHistory);
 transaksiRouter.delete("/", transaksiController.deleteTransaksiByUserHistory);
+transaksiRouter.post("/revenue/month", transaksiController.getRevenueByMonth);
 
 diagnosisRouter.post("/", diagnosisController.createDiagnosis);
 diagnosisRouter.get(

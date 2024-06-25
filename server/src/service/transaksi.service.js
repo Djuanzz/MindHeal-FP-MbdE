@@ -54,10 +54,22 @@ const userPayTheTransaction = async (req) => {
   return result;
 };
 
+const getRevenueByMonth = async (req) => {
+  const getRevenueByMonthQuery =
+    "SELECT GetMonthlyRevenue(?, ?) AS RevenuePerMonth";
+  const [result] = await db.query(getRevenueByMonthQuery, [
+    req.Year,
+    req.Month,
+  ]);
+
+  return result;
+};
+
 export default {
   getAllTransaksi,
   createTransaksi,
   updateTransaksiByUserHistory,
   deleteTransaksiByUserHistory,
   userPayTheTransaction,
+  getRevenueByMonth,
 };

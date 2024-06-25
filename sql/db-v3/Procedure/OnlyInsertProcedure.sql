@@ -34,3 +34,25 @@ BEGIN
         p_UserHistoryID
     );
 END;
+
+CREATE PROCEDURE UpdateUserDiagnosis(
+    IN p_UserDiagnosisID INT,
+    IN p_DiagnosisType VARCHAR(50),
+    IN p_DiagnosisStatus ENUM('active','resolved','re-evaluated'),
+    IN p_SeverityLevel ENUM('mild','moderate','severe'),
+    IN p_SymptompsDescription TEXT,
+    IN p_TreatmentPlan TEXT,
+    IN p_DiagnosisDate DATE,
+    IN p_Notes TEXT
+)
+BEGIN
+    UPDATE UserDiagnosis SET 
+        DiagnosisType = p_DiagnosisType, 
+        DiagnosisStatus = p_DiagnosisStatus, 
+        SeverityLevel = p_SeverityLevel, 
+        SymptompsDescription = p_SymptompsDescription, 
+        TreatmentPlan = p_TreatmentPlan, 
+        DiagnosisDate = p_DiagnosisDate, 
+        Notes = p_Notes 
+    WHERE UserDiagnosisID = p_UserDiagnosisID;
+END;

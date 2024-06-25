@@ -25,3 +25,26 @@ JOIN
     UserHistory uh ON s.UserHistory_UserHistoryID = uh.UserHistoryID
 JOIN 
     UserDiagnosis ud ON uh.UserHistoryID = ud.UserHistory_UserHistoryID;
+
+CREATE VIEW PsychologistUserHistoryView AS
+SELECT 
+    p.PsychologistID,
+    p.Name AS PsychologistName,
+    p.Email AS PsychologistEmail,
+    p.Mobile AS PsychologistMobile,
+    p.VisitPrice,
+    s.ScheduleID,
+    s.`ScheduleDate`,
+    uh.User_UserID AS UserID,
+    uh.UserHistoryID AS UHistoryID,
+    u.Name AS UserName
+FROM
+    Psychologist p
+JOIN
+    Schedule s ON p.PsychologistID = s.Psychologist_PsychologistID
+JOIN
+    UserHistory uh ON s.UserHistory_UserHistoryID = uh.UserHistoryID
+JOIN
+    Users u ON uh.User_UserID = u.UserID;
+
+DROP VIEW IF EXISTS PsychologistUserHistoryView;

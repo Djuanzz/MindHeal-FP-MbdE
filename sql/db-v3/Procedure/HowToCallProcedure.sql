@@ -14,6 +14,8 @@ CALL CreateUserHistory(1, 2);
 CALL GetPsychologistSchedule('2024-06-04');
 
 -- UNTUK MENAMBAHKAN DIAGNOSIS KE USER HISTORY BERDASARKAN ID USER HISTORY
-CALL InsertUserDiagnosis(?, ?, ?, ?, ?, ?, ?, ?);
--- CALL InsertUserDiagnosis(4, 'Autism', 'active', 'moderate', 'SAKIT', 'SEHATIN DIRI SENDIRI', '2024-06-24', 'Additional notes');
+-- CALL InsertUserDiagnosis(?, ?, ?, ?, ?, ?, ?, ?);
+CALL InsertUserDiagnosis(2, 'Autism', 'active', 'moderate', 'SAKIT', 'SEHATIN DIRI SENDIRI', '2024-06-24', 'Additional notes');
 -- Parameter
+
+CALL `UpdateUserDiagnosis`(1, 'Autism', 'active', 'moderate', 'SAKIT', 'SEHATIN DIRIIIIII SENDIRI', '2024-06-24', 'Additional notes');

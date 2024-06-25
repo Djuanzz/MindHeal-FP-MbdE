@@ -12,3 +12,8 @@ CALL CreateUserHistory(1, 2);
 
 -- UNTUK MENDAPATKAN JADWAL PSIKOLOG BERDASARKAN TANGGAL
 CALL GetPsychologistSchedule('2024-06-04');
+
+-- UNTUK MENAMBAHKAN DIAGNOSIS KE USER HISTORY BERDASARKAN ID USER HISTORY
+CALL InsertUserDiagnosis(?, ?, ?, ?, ?, ?, ?, ?);
+-- CALL InsertUserDiagnosis(4, 'Autism', 'active', 'moderate', 'SAKIT', 'SEHATIN DIRI SENDIRI', '2024-06-24', 'Additional notes');
+-- Parameter

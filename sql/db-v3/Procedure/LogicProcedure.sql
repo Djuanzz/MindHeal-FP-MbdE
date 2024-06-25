@@ -167,6 +167,31 @@ BEGIN
         uh.UserHistoryID = userHistoryID;
 END;
 
-CALL GetDetailedUserHistoryByUserHistoryID(3);
+CREATE PROCEDURE GetTransactionDetails()
+BEGIN
+    SELECT 
+        tb.TransactionBillID,
+        tb.PaymentType,
+        tb.Amount,
+        u.Name AS UserName,
+        p.Name AS PsychologistName,
+        s.ScheduleID,
+        s.ScheduleDate,
+        ses.SessionStart,
+        ses.SessionEnd
+    FROM 
+        TransactionBill tb
+    JOIN 
+        UserHistory uh ON tb.UserHistory_UserHistoryID = uh.UserHistoryID
+    JOIN 
+        Users u ON uh.User_UserID = u.UserID
+    JOIN 
+        Schedule s ON uh.UserHistoryID = s.UserHistory_UserHistoryID
+    JOIN 
+        Psychologist p ON s.Psychologist_PsychologistID = p.PsychologistID
+    JOIN 
+        Session ses ON s.Session_SessionID = ses.SessionID
+    WHERE
+        s.ScheduleStatus = 'Booked';
+END;
 
-DROP PROCEDURE IF EXISTS `GetDetailedUserHistoryByUserHistoryID`;

@@ -18,4 +18,5 @@ CALL GetPsychologistSchedule('2024-06-04');
 CALL InsertUserDiagnosis(2, 'Autism', 'active', 'moderate', 'SAKIT', 'SEHATIN DIRI SENDIRI', '2024-06-24', 'Additional notes');
 -- Parameter
 
-CALL `UpdateUserDiagnosis`(1, 'Autism', 'active', 'moderate', 'SAKIT', 'SEHATIN DIRIIIIII SENDIRI', '2024-06-24', 'Additional notes');
+CALL GetTransactionDetails();
+-- Procedure terbaru nihhh monggo

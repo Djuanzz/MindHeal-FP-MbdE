@@ -14,6 +14,10 @@ router.get(
   "/historys/detail/:id",
   historyController.getDetailUserHistoryByUserHistoryID
 );
+router.get(
+  "/historys/psychologist/:psychologistID",
+  historyController.getUserHistoryByPsychologistID
+);
 
 router.post("/register", userController.register);
 router.post("/login", userController.login);

@@ -34,6 +34,13 @@
           <span class="link-text">Users List</span>
         </div>
       </router-link>
+
+      <router-link to="/admin/manage-diagnosis" class="dashboard-link">
+        <div class="link-card">
+          <i class="fas fa-clipboard icon"></i>
+          <span class="link-text">Diagnosis</span>
+        </div>
+      </router-link>
     </div>
   </div>
 </template>

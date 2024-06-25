@@ -99,6 +99,21 @@ const deleteHistory = async (req, res, next) => {
   }
 };
 
+const getUserHistoryByPsychologistID = async (req, res, next) => {
+  try {
+    const result = await historyService.getUserHistoryByPsychologistID(
+      req.params.psychologistID
+    );
+    res.status(200).json({
+      data: result,
+      message: "done",
+    });
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
 export default {
   createUserHistory,
   listUserHistory,
@@ -107,4 +122,5 @@ export default {
   getUserHistoryByUserId,
   getDetailUserHistoryByUserHistoryID,
   deleteHistory,
+  getUserHistoryByPsychologistID,
 };

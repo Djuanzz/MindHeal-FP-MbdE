@@ -12,6 +12,21 @@ const createDiagnosis = async (req, res) => {
   }
 };
 
+const getDiagnosisByUserHistoryId = async (req, res) => {
+  try {
+    const result = await diagnosisService.getDiagnosisByUserHistoryId(
+      req.params.userHistoryId
+    );
+    res.status(200).json({
+      data: result,
+      message: "done",
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export default {
   createDiagnosis,
+  getDiagnosisByUserHistoryId,
 };

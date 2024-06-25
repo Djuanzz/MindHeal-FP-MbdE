@@ -15,6 +15,7 @@ import ManageUserProfile from "@/views/admin/ManageUserProfile.vue";
 import ManageUserHistory from "@/views/admin/ManageUserHistory.vue";
 import ManageSchedulePsycholog from "@/views/admin/ManageSchedulePsycholog.vue";
 import DetailHistory from "@/views/DetailHistory.vue";
+import ManageDiagnosis from "@/views/admin/ManageDiagnosis.vue";
 
 const routes = [
   {
@@ -114,6 +115,16 @@ const routes = [
     component: ManageSchedulePsycholog,
     meta: {
       title: "Manage Psycholog Schedule",
+      requiresAuth: true,
+      role: "admin",
+    },
+  },
+  {
+    path: "/admin/manage-diagnosis",
+    name: "ManageDiagnosis",
+    component: ManageDiagnosis,
+    meta: {
+      title: "Manage Diagnosis",
       requiresAuth: true,
       role: "admin",
     },

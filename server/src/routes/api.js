@@ -46,6 +46,10 @@ transaksiRouter.patch("/", transaksiController.updateTransaksiByUserHistory);
 transaksiRouter.delete("/", transaksiController.deleteTransaksiByUserHistory);
 
 diagnosisRouter.post("/", diagnosisController.createDiagnosis);
+diagnosisRouter.get(
+  "/:userHistoryId",
+  diagnosisController.getDiagnosisByUserHistoryId
+);
 
 locationRouter.post("/", locationController.createLocation);
 locationRouter.get("/", locationController.getAllLocation);

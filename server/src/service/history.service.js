@@ -59,6 +59,14 @@ const deleteHistory = async (req) => {
   return result;
 };
 
+const getUserHistoryByPsychologistID = async (psychologistId) => {
+  const q =
+    "SELECT * FROM PsychologistUserHistoryView WHERE `PsychologistID` = ?";
+  const [result] = await db.query(q, [psychologistId]);
+
+  return result;
+};
+
 export default {
   createUserHistory,
   listUserHistory,
@@ -67,4 +75,5 @@ export default {
   getUserHistoryByUserId,
   getDetailUserHistoryByUserHistoryID,
   deleteHistory,
+  getUserHistoryByPsychologistID,
 };

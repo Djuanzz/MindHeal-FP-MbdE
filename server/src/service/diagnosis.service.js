@@ -2,9 +2,9 @@ import { db } from "../db/db.js";
 
 const createDiagnosis = async (req) => {
   const diagnosis = req;
-  const newDiagnosisQuery =
-    "INSERT INTO UserDiagnosis (DiagnosisType, DiagnosisStatus, SeverityLevel, SymptompsDescription, TreatmentPlan, DiagnosisDate, Notes, UserHistory_UserHistoryID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+  const newDiagnosisQuery = "CALL InsertUserDiagnosis(?, ?, ?, ?, ?, ?, ?, ?);";
   const [result] = await db.query(newDiagnosisQuery, [
+    diagnosis.UserHistory_UserHistoryID,
     diagnosis.DiagnosisType,
     diagnosis.DiagnosisStatus,
     diagnosis.SeverityLevel,
@@ -12,12 +12,20 @@ const createDiagnosis = async (req) => {
     diagnosis.TreatmentPlan,
     diagnosis.DiagnosisDate,
     diagnosis.Notes,
-    diagnosis.UserHistory_UserHistoryID,
   ]);
+
+  return diagnosis;
+};
+
+const getDiagnosisByUserHistoryId = async (userHistoryId) => {
+  const diagnosisQuery =
+    "SELECT * FROM UserDiagnosis WHERE UserHistory_UserHistoryID = ?";
+  const [diagnosis] = await db.query(diagnosisQuery, [userHistoryId]);
 
   return diagnosis;
 };
 
 export default {
   createDiagnosis,
+  getDiagnosisByUserHistoryId,
 };

@@ -54,7 +54,7 @@ for (let i = 0; i < 500; i++) {
   const user = {
     Name: `warna${color}${i + 1}`,
     Email: `warna${color}${i + 1}@gmail.com`,
-    Password: `warna${color}aja123`,
+    Password: `warna${color}123`,
     DateOfBirth: "2000-01-01",
     Address: `Jalan warna ${color} no ${i + 1}`,
     City: cityMaps[(i % 10) + 1],

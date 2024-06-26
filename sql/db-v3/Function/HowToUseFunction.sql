@@ -17,3 +17,11 @@ SELECT GetMonthlyRevenue(?, ?);
 SELECT GetUserConsultationCount(?) AS ConsultationCount;
 -- SELECT GetUserConsultationCount(2) AS ConsultationCount;
 -- Total Konsultasi per User berdasarkan UserID
+
+SELECT 
+    COUNT(*) AS TotalSchedules
+FROM 
+    Schedule
+WHERE 
+    YEAR(ScheduleDate) = 2024
+    AND MONTH(ScheduleDate) = 7;

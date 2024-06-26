@@ -58,7 +58,7 @@ const seed = async () => {
       const locationQuery =
         "INSERT INTO Locations (Name, Address, City, Phone) VALUES (?, ?, ?, ?)";
       await db.query(locationQuery, [
-        element.City,
+        element.Name,
         element.Address,
         element.City,
         element.Phone,
@@ -90,16 +90,16 @@ const seed = async () => {
     }
     console.log("Psychologist seed done");
 
-    // for (const element of scheduleSeeds) {
-    //   const scheduleQuery =
-    //     "INSERT INTO schedule (ScheduleDate, Psychologist_PsychologistID, Session_SessionID) VALUES (?, ?, ?)";
-    //   await db.query(scheduleQuery, [
-    //     element.ScheduleDate,
-    //     element.Psychologist_PsychologistID,
-    //     element.Session_SessionID,
-    //   ]);
-    //   console.log("Schedule seeded:", element);
-    // }
+    for (const element of scheduleSeeds) {
+      const scheduleQuery =
+        "INSERT INTO schedule (ScheduleDate, Psychologist_PsychologistID, Session_SessionID) VALUES (?, ?, ?)";
+      await db.query(scheduleQuery, [
+        element.ScheduleDate,
+        element.Psychologist_PsychologistID,
+        element.Session_SessionID,
+      ]);
+      console.log("Schedule seeded:", element);
+    }
   } catch (err) {
     console.error("Error seeding data:", err);
   } finally {

@@ -12,21 +12,6 @@ BEGIN
     RETURN totalRevenue;
 END;
 
--- REVENUE PER MONTH
-CREATE FUNCTION GetMonthlyRevenue(year_input INT, month_input INT)
-RETURNS DECIMAL(10, 2)
-DETERMINISTIC
-BEGIN
-    DECLARE monthlyRevenue DECIMAL(10, 2);
-
-    SELECT COALESCE(SUM(Amount), 0) INTO monthlyRevenue
-    FROM TransactionBill
-    WHERE IsPayed = TRUE
-    AND YEAR(TimeDue) = year_input
-    AND MONTH(TimeDue) = month_input;
-
-    RETURN monthlyRevenue;
-END;
 
 -- Mendapatkan Total Patients yang telah di-Handle
 -- Berdasarkan PsyhchologistID
@@ -84,4 +69,29 @@ BEGIN
 
     RETURN consultationCount;
 END;
+
+
+
+-- REVENUE PER MONTH
+CREATE FUNCTION GetMonthlyRevenue(year_input INT, month_input INT)
+RETURNS DECIMAL(10, 2)
+DETERMINISTIC
+BEGIN
+    DECLARE monthlyRevenue DECIMAL(10, 2);
+
+    SELECT COALESCE(SUM(tb.Amount), 0) INTO monthlyRevenue
+    FROM TransactionBill tb
+    JOIN UserHistory uh ON tb.UserHistory_UserHistoryID = uh.UserHistoryID
+    JOIN Schedule s ON uh.UserHistoryID = s.UserHistory_UserHistoryID
+    WHERE tb.IsPayed = TRUE
+    AND YEAR(s.ScheduleDate) = year_input
+    AND MONTH(s.ScheduleDate) = month_input;
+
+    RETURN monthlyRevenue;
+END;
+
+DROP FUNCTION IF EXISTS GetMonthlyRevenue;
+
+SELECT GetMonthlyRevenue(2024, 6) AS JuneRevenue;
+
 

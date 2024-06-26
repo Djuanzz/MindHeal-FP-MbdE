@@ -135,6 +135,14 @@ const lastConsultation = async (req) => {
   return lastConsultation;
 };
 
+const getTopCountUserConsultation = async () => {
+  const topCountUserConsultationQuery =
+    "SELECT * FROM UserConsultationCount LIMIT 5";
+  const [result] = await db.query(topCountUserConsultationQuery);
+
+  return result;
+};
+
 export default {
   getAllUsers,
   register,
@@ -145,4 +153,5 @@ export default {
   getCountConsultation,
   topLocation,
   lastConsultation,
+  getTopCountUserConsultation,
 };

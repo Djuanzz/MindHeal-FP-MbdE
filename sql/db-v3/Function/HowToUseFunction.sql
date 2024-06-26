@@ -24,4 +24,4 @@ FROM
     Schedule
 WHERE 
     YEAR(ScheduleDate) = 2024
-    AND MONTH(ScheduleDate) = 7;
+    AND MONTH(ScheduleDate) = 6;

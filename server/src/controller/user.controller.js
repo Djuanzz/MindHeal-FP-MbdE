@@ -141,6 +141,19 @@ const lastConsultation = async (req, res, next) => {
   }
 };
 
+const getTopCountUserConsultation = async (req, res, next) => {
+  try {
+    const data = await userService.getTopCountUserConsultation();
+    res.status(200).json({
+      data: data,
+      message: "done",
+    });
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
 export default {
   getAllUsers,
   register,
@@ -152,4 +165,5 @@ export default {
   getCountConsultation,
   topLocation,
   lastConsultation,
+  getTopCountUserConsultation,
 };

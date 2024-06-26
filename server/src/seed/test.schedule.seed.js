@@ -1,6 +1,6 @@
 import fs from "fs";
 
-const countPsychologist = 100;
+const countPsychologist = 10;
 const countSession = 3;
 
 // Generate schedules

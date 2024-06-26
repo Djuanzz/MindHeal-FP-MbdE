@@ -25,6 +25,31 @@
       </table>
     </section>
 
+    <!-- Top 5 Users Scheduled -->
+    <section class="top-users">
+      <h2>Top 5 Users Scheduled</h2>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>User ID</th>
+            <th>Name</th>
+            <th>Schedule Count</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(user, index) in topUser" :key="index">
+            <td>{{ user.UserID }}</td>
+            <td>{{ user.Name }}</td>
+            <td>{{ user.ConsultationCount }}</td>
+          </tr>
+          <!-- Display empty rows if less than 5 users -->
+          <tr v-for="index in emptyRows" :key="'empty' + index">
+            <td colspan="3"></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
     <router-link to="/admin/dashboard" class="back-to-dashboard">
       Back to Dashboard
     </router-link>
@@ -38,6 +63,7 @@ export default {
   data() {
     return {
       topPsikolog: ref([]),
+      topUser: ref([]),
     };
   },
   computed: {},
@@ -61,10 +87,31 @@ export default {
         console.error(error);
       }
     },
+
+    async getTopUser() {
+      try {
+        const response = await fetch(
+          "http://localhost:5000/api/transaksi/top-user",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        const responseData = await response.json();
+        this.topUser = responseData.data;
+        console.log(responseData.data);
+      } catch (error) {
+        console.error(error);
+      }
+    },
   },
 
   mounted() {
     this.getTopPsychologist();
+    this.getTopUser();
   },
 };
 </script>

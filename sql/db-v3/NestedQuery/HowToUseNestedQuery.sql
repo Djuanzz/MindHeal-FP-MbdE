@@ -7,3 +7,5 @@ SELECT * FROM PsychologistScheduleCount LIMIT ?;
 -- SELECT * FROM PsychologistScheduleCount LIMIT 1;
 -- Ntr gunanya buat nge return Psychologist yang paling banyak ngurus konsultasi
 -- BTW itu LIMIT-ny Opsional ya
+
+SELECT * FROM UserConsultationCount LIMIT 5;

@@ -45,16 +45,11 @@ BEGIN
         sch.ScheduleDate,
         loc.LocationID,
         loc.Name as LocationName
-    FROM 
-        Psychologist p
-    JOIN 
-        Schedule sch ON p.PsychologistID = sch.Psychologist_PsychologistID
-    JOIN 
-        Session s ON sch.Session_SessionID = s.SessionID
-    JOIN
-        Locations loc ON p.Location_LocationID = loc.LocationID
-    WHERE 
-        sch.ScheduleDate = requestedDate;
+    FROM Psychologist p
+    JOIN Schedule sch ON p.PsychologistID = sch.Psychologist_PsychologistID
+    JOIN Session s ON sch.Session_SessionID = s.SessionID
+    JOIN Locations loc ON p.Location_LocationID = loc.LocationID
+    WHERE sch.ScheduleDate = requestedDate;
 END;
 
 DROP PROCEDURE IF EXISTS `GetPsychologistSchedule`;
@@ -118,14 +113,10 @@ BEGIN
         sch.ScheduleDate,
         loc.LocationID,
         loc.Name as LocationName
-    FROM 
-        Psychologist p
-    JOIN 
-        Schedule sch ON p.PsychologistID = sch.Psychologist_PsychologistID
-    JOIN 
-        Session s ON sch.Session_SessionID = s.SessionID
-    JOIN 
-        Locations loc ON p.Location_LocationID = loc.LocationID
+    FROM Psychologist p
+    JOIN Schedule sch ON p.PsychologistID = sch.Psychologist_PsychologistID
+    JOIN Session s ON sch.Session_SessionID = s.SessionID
+    JOIN Locations loc ON p.Location_LocationID = loc.LocationID
     ORDER BY sch.ScheduleDate DESC;
 END;
 
@@ -151,20 +142,13 @@ BEGIN
         se.SessionStart,
         se.SessionEnd,
         l.Name AS LocationName
-    FROM 
-        UserHistory uh
-    JOIN 
-        Users u ON uh.User_UserID = u.UserID
-    JOIN 
-        Schedule s ON uh.UserHistoryID = s.UserHistory_UserHistoryID
-    JOIN 
-        Psychologist p ON s.Psychologist_PsychologistID = p.PsychologistID
-    JOIN 
-        Session se ON s.Session_SessionID = se.SessionID
-    JOIN 
-        Locations l ON p.Location_LocationID = l.LocationID
-    WHERE 
-        uh.UserHistoryID = userHistoryID;
+    FROM UserHistory uh
+    JOIN Users u ON uh.User_UserID = u.UserID
+    JOIN Schedule s ON uh.UserHistoryID = s.UserHistory_UserHistoryID
+    JOIN Psychologist p ON s.Psychologist_PsychologistID = p.PsychologistID
+    JOIN Session se ON s.Session_SessionID = se.SessionID
+    JOIN Locations l ON p.Location_LocationID = l.LocationID
+    WHERE uh.UserHistoryID = userHistoryID;
 END;
 
 CREATE PROCEDURE GetTransactionDetails()
@@ -179,19 +163,12 @@ BEGIN
         s.ScheduleDate,
         ses.SessionStart,
         ses.SessionEnd
-    FROM 
-        TransactionBill tb
-    JOIN 
-        UserHistory uh ON tb.UserHistory_UserHistoryID = uh.UserHistoryID
-    JOIN 
-        Users u ON uh.User_UserID = u.UserID
-    JOIN 
-        Schedule s ON uh.UserHistoryID = s.UserHistory_UserHistoryID
-    JOIN 
-        Psychologist p ON s.Psychologist_PsychologistID = p.PsychologistID
-    JOIN 
-        Session ses ON s.Session_SessionID = ses.SessionID
-    WHERE
-        s.ScheduleStatus = 'Booked';
+    FROM TransactionBill tb
+    JOIN UserHistory uh ON tb.UserHistory_UserHistoryID = uh.UserHistoryID
+    JOIN Users u ON uh.User_UserID = u.UserID
+    JOIN Schedule s ON uh.UserHistoryID = s.UserHistory_UserHistoryID
+    JOIN Psychologist p ON s.Psychologist_PsychologistID = p.PsychologistID
+    JOIN Session ses ON s.Session_SessionID = ses.SessionID
+    WHERE s.ScheduleStatus = 'Booked';
 END;
 

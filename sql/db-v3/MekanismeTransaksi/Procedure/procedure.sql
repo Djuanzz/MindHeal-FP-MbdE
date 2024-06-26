@@ -5,7 +5,6 @@ CREATE PROCEDURE InputTransaction(
     OUT Created_UserHistoryID INT -- Tambah Line Ini
 )
 BEGIN 
-
     DECLARE setUserHistoryID INT;
 
     INSERT INTO `UserHistory`(User_UserID)

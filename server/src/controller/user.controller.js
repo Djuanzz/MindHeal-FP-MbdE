@@ -128,6 +128,19 @@ const topLocation = async (req, res, next) => {
   }
 };
 
+const lastConsultation = async (req, res, next) => {
+  try {
+    const data = await userService.lastConsultation(req);
+    res.status(200).json({
+      data: data,
+      message: "done",
+    });
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
 export default {
   getAllUsers,
   register,
@@ -138,4 +151,5 @@ export default {
   getUserByUserID,
   getCountConsultation,
   topLocation,
+  lastConsultation,
 };

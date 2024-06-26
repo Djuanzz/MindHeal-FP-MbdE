@@ -17,6 +17,7 @@ import ManageSchedulePsycholog from "@/views/admin/ManageSchedulePsycholog.vue";
 import DetailHistory from "@/views/DetailHistory.vue";
 import ManageDiagnosis from "@/views/admin/ManageDiagnosis.vue";
 import ManageDetailPsychologist from "@/views/admin/ManageDetailPsychologist.vue";
+import RecordData from "@/views/admin/RecordData.vue";
 
 const routes = [
   {
@@ -139,6 +140,13 @@ const routes = [
       requiresAuth: true,
       role: "admin",
     },
+  },
+
+  {
+    path: "/admin/record-data",
+    name: "RecordData",
+    component: RecordData,
+    meta: { title: "RecordData", requiresAuth: true, role: "admin" },
   },
 ];
 

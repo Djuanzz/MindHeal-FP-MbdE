@@ -126,6 +126,15 @@ const topLocation = async (req) => {
   return topLocation;
 };
 
+const lastConsultation = async (req) => {
+  const userId = req.user.UserID;
+  const lastConsultationQuery =
+    "SELECT *FROM `LatestConsultations` WHERE UserID = ?";
+  const [lastConsultation] = await db.query(lastConsultationQuery, [userId]);
+
+  return lastConsultation;
+};
+
 export default {
   getAllUsers,
   register,
@@ -135,4 +144,5 @@ export default {
   getUserByUserID,
   getCountConsultation,
   topLocation,
+  lastConsultation,
 };

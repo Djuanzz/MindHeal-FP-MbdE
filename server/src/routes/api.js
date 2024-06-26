@@ -30,8 +30,10 @@ userRouter.post("/transaksi/pay", transaksiController.userPayTheTransaction);
 userRouter.delete("/history", historyController.deleteHistory);
 userRouter.get("/count-consultation", userController.getCountConsultation);
 userRouter.get("/top-location", userController.topLocation);
+userRouter.get("/last-consultation", userController.lastConsultation);
 
 psikologRouter.get("/:id", psikologController.getPsikologById);
+psikologRouter.get("/top/psikolog", psikologController.getTopPsikolog);
 psikologRouter.post("/", psikologController.createPsikolog);
 psikologRouter.delete("/", psikologController.deletePsikolog);
 psikologRouter.get(

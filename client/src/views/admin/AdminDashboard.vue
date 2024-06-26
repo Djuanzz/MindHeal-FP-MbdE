@@ -25,6 +25,13 @@
             <span class="link-text">Total Transaction</span>
           </div>
         </router-link>
+
+        <router-link to="/admin/record-data" class="dashboard-link">
+          <div class="link-card">
+            <i class="fas fa-solid fa-file icon"></i>
+            <span class="link-text">Record</span>
+          </div>
+        </router-link>
       </div>
 
       <div class="didalamnya">

@@ -65,10 +65,18 @@ SELECT GetTotalPatientsHandled(?) AS TotalPatients
   return result;
 };
 
+const getTopPsikolog = async () => {
+  const getTopPsikologQuery = "SELECT * FROM PsychologistScheduleCount LIMIT 5";
+  const [result] = await db.query(getTopPsikologQuery);
+
+  return result;
+};
+
 export default {
   getAllPsikolog,
   getPsikologById,
   createPsikolog,
   deletePsikolog,
   getTotalPatientHandled,
+  getTopPsikolog,
 };

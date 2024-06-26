@@ -70,6 +70,10 @@
             <th>Count Consultation</th>
             <td>{{ countConsultation }}</td>
           </tr>
+          <tr>
+            <th>Last Consultation Date</th>
+            <td>{{ dateLastConsultation }}</td>
+          </tr>
         </tbody>
       </table>
     </section>
@@ -161,6 +165,7 @@ export default {
       user: ref({}),
       countConsultation: ref(0),
       topLocations: ref([]),
+      dateLastConsultation: ref(""),
       passwords: {
         Password: "",
         NewPassword: "",
@@ -288,12 +293,33 @@ export default {
         console.error("Error:", error);
       }
     },
+
+    async getLastConsultation() {
+      try {
+        const response = await fetch(
+          "http://localhost:5000/api/user/last-consultation",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        const data = await response.json();
+        // console.log("Last consultation:", data.data[0].LastConsultationDate);
+        this.dateLastConsultation = data.data[0].LastConsultationDate;
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    },
   },
 
   mounted() {
     this.currentUser();
     this.fetchCountConsultation();
     this.fetchTopLocations();
+    this.getLastConsultation();
   },
 };
 </script>

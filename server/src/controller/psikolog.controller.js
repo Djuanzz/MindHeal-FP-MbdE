@@ -67,10 +67,24 @@ const getTotalPatientHandled = async (req, res, next) => {
   }
 };
 
+const getTopPsikolog = async (req, res, next) => {
+  try {
+    const data = await psikologService.getTopPsikolog();
+    res.status(200).json({
+      data: data,
+      message: "done",
+    });
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
 export default {
   getAllPsikolog,
   getPsikologById,
   createPsikolog,
   deletePsikolog,
   getTotalPatientHandled,
+  getTopPsikolog,
 };
